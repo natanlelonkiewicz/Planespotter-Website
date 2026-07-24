@@ -714,9 +714,9 @@ h2{
 
     justify-content:center;
 
-    gap:20px;
+    gap:11px;
 
-    margin-top:10px;
+    margin-top:0px;
 
 }
 
@@ -731,11 +731,20 @@ h2{
 
     border-radius:8px;
 
-    padding:8px 15px;
+    width:34px;
+    height:34px;
+
+    padding:0;
 
     cursor:pointer;
 
-    font-size:18px;
+    font-size:22px;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    transform: translateY(-1px);
 
 }
 
