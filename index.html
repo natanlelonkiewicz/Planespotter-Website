@@ -1,0 +1,2334 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Avspot</title>
+
+<link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css"/>
+<link rel="stylesheet" href="css/style.css">
+
+</head>
+
+<body>
+
+<div id="container">
+
+    <div id="map">
+
+    <div id="toolbar">
+
+        <input 
+        type="text" 
+        placeholder="Search airport..."
+        >
+
+        <button onclick="toggleSunCompass()">
+        ☀ Sun
+        </button>
+
+        <button onclick="locateUser()">
+📍 Location
+</button>
+
+        <button id="flightButton" onclick="toggleFlights()">
+✈ Flights ON
+</button>
+
+        <div id="sunTimeControl" style="display:none;">
+
+<p style="margin:5px 0;">
+☀ Sun Position:
+<span id="selectedTime">--:--</span>
+</p>
+
+<input
+type="range"
+min="4"
+max="22"
+value="17"
+id="sunTimeSlider"
+oninput="changeSunTime()"
+>
+
+<button id="liveButton" onclick="liveSunTime()">
+🔴 LIVE
+</button>
+
+</div>
+
+    </div>
+
+<div id="sunCompassOverlay">
+
+</div>
+
+</div>
+
+<button id="sidebarToggle" onclick="toggleSidebar()">
+☰
+</button>
+
+    <div id="sidebar">
+
+        <h2>Avspot</h2>
+
+        <p>Click an airport to begin.
+        </p>
+        
+        <p>This website is in early development. More features will be added soon.
+        </p>
+
+    </div>
+
+</div>
+
+<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/suncalc/1.9.0/suncalc.min.js"></script>
+
+<script>
+
+var map = L.map('map').setView([55.674818,-4.407905],9);
+
+L.DomEvent.disableClickPropagation(
+    document.getElementById("sunTimeControl")
+);
+
+document.getElementById("sunTimeControl").addEventListener(
+"mousedown",
+function(e){
+    L.DomEvent.stopPropagation(e);
+}
+);
+
+L.DomEvent.disableClickPropagation(
+    document.getElementById("sunCompassOverlay")
+);
+
+L.DomEvent.disableScrollPropagation(
+    document.getElementById("sunCompassOverlay")
+);
+
+L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{
+    attribution:'© OpenStreetMap contributors'
+}).addTo(map);
+
+var rankedSpots = [];
+
+var weather = {
+    temperature: "--",
+    description: "Loading...",
+    windSpeed: "--",
+    windDirection: "--",
+    cloudCover: "--"
+};
+
+var spotMarkers = [];
+
+var activeRunway = "";
+
+var airport = null;
+
+var marker;
+
+var userMarker = null;
+
+var userLocationIcon = L.divIcon({
+
+    className:"",
+
+    html:
+    `
+    <div class="user-location-dot">
+    </div>
+    `,
+
+    iconSize:[24,24],
+
+    iconAnchor:[12,12]
+
+});
+
+var greenIcon = L.divIcon({
+
+    className:"",
+
+    html:
+    "<div class='pin green'>📍</div>",
+
+    iconSize:[32,32],
+
+    iconAnchor:[16,16]
+
+});
+
+
+var yellowIcon = L.divIcon({
+
+    className:"",
+
+    html:
+    "<div class='pin yellow'>📍</div>",
+
+    iconSize:[32,32],
+
+    iconAnchor:[16,16]
+
+});
+
+function createPlaneIcon(heading){
+
+    return L.divIcon({
+
+        className:"",
+
+        html:
+        `
+        <div style="
+            transform:rotate(${heading}deg);
+            filter:drop-shadow(0 2px 3px rgba(0,0,0,0.7));
+        ">
+
+        <svg 
+        width="38"
+        height="38"
+        viewBox="0 0 38 38"
+        xmlns="http://www.w3.org/2000/svg">
+
+
+        <!-- aircraft body -->
+
+        <path
+        d="
+        M19 2
+
+        C20.2 2 21 3.2 21 5
+
+        L21 15
+
+        L34 20
+
+        C35 20.5 35 22 33.5 22
+
+        L21 19.5
+
+        L21 30
+
+        L25 33
+
+        L25 35
+
+        L19 32
+
+        L13 35
+
+        L13 33
+
+        L17 30
+
+        L17 19.5
+
+        L4.5 22
+
+        C3 22 3 20.5 4 20
+
+        L17 15
+
+        L17 5
+
+        C17 3.2 17.8 2 19 2
+
+        Z
+        "
+
+        fill="#f5c542"
+        stroke="#111"
+        stroke-width="1.2"
+
+        />
+
+        </svg>
+
+        </div>
+        `,
+
+        iconSize:[38,38],
+
+        iconAnchor:[19,19]
+
+    });
+
+}
+
+var redIcon = L.divIcon({
+
+    className:"",
+
+    html:
+    "<div class='pin red'>📍</div>",
+
+    iconSize:[32,32],
+
+    iconAnchor:[16,16]
+
+});
+
+var spots = [];
+
+function airportClicked(){
+
+    updateSpotLighting();
+
+    renderSidebar();
+
+}
+
+function renderSidebar(){
+
+    rankedSpots = getBestSpots();
+
+    if(weather.windDirection != "--"){
+
+    activeRunway = getRunwayInUse();
+
+}
+else{
+
+    activeRunway = "Unknown";
+
+}
+
+    document.getElementById("sidebar").innerHTML = `
+
+<h2>
+✈ ${airport.name}
+</h2>
+
+<p class="airport-details">
+
+${airport.code}<br>
+
+${airport.location}
+
+</p>
+
+<div class="photoContainer airport-image">
+
+<img 
+src="${airport.image}"
+alt="${airport.name}"
+>
+
+<div id="photoCredit">
+${airport.airportCredits?.[currentAirportPhotoIndex] || ""}
+</div>
+
+</div>
+
+<hr>
+
+<h3>🛫 Runway Information</h3>
+
+<p>
+🌬 Wind:
+<b>${weather.windDirection}°</b>
+</p>
+
+<p>
+🛬 Active Runway:
+<b>${activeRunway}</b>
+</p>
+
+<p>
+Runway Headings:
+${airport.runways.map(function(runway){
+
+return runway.name + ": " +
+runway.heading1 + "° / " +
+runway.heading2 + "°";
+
+}).join("<br>")}
+</p>
+
+<hr>
+
+
+<h3>☀ Best Spot Right Now</h3>
+
+<p>
+${
+rankedSpots.length > 0 && rankedSpots[0].lighting
+?
+"<b>" + rankedSpots[0].name + "</b>"
++ "<br>"
++ rankedSpots[0].lighting.stars
++ " "
++ rankedSpots[0].lighting.text
+:
+"Calculating..."
+}
+</p>
+
+<hr>
+
+
+<h3>📍 Best Spotting Locations</h3>
+
+
+${rankedSpots.map((spot,index)=>`
+
+<div 
+class="spot-card ${
+    spot.lighting
+    ?
+    spot.lighting.text === "Excellent"
+    ? "excellent"
+    :
+    spot.lighting.text === "Side lighting"
+    ? "side"
+    :
+    "backlit"
+    :
+    ""
+}"
+onclick="showSpot(rankedSpots[${index}])">
+
+<h3 style="margin:0;">
+${spot.name}
+</h3>
+
+
+<p style="margin:5px 0;">
+${
+spot.lighting
+?
+spot.lighting.stars
++ " "
++ spot.lighting.text
+:
+"Calculating..."
+}
+</p>
+
+
+
+
+</div>
+
+`).join("")}
+
+
+<hr>
+
+<h3>🌤 Flight Conditions</h3>
+
+<p>
+<b>${weather.description}</b>
+</p>
+
+<p>
+🌡 Temperature:
+${weather.temperature}°C
+</p>
+
+<p>
+💨 Wind:
+${weather.windDirection}°
+@ ${weather.windSpeed} km/h
+</p>
+
+<p>
+☁ Cloud:
+${weather.cloudCover}%
+</p>
+
+<hr>
+
+<h3>📸 Photography Conditions</h3>
+
+<p>
+${getPhotographyScore()}
+</p>
+
+<p>
+${getWeatherAdvice()}
+</p>
+
+
+<hr>
+
+<p><b>Current Time</b></p>
+<p id="currentTime"></p>
+
+`;
+
+updateCurrentTime();
+
+}
+
+var airports = [];
+
+var airportMarkers = [];
+
+
+async function loadAirportList(){
+
+    openSidebar();
+
+    try{
+
+        var response = await fetch(
+            "data/airports.json"
+        );
+
+
+        airports = await response.json();
+
+
+        console.log(
+            "Airports loaded:",
+            airports
+        );
+
+        displayAirports();
+
+
+    }
+
+    catch(error){
+
+        console.log(
+            "Airport loading error:",
+            error
+        );
+
+    }
+
+}
+
+
+loadAirportList();
+
+function showSpot(spot){
+
+    openSidebar();
+
+    currentSpot = spot;
+
+    currentPhotos = spot.photos;
+    
+    currentPhotoIndex = 0;
+
+    map.flyTo(
+        [spot.lat, spot.lng],
+        17
+    );
+
+    spot.marker.bindPopup(
+        spot.name
+    ).openPopup();
+
+
+    document.getElementById("sidebar").innerHTML = `
+    
+    <h2>${spot.name}</h2>
+
+    <hr>
+
+    <p><b>Lighting</b></p>
+
+<p>
+${spot.lighting 
+? spot.lighting.stars + " " + spot.lighting.text
+: "Calculating..."
+}
+
+<h3>📸 Location Photos</h3>
+
+<div class="carousel">
+
+    <div class="photoContainer">
+
+        <img
+        id="spotPhoto"
+        src="${spot.photos[0]}"
+        >
+
+        <div id="photoCredit">
+            ${spot.photoCredits?.[currentPhotoIndex] || ""}
+        </div>
+
+    </div>
+
+    <div class="photoButtons">
+
+        <button onclick="previousPhoto()">◀</button>
+
+        <button onclick="nextPhoto()">▶</button>
+
+    </div>
+
+</div>
+
+</p>
+
+    <hr>
+
+    <hr>
+
+<div 
+id="directionButton"
+class="direction-card"
+onclick="getDirections(${spot.lat}, ${spot.lng})">
+
+Get Walking Directions
+
+</div>
+
+<div id="walkingInfo"></div>
+
+<hr>
+
+<p><b>Best For Runway</b></p>
+
+<p>
+Runway ${spot.bestForRunway}
+</p>
+
+    <p><b>Recommended Focal Length</b></p>
+<p>${spot.recommendedFocalLength}</p>
+
+    <hr>
+
+    <p><b>Parking</b></p>
+    <p>${spot.parking}</p>
+
+    <hr>
+
+    <p><b>Best Time To Visit</b></p>
+<p>${spot.bestTimeToVisit}</p>
+
+    <hr>
+
+    <p><b>Notes</b></p>
+    ${
+Array.isArray(spot.notes)
+
+?
+
+spot.notes.map(function(note){
+
+    return "• " + note + "<br>";
+
+}).join("")
+
+:
+
+spot.notes
+}
+
+    `;
+
+}
+
+function getDirections(lat, lng){
+
+    var button = document.getElementById(
+        "directionButton"
+    );
+
+
+    if(button){
+
+        button.innerHTML =
+        "⏳ Loading directions...";
+
+        button.style.pointerEvents = "none";
+
+    }
+
+
+    if(!navigator.geolocation){
+
+        alert("Location services not supported.");
+
+        resetDirectionButton();
+
+        return;
+
+    }
+
+
+    navigator.geolocation.getCurrentPosition(
+
+        function(position){
+
+
+            var userLat =
+            position.coords.latitude;
+
+
+            var userLng =
+            position.coords.longitude;
+
+
+            drawWalkingRoute(
+                userLat,
+                userLng,
+                lat,
+                lng
+            );
+
+
+        },
+
+
+        function(){
+
+            alert(
+            "Please allow location access."
+            );
+
+            resetDirectionButton();
+
+        },
+
+
+        {
+
+            enableHighAccuracy:true,
+
+            timeout:10000
+
+        }
+
+    );
+
+}
+
+function resetDirectionButton(){
+
+    var button =
+    document.getElementById(
+        "directionButton"
+    );
+
+
+    if(button){
+
+        button.innerHTML =
+        "Get Walking Directions";
+
+
+        button.style.pointerEvents =
+        "auto";
+
+    }
+
+}
+
+function decodePolyline(encoded){
+
+    var coordinates = [];
+
+    var index = 0;
+    var lat = 0;
+    var lng = 0;
+
+
+    while(index < encoded.length){
+
+        var b;
+        var shift = 0;
+        var result = 0;
+
+
+        do {
+
+            b = encoded.charCodeAt(index++) - 63;
+
+            result |= (b & 0x1f) << shift;
+
+            shift += 5;
+
+        } while(b >= 0x20);
+
+
+        var dlat =
+        ((result & 1)
+        ? ~(result >> 1)
+        : (result >> 1));
+
+
+        lat += dlat;
+
+
+        shift = 0;
+        result = 0;
+
+
+        do {
+
+            b = encoded.charCodeAt(index++) - 63;
+
+            result |= (b & 0x1f) << shift;
+
+            shift += 5;
+
+        } while(b >= 0x20);
+
+
+        var dlng =
+        ((result & 1)
+        ? ~(result >> 1)
+        : (result >> 1));
+
+
+        lng += dlng;
+
+
+        coordinates.push([
+            lat / 1e6,
+            lng / 1e6
+        ]);
+
+    }
+
+
+    return coordinates;
+
+}
+
+async function drawWalkingRoute(
+    userLat,
+    userLng,
+    spotLat,
+    spotLng
+){
+
+    try{
+
+
+        var request = {
+
+            locations:[
+
+                {
+                    lat:userLat,
+                    lon:userLng
+                },
+
+                {
+                    lat:spotLat,
+                    lon:spotLng
+                }
+
+            ],
+
+            costing:"pedestrian",
+
+            units:"kilometers"
+
+        };
+
+
+        var response = await fetch(
+
+            "https://valhalla1.openstreetmap.de/route?json="
+            +
+            encodeURIComponent(
+                JSON.stringify(request)
+            )
+
+        );
+
+
+        var data = await response.json();
+
+
+        var trip = data.trip;
+
+
+        var route =
+        decodePolyline(
+            trip.legs[0].shape
+        );
+
+
+        // remove previous route
+
+        if(walkingRoute){
+
+            map.removeLayer(walkingRoute);
+
+        }
+
+
+        walkingRoute = L.polyline(
+
+            route,
+
+            {
+
+                color:"#f5c542",
+
+                weight:5,
+
+                opacity:0.9
+
+            }
+
+        );
+
+
+        walkingRoute.addTo(map);
+
+
+        map.fitBounds(
+            walkingRoute.getBounds()
+        );
+
+
+
+        var distance =
+        trip.summary.length.toFixed(2);
+
+
+        var minutes =
+        Math.round(
+            trip.summary.time / 60
+        );
+
+
+        document.getElementById("walkingInfo").innerHTML =
+
+        `
+
+        <hr>
+
+        <h3>Walking Directions</h3>
+
+
+        <p>
+        🚶 Time:
+        <b>${minutes} minutes</b>
+        </p>
+
+
+        <p>
+        📏 Distance:
+        <b>${distance} km</b>
+        </p>
+
+        `;
+
+        resetDirectionButton();
+
+
+
+    }
+
+
+    catch(error){
+
+    console.log(
+        "Walking route error:",
+        error
+    );
+
+    resetDirectionButton();
+
+}
+
+}
+
+function displayAirports(){
+
+    // remove old markers
+
+    airportMarkers.forEach(function(marker){
+
+        map.removeLayer(marker);
+
+    });
+
+
+    airportMarkers = [];
+
+
+    airports.forEach(function(airport){
+
+
+        var marker = L.marker(
+    [airport.lat, airport.lng]
+);
+
+
+        marker.addTo(map);
+
+
+        marker.on("click", function(){
+
+    loadAirport(
+        airport.icao
+    );
+
+    openSidebar();
+
+});
+
+
+        airportMarkers.push(marker);
+
+
+    });
+
+
+}
+
+async function loadAirport(icao){
+
+    try{
+
+        var response = await fetch(
+            "data/airports/" + icao + ".json"
+        );
+
+        var data = await response.json();
+
+        airport = data;
+
+        currentAirportPhotoIndex = 0;
+
+        console.log("Loaded airport:", airport);
+
+        spots = airport.spots;
+
+        showSpotMarkers(airport.spots);
+
+        map.flyTo(
+            [
+                airport.lat,
+                airport.lng
+            ],
+            13
+        );
+
+        // Wait for weather before updating everything
+        await updateWeather();
+
+        updateSpotLighting();
+
+        renderSidebar();
+
+        liveSunTime();
+
+        loadFlights();
+
+    }
+
+    catch(error){
+
+        console.log(
+            "Airport load error:",
+            error
+        );
+
+    }
+
+}
+
+function showSunCompass(){
+
+    var lat = airport.lat;
+    var lng = airport.lng;
+
+    var now = new Date();
+
+
+    var sun = SunCalc.getPosition(
+        now,
+        lat,
+        lng
+    );
+
+
+    var times = SunCalc.getTimes(
+        now,
+        lat,
+        lng
+    );
+
+
+    var degrees = sun.azimuth * (180 / Math.PI);
+
+    // Convert negative numbers
+    if(degrees < 0){
+        degrees += 360;
+    }
+
+
+    var direction;
+
+
+    if(degrees < 22.5 || degrees >=337.5){
+        direction = "North";
+    }
+    else if(degrees <67.5){
+        direction = "North East";
+    }
+    else if(degrees <112.5){
+        direction = "East";
+    }
+    else if(degrees <157.5){
+        direction = "South East";
+    }
+    else if(degrees <202.5){
+        direction = "South";
+    }
+    else if(degrees <247.5){
+        direction = "South West";
+    }
+    else if(degrees <292.5){
+        direction = "West";
+    }
+    else{
+        direction = "North West";
+    }
+
+
+    var altitude = sun.altitude * (180 / Math.PI);
+
+
+    document.getElementById("sidebar").innerHTML = `
+<h2>SpotLight Aviation</h2>
+
+<p>Select an airport or spotting location.</p>
+`;
+
+}
+
+function toggleSunCompass(){
+
+    var compass = document.getElementById("sunCompassOverlay");
+
+    if(compass.style.display === "block"){
+
+        compass.style.display="none";
+
+        document.getElementById("sunTimeControl").style.display="none";
+
+    }
+    else{
+
+        compass.style.display="block";
+
+document.getElementById("sunTimeControl").style.display="block";
+
+updateSunCompass();
+
+    }
+
+}
+
+function updateSunCompass(){
+
+      if(!airport) return;
+
+    var lat = airport.lat;
+    var lng = airport.lng;
+
+    var now = new Date();
+
+var slider = document.getElementById("sunTimeSlider");
+
+if(slider){
+    now.setHours(parseInt(slider.value));
+    now.setMinutes(0);
+}
+
+    var sun = SunCalc.getPosition(
+        now,
+        lat,
+        lng
+    );
+
+
+    var degrees = sun.azimuth * (180 / Math.PI);
+
+degrees = degrees + 180;
+
+if(degrees >= 360){
+    degrees -= 360;
+}
+
+    document.getElementById("sunCompassOverlay").innerHTML = `
+
+<div class="compass-label compass-north">
+N
+</div>
+
+<div class="compass-label compass-south">
+S
+</div>
+
+<div class="compass-label compass-east">
+E
+</div>
+
+<div class="compass-label compass-west">
+W
+</div>
+
+
+<div class="sun-position"
+style="
+transform:
+translate(-50%,-50%)
+rotate(${degrees}deg)
+translateY(${window.innerWidth <= 768 ? -160 : -240}px);
+">
+
+<div class="sun-dot"></div>
+
+<div class="sun-line"></div>
+
+</div>
+
+
+<div style="
+position:absolute;
+bottom:-65px;
+width:100%;
+text-align:center;
+font-size:24px;
+font-weight:bold;
+">
+${Math.round(degrees)}<span style="font-size:14px;">°</span>
+</div>
+
+`;
+
+}
+
+function changeSunTime(){
+
+    var slider = document.getElementById("sunTimeSlider");
+
+    var hour = parseInt(slider.value);
+
+    document.getElementById("selectedTime").innerHTML =
+    hour + ":00";
+
+    updateSunCompass();
+
+    updateSpotLighting();
+
+    renderSidebar();
+
+}
+
+function getSunBearing(date, lat, lng){
+
+    var sun = SunCalc.getPosition(
+        date,
+        lat,
+        lng
+    );
+
+
+    var bearing = sun.azimuth * 180 / Math.PI;
+
+
+    bearing += 180;
+
+
+    if(bearing >=360){
+        bearing -=360;
+    }
+
+
+    return bearing;
+
+}
+
+function getRunwayInUse(){
+
+    if(!airport || !airport.runways || !weather){
+
+        return "Unknown";
+
+    }
+
+
+    var windDirection = weather.windDirection;
+
+
+    var bestRunway = null;
+
+    var smallestDifference = 999;
+
+
+
+    airport.runways.forEach(function(runway){
+
+
+        var runwayOptions = [
+            {
+                name: runway.name.split("/")[0],
+                heading: runway.heading1
+            },
+
+            {
+                name: runway.name.split("/")[1],
+                heading: runway.heading2
+            }
+        ];
+
+
+
+        runwayOptions.forEach(function(option){
+
+
+            var diff = Math.abs(
+                windDirection - option.heading
+            );
+
+
+            if(diff > 180){
+
+                diff = 360 - diff;
+
+            }
+
+
+
+            if(diff < smallestDifference){
+
+                smallestDifference = diff;
+
+                bestRunway = option.name;
+
+            }
+
+
+        });
+
+
+    });
+
+
+    return bestRunway || "Unknown";
+
+}
+
+function getLightingRating(
+    sunBearing,
+    cameraBearing,
+    sunAltitude
+){
+
+    // No useful photography light below horizon
+    if(sunAltitude < -6){
+
+        return {
+            emoji:"⚫",
+            stars:"☆☆☆☆☆",
+            text:"Night",
+            score:0
+        };
+
+    }
+
+
+    // Twilight
+    if(sunAltitude >= -6 && sunAltitude <= 5){
+
+        return {
+            emoji:"🔵",
+            stars:"★★☆☆☆",
+            text:"Low light",
+            score:30
+        };
+
+    }
+
+
+
+    let difference = Math.abs(
+        sunBearing - cameraBearing
+    );
+
+
+    let altitudeBonus = 0;
+
+
+    if(sunAltitude > 5 && sunAltitude < 20){
+
+        altitudeBonus = 20;
+
+    }
+
+
+    if(sunAltitude >=20 && sunAltitude <45){
+
+        altitudeBonus = 10;
+
+    }
+
+
+    if(difference > 180){
+
+        difference = 360 - difference;
+
+    }
+
+
+
+    if(difference <=45){
+
+        return {
+            emoji:"🟢",
+            stars:"★★★★★",
+            text:"Excellent",
+            score:100 + altitudeBonus
+        };
+
+    }
+
+
+    if(difference <=110){
+
+        return {
+            emoji:"🟡",
+            stars:"★★★☆☆",
+            text:"Side lighting",
+            score:60 + altitudeBonus
+        };
+
+    }
+
+
+
+    return {
+        emoji:"🔴",
+        stars:"★☆☆☆☆",
+        text:"Backlit",
+        score:20 + altitudeBonus
+    };
+
+}
+
+function updateSpotMarker(spot){
+
+    if(spot.lighting.text === "Excellent"){
+
+        spot.marker.setIcon(greenIcon);
+
+    }
+
+    else if(spot.lighting.text === "Side lighting"){
+
+        spot.marker.setIcon(yellowIcon);
+
+    }
+
+    else{
+
+        spot.marker.setIcon(redIcon);
+
+    }
+
+}
+
+function updateSpotLighting(){
+
+    if(!airport){
+        return;
+    }
+
+    var date = new Date();
+
+    var slider = document.getElementById("sunTimeSlider");
+
+    if(slider){
+
+        date.setHours(
+            parseInt(slider.value)
+        );
+
+    }
+
+
+    var sunBearing = getSunBearing(
+        date,
+        airport.lat,
+        airport.lng
+    );
+
+    var sun = SunCalc.getPosition(
+    date,
+    airport.lat,
+    airport.lng
+);
+
+
+var sunAltitude =
+sun.altitude * 180 / Math.PI;
+
+    spots.forEach(function(spot){
+
+    spot.lighting = getLightingRating(
+        sunBearing,
+        spot.direction,
+        sunAltitude
+    );
+
+    updateSpotMarker(spot);
+
+});
+
+}
+
+function getBestSpots(){
+
+    return [...spots].sort(function(a,b){
+
+        return b.lighting.score - a.lighting.score;
+
+    });
+
+}
+
+
+async function updateWeather(){
+
+    if (!airport) {
+    return;
+}
+
+    try{
+
+        var url =
+        "https://api.open-meteo.com/v1/forecast"
+        + "?latitude=" + airport.lat
+        + "&longitude=" + airport.lng
+        + "&current=temperature_2m,weather_code,wind_speed_10m,wind_direction_10m,cloud_cover";
+
+
+        var response = await fetch(url);
+
+
+        if(!response.ok){
+
+            throw new Error("Weather API failed");
+
+        }
+
+
+        var data = await response.json();
+
+
+        weather.temperature =
+            data.current.temperature_2m;
+
+
+        weather.windSpeed =
+            data.current.wind_speed_10m;
+
+
+        weather.windDirection =
+            data.current.wind_direction_10m;
+
+
+        weather.cloudCover =
+            data.current.cloud_cover;
+
+
+        weather.description =
+            getWeatherDescription(
+                data.current.weather_code
+            );
+
+
+        console.log("Weather updated:", weather);
+
+
+    }
+
+    catch(error){
+
+        console.log("Weather error:", error);
+
+        weather.description = "Weather unavailable";
+
+    }
+
+}
+
+function getWeatherDescription(code){
+
+    switch(code){
+
+        case 0:
+            return "Clear";
+
+        case 1:
+        case 2:
+            return "Mostly Sunny";
+
+        case 3:
+            return "Cloudy";
+
+        case 45:
+        case 48:
+            return "Fog";
+
+        case 61:
+        case 63:
+        case 65:
+            return "Rain";
+
+        default:
+            return "Unknown";
+
+    }
+
+}
+
+function getPhotographyScore(){
+
+    var now = new Date();
+
+
+    var times = SunCalc.getTimes(
+        now,
+        airport.lat,
+        airport.lng
+    );
+
+
+    // Night time
+    if(now > times.dusk || now < times.dawn){
+
+        return "☆☆☆☆☆ Night - no photography light";
+
+    }
+
+
+
+    var score = 5;
+
+
+
+    // Wind penalty
+    if(weather.windSpeed > 30){
+
+        score--;
+
+    }
+
+
+
+    // Cloud penalty
+    if(weather.cloudCover > 80){
+
+        score--;
+
+    }
+
+
+
+    // Rain penalty
+    if(weather.description === "Rain"){
+
+        score -= 2;
+
+    }
+
+
+
+    if(score < 1){
+
+        score = 1;
+
+    }
+
+
+
+    var stars = "";
+
+
+    for(var i = 0; i < score; i++){
+
+        stars += "★";
+
+    }
+
+
+    for(var i = score; i < 5; i++){
+
+        stars += "☆";
+
+    }
+
+
+    return stars + " Photography conditions";
+
+}
+
+function updateCurrentTime(){
+
+    var now = new Date();
+
+    var time = now.toLocaleTimeString([], {
+        hour: "2-digit",
+        minute: "2-digit"
+    });
+
+    var element = document.getElementById("currentTime");
+
+    if(element){
+        element.innerHTML = time;
+    }
+
+}
+
+function refreshWeather(){
+
+    document.getElementById("sidebar").innerHTML =
+    "<h2>SpotLight Aviation</h2><p>Loading weather...</p>";
+
+
+    updateWeather().then(function(){
+
+    updateSpotLighting();
+
+    renderSidebar();
+
+});
+
+}
+
+function liveSunTime(){
+
+    if(!airport) return;
+
+    var now = new Date();
+
+    var hour = now.getHours();
+    var minute = now.getMinutes();
+
+    document.getElementById("sunTimeSlider").value = hour;
+
+    document.getElementById("selectedTime").innerHTML =
+        hour.toString().padStart(2,"0")
+        + ":"
+        + minute.toString().padStart(2,"0")
+        + " 🔴 LIVE";
+
+    updateSunCompass();
+    updateSpotLighting();
+    renderSidebar();
+
+}
+
+function showSpotMarkers(spots){
+
+    // remove old spot markers
+    spotMarkers.forEach(function(marker){
+
+        map.removeLayer(marker);
+
+    });
+
+
+    spotMarkers = [];
+
+
+    spots.forEach(function(spot){
+
+
+        var marker = L.marker(
+
+            [spot.lat, spot.lng],
+
+            {
+                icon: yellowIcon
+            }
+
+        );
+
+
+        marker.on(
+            "click",
+            function(){
+
+                showSpot(spot);
+
+            }
+        );
+
+
+        marker.addTo(map);
+
+
+        spotMarkers.push(marker);
+
+
+        spot.marker = marker;
+
+
+    });
+
+
+}
+
+var aircraftMarkers = [];
+
+var walkingRoute = null;
+var userLocationMarker = null;
+
+var flightsVisible = true;
+
+var flightTimer = null;
+
+function toggleFlights(){
+
+    if(flightsVisible){
+
+        clearInterval(flightTimer);
+
+
+        aircraftMarkers.forEach(function(marker){
+
+            map.removeLayer(marker);
+
+        });
+
+
+        aircraftMarkers = [];
+
+
+        flightsVisible = false;
+
+
+        document.getElementById("flightButton").innerHTML =
+        "✈ Flights OFF";
+
+
+    }
+
+    else{
+
+
+        loadFlights();
+
+
+        flightTimer = setInterval(function(){
+
+            loadFlights();
+
+        },60000);
+
+
+        flightsVisible = true;
+
+
+        document.getElementById("flightButton").innerHTML =
+        "✈ Flights ON";
+
+
+    }
+
+}
+
+async function loadFlights(){
+
+    if(!airport){
+        return;
+    }
+
+    try{
+
+        var radius = airport.flightRadius || 50;
+
+        const response = await fetch(
+            `/flights?lat=${airport.lat}&lng=${airport.lng}&radius=${radius}`
+        );
+
+        const data = await response.json();
+
+
+        // remove old aircraft
+
+        aircraftMarkers.forEach(function(marker){
+
+            map.removeLayer(marker);
+
+        });
+
+
+        aircraftMarkers = [];
+
+
+        if(!data.ac){
+    console.log("No flight data received:", data);
+    return;
+}
+
+data.ac.forEach(function(flight){
+
+
+            var callsign = flight.flight || "";
+
+var aircraftType = flight.desc || "";
+
+var longitude = flight.lon;
+
+var latitude = flight.lat;
+
+var altitude = flight.alt_baro;
+
+var speed = flight.gs;
+
+var heading = flight.track || flight.true_heading || 0;
+
+var aircraftID = flight.hex;
+
+
+            if(latitude && longitude){
+
+
+                var plane = L.marker(
+    [latitude, longitude],
+    {
+        icon:createPlaneIcon(
+            heading || 0
+        )
+    }
+);
+
+
+                plane.addTo(map);
+
+
+                plane.bindPopup(
+`
+<div style="
+font-family:Arial;
+min-width:180px;
+">
+
+<h3 style="
+margin:0;
+color:#d4af37;
+">
+✈ ${callsign || "Unknown"}
+</h3>
+
+<hr>
+
+<b>Aircraft:</b>
+<br>
+${aircraftType || "Unknown"}
+
+<br><br>
+
+<b>Altitude:</b>
+<br>
+${Math.round(altitude || 0).toLocaleString()} ft
+
+<br><br>
+
+<b>Speed:</b>
+<br>
+${Math.round(speed || 0)} knots
+
+<br><br>
+
+<b>Heading:</b>
+<br>
+${Math.round(heading || 0)}°
+
+<br><br>
+
+<b>Position:</b>
+<br>
+${latitude.toFixed(4)},
+${longitude.toFixed(4)}
+
+</div>
+`
+);
+
+
+                aircraftMarkers.push(plane);
+
+
+            }
+
+
+        });
+
+
+    }
+
+    catch(error){
+
+        console.log(
+            "Flight loading error:",
+            error
+        );
+
+    }
+
+}
+
+var flightTimer;
+
+function getWeatherAdvice(){
+
+    var now = new Date();
+
+    var times = SunCalc.getTimes(
+        now,
+        airport.lat,
+        airport.lng
+    );
+
+
+    if(now > times.dusk || now < times.dawn){
+
+        return "🌙 Night time - spotting possible but photography unavailable.";
+
+    }
+
+
+    var advice = [];
+
+
+    if(weather.windSpeed > 30){
+
+        advice.push("💨 Strong winds - tripod stability may be affected.");
+
+    }
+
+
+    if(weather.cloudCover > 80){
+
+        advice.push("☁ Heavy cloud - reduced lighting contrast.");
+
+    }
+
+
+    if(weather.description === "Rain"){
+
+        advice.push("🌧 Rain conditions - spotting may be difficult.");
+
+    }
+
+
+    if(advice.length === 0){
+
+        return "✅ Good conditions for spotting.";
+
+    }
+
+
+    return advice.join("<br>");
+
+}
+
+setInterval(updateCurrentTime,1000);
+
+
+var now = new Date();
+
+var currentHour = now.getHours();
+
+document.getElementById("sunTimeSlider").value = currentHour;
+
+flightTimer = setInterval(function () {
+
+    loadFlights();
+
+}, 60000);
+
+// Keep sun live
+setInterval(function(){
+
+    liveSunTime();
+
+},60000);
+
+
+// Refresh weather every 10 minutes
+setInterval(function(){
+
+    updateWeather().then(function(){
+
+        updateSpotLighting();
+
+        renderSidebar();
+
+    });
+
+},600000);
+
+function openWeatherTool(){
+
+    alert("Weather tool coming soon");
+
+}
+
+let currentPhotos = [];
+let currentPhotoIndex = 0;
+let currentSpot = null;
+let currentAirportPhotoIndex = 0;
+
+function nextPhoto(){
+
+    currentPhotoIndex++;
+
+    if(currentPhotoIndex >= currentPhotos.length){
+        currentPhotoIndex = 0;
+    }
+
+    document.getElementById("spotPhoto").src =
+    currentPhotos[currentPhotoIndex];
+
+    document.getElementById("photoCredit").innerHTML =
+    currentSpot.photoCredits[currentPhotoIndex];
+
+}
+
+
+function previousPhoto(){
+
+    currentPhotoIndex--;
+
+    if(currentPhotoIndex < 0){
+        currentPhotoIndex = currentPhotos.length - 1;
+    }
+
+    document.getElementById("spotPhoto").src =
+    currentPhotos[currentPhotoIndex];
+
+    document.getElementById("photoCredit").innerHTML =
+    currentSpot.photoCredits[currentPhotoIndex];
+
+}
+
+var compass = document.getElementById("sunCompassOverlay");
+
+var dragging = false;
+var offsetX = 0;
+var offsetY = 0;
+
+compass.addEventListener("mousedown", function(e){
+
+    if(window.innerWidth <= 768){
+        return;
+    }
+
+    dragging = true;
+
+    compass.style.cursor="grabbing";
+
+    offsetX = e.clientX - compass.offsetLeft;
+    offsetY = e.clientY - compass.offsetTop;
+
+});
+
+
+document.addEventListener("mousemove", function(e){
+
+    if(window.innerWidth <= 768){
+        return;
+    }
+
+    if(!dragging) return;
+
+
+    compass.style.left =
+    (e.clientX - offsetX) + "px";
+
+
+    compass.style.top =
+    (e.clientY - offsetY) + "px";
+
+});
+
+
+document.addEventListener("mouseup", function(){
+
+    if(window.innerWidth <= 768){
+        return;
+    }
+
+    dragging=false;
+
+    compass.style.cursor="grab";
+
+});
+
+var timeSlider = document.getElementById("sunTimeSlider");
+
+var draggingTime = false;
+
+var startX = 0;
+
+var startHour = 0;
+
+
+timeSlider.addEventListener("mousedown", function(e){
+
+    draggingTime = true;
+
+    startX = e.clientX;
+
+    startHour = parseInt(timeSlider.value);
+
+});
+
+
+document.addEventListener("mousemove", function(e){
+
+    if(!draggingTime) return;
+
+
+    var movement = e.clientX - startX;
+
+
+    // every 50 pixels = 1 hour
+    var hourChange = Math.round(movement / 50);
+
+
+    var newHour = startHour + hourChange;
+
+
+    if(newHour < 4){
+        newHour = 4;
+    }
+
+
+    if(newHour > 22){
+        newHour = 22;
+    }
+
+
+    timeSlider.value = newHour;
+
+
+    document.getElementById("selectedTime").innerHTML =
+    newHour + ":00";
+
+
+    updateSunCompass();
+
+    updateSpotLighting();
+
+    renderSidebar();
+
+
+});
+
+
+document.addEventListener("mouseup", function(){
+
+    draggingTime=false;
+
+});
+
+function locateUser(){
+
+    if(!navigator.geolocation){
+
+        alert("Location is not supported by this browser.");
+
+        return;
+
+    }
+
+
+    navigator.geolocation.getCurrentPosition(
+
+    function(position){
+
+        var lat = position.coords.latitude;
+        var lng = position.coords.longitude;
+
+        var accuracy = position.coords.accuracy;
+
+
+        // remove old location
+
+        if(userMarker){
+
+            map.removeLayer(userMarker);
+
+        }
+
+
+        userMarker = L.marker(
+            [lat,lng],
+            {
+                icon:userLocationIcon
+            }
+        );
+
+
+        userMarker.addTo(map);
+
+
+        map.flyTo(
+            [lat,lng],
+            15
+        );
+
+
+    },
+
+
+    function(error){
+
+        alert(
+            "Unable to get your location."
+        );
+
+    }
+
+    );
+
+}
+
+function openSidebar(){
+
+    var sidebar = document.getElementById("sidebar");
+
+    if(window.innerWidth <= 768){
+
+        sidebar.classList.add("open");
+
+        // scroll sidebar to top
+        sidebar.scrollTop = 0;
+
+    }
+
+}
+
+function toggleSidebar(){
+
+    var sidebar=document.getElementById("sidebar");
+
+    sidebar.classList.toggle("open");
+
+}
+
+</script>
+
+</body>
+</html>

@@ -1,0 +1,226 @@
+{
+  "name": "Glasgow Airport",
+  "code": "EGPF",
+  "location": "Paisley, Scotland",
+
+  "image": "https://pub-6411be86c46a44edb6371cd742f7819e.r2.dev/images/egpf-airport.jpg",
+  "airportCredits": [
+    "Aiden Cassidy"
+],
+
+  "lat": 55.8719,
+  "lng": -4.4331,
+
+  "runways": [
+    {
+      "name": "05/23",
+      "heading1": 50,
+      "heading2": 230
+    }
+  ],
+
+"spots": [
+    {
+        "name": "Mound",
+        "lat": 55.875234,
+        "lng": -4.419906,
+
+        "direction": 130,
+
+        "bestForRunway": "23",
+
+        "recommendedFocalLength": "Taxiway: 30-200mm.  Runway: 70-300mm",
+        "parking": "Roadside parking co-ordinates: 55.873026, -4.423047",
+        "bestTimeToVisit": "Morning till early afternoon",
+        "notes": "None",
+
+        "photos": [
+            "https://pub-6411be86c46a44edb6371cd742f7819e.r2.dev/images/glamound1.jpg",
+            "https://pub-6411be86c46a44edb6371cd742f7819e.r2.dev/images/glamound2.jpg",
+            "https://pub-6411be86c46a44edb6371cd742f7819e.r2.dev/images/glamound3.jpg"
+        ],
+
+        "photoCredits": [
+            "Natan Lelonkiewicz",
+            "Joshua McNaughton",
+            "Joshua McNaughton"
+        ]
+    },
+
+    {
+        "name": "Bute Road",
+        "lat": 55.863115,
+        "lng": -4.439194,
+
+        "direction": 165,
+
+        "recommendedFocalLength": "18-100mm",
+        "parking": "Unavailable",
+        "bestTimeToVisit": "Afternoon",
+        "notes": "Involves shooting through fence",
+
+        "photos": [
+            "https://pub-6411be86c46a44edb6371cd742f7819e.r2.dev/images/buteroad1.jpg",
+            "https://pub-6411be86c46a44edb6371cd742f7819e.r2.dev/images/buteroad2.jpg",
+            "https://pub-6411be86c46a44edb6371cd742f7819e.r2.dev/images/buteroad3.jpg"
+        ],
+
+        "photoCredits": [
+            "Joshua McNaughton",
+            "Aiden Cassidy",
+            "Aiden Cassidy"
+        ]
+    },
+
+    {
+        "name": "23 Approach",
+        "lat": 55.882951,
+        "lng": -4.412850,
+
+        "direction": 227,
+
+        "bestForRunway": "23",
+
+        "recommendedFocalLength": "30-200mm",
+        "parking": "Car park available",
+        "bestTimeToVisit": "Afternoon till evening",
+        "notes": "None",
+
+        "photos": [
+            "https://pub-6411be86c46a44edb6371cd742f7819e.r2.dev/images/23approach1.jpg",
+            "https://pub-6411be86c46a44edb6371cd742f7819e.r2.dev/images/23approach2.jpg",
+            "https://pub-6411be86c46a44edb6371cd742f7819e.r2.dev/images/23approach3.jpg"
+        ],
+        
+        "photoCredits": [
+            "Corey Bunten",
+            "Aiden Cassidy",
+            "Aiden Cassidy"
+        ]
+    },
+
+    {
+        "name": "Farm",
+        "lat": 55.875647,
+        "lng": -4.431327,
+
+        "direction": 310,
+
+        "bestForRunway": "05/23",
+
+        "recommendedFocalLength": "70-200mm",
+        "parking": "Roadside parking",
+        "bestTimeToVisit": "Evening",
+        "notes": "Involves shooting through fence",
+
+        "photos": [
+            "https://pub-6411be86c46a44edb6371cd742f7819e.r2.dev/images/farm1.jpg",
+            "https://pub-6411be86c46a44edb6371cd742f7819e.r2.dev/images/farm2.jpg",
+            "https://pub-6411be86c46a44edb6371cd742f7819e.r2.dev/images/farm3.jpg"
+        ],
+
+        "photoCredits": [
+            "Aiden Cassidy",
+            "Aiden Cassidy",
+            "Aiden Cassidy"
+        ]
+    },
+
+    {
+        "name": "05 Approach",
+        "lat": 55.860321,
+        "lng": -4.454931,
+
+        "direction": 47,
+
+        "bestForRunway": "05",
+
+        "recommendedFocalLength": "18-200mm",
+        "parking": "Unavailable",
+        "bestTimeToVisit": "Morning",
+        "notes": "Only runway 05 arrivals visible here",
+
+        "photos": [
+            "https://pub-6411be86c46a44edb6371cd742f7819e.r2.dev/images/05approach1.jpg",
+            "https://pub-6411be86c46a44edb6371cd742f7819e.r2.dev/images/05approach2.jpg"
+        ],
+
+        "photoCredits": [
+            "Corey Bunten",
+            "Corey Bunten"
+        ]
+    },
+
+    {
+        "name": "Loganair Hangar",
+        "lat": 55.863773,
+        "lng": -4.442407,
+
+        "direction": 135,
+
+        "bestForRunway": "05/23",
+
+        "recommendedFocalLength": "18-200mm",
+        "parking": "Car Park Available",
+        "bestTimeToVisit": "Morning till early afternoon",
+        "notes": "May involve shooting through fence",
+
+        "photos": [
+            "https://pub-6411be86c46a44edb6371cd742f7819e.r2.dev/images/loganair1.jpg"
+        ],
+
+        "photoCredits": [
+            "Corey Bunten"
+        ]
+    },
+
+    {
+        "name": "Walkinshaw Road",
+        "lat": 55.872818,
+        "lng": -4.445998,
+
+        "direction": 296,
+
+        "recommendedFocalLength": "70-200mm",
+        "parking": "Unavailable",
+        "bestTimeToVisit": "Evening",
+        "notes": [
+            "Good location for parked aircraft",
+            "May involve shooting through fence"
+        ],
+
+        "photos": [
+            "https://pub-6411be86c46a44edb6371cd742f7819e.r2.dev/images/walkinshaw1.jpg",
+            "https://pub-6411be86c46a44edb6371cd742f7819e.r2.dev/images/walkinshaw2.jpg"
+        ],
+
+        "photoCredits": [
+            "Aiden Cassidy",
+            "Aiden Cassidy"
+        ]
+    },
+
+    {
+        "name": "Barnsford Road",
+        "lat": 55.865292,
+        "lng": -4.450886,
+
+        "direction": 320,
+
+        "bestForRunway": "05",
+
+        "recommendedFocalLength": "50-200mm",
+        "parking": "Unavailable",
+        "bestTimeToVisit": "Evening",
+        "notes": "May involve shooting through fence",
+
+        "photos": [
+            "https://pub-6411be86c46a44edb6371cd742f7819e.r2.dev/images/barnsford1.jpg"
+        ],
+
+        "photoCredits": [
+            "Aiden Cassidy"
+        ]
+    }
+]
+}

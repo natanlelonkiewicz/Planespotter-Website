@@ -1,0 +1,749 @@
+html, body{
+    height:100%;
+    margin:0;
+    font-family:Arial, Helvetica, sans-serif;
+}
+
+#container{
+    display:flex;
+    height:100vh;
+}
+
+#map{
+    flex:1;
+}
+
+#sidebar{
+
+    width:350px;
+
+    background:#1b1b1b;
+
+    color:#f5f5f5;
+
+    border-left:2px solid #d4af37;
+
+    padding:20px;
+
+    box-sizing:border-box;
+
+    overflow-y:auto;
+
+}
+
+#sidebar h2{
+
+    background:#252525;
+
+    color:#f5c542;
+
+    padding:15px;
+
+    border-radius:10px;
+
+    border-bottom:3px solid #f5c542;
+
+}
+
+#sidebar h3{
+
+    color:#f5c542;
+
+    border-bottom:1px solid #555;
+
+    padding-bottom:5px;
+
+}
+
+h2{
+    margin-top:0;
+}
+
+.spot-card{
+
+    cursor:pointer;
+
+    padding:15px;
+
+    margin-bottom:12px;
+
+    background:#303030;
+
+    border:1px solid #555;
+
+    border-radius:12px;
+
+    color:white;
+
+    transition:0.2s;
+
+}
+
+
+.spot-card:hover{
+
+    background:#333333;
+
+    border-color:#f5c542;
+
+}
+
+.best-spot{
+
+    background:#302b00;
+
+    border:2px solid #d4af37;
+
+    padding:15px;
+
+    border-radius:12px;
+
+}
+
+.spot-card:hover{
+
+    transform:translateY(-2px);
+
+    box-shadow:0 5px 12px rgba(0,0,0,0.15);
+
+}
+
+.spot-card.excellent{
+
+    background:#14532d;
+
+    border:2px solid #22c55e;
+
+    color:white;
+
+}
+
+.direction-card{
+
+    background:#111;
+
+    color:#f5c542;
+
+    padding:20px;
+
+    margin:15px 0;
+
+    border-radius:12px;
+
+    font-size:22px;
+
+    font-weight:bold;
+
+    text-align:center;
+
+    cursor:pointer;
+
+    border:2px solid #f5c542;
+
+    transition:0.2s;
+
+}
+
+
+.direction-card:hover{
+
+    background:#f5c542;
+
+    color:#111;
+
+    transform:scale(1.03);
+
+}
+
+.spot-card.side{
+
+    background:#713f12;
+
+    border:2px solid #eab308;
+
+    color:white;
+
+}
+
+
+.spot-card.backlit{
+
+    background:#7f1d1d;
+
+    border:2px solid #ef4444;
+
+    color:white;
+
+}
+
+#map{
+    flex:1;
+    position:relative;
+}
+
+/* Main map toolbar - positioned away from Leaflet zoom controls */
+#toolbar{
+
+    position:absolute;
+
+    top:15px;
+
+    left:70px;
+
+    z-index:1000;
+
+    background:#252525;
+
+    padding:10px;
+
+    border-radius:10px;
+
+    border:1px solid #555;
+
+    box-shadow:0 2px 10px rgba(0,0,0,0.5);
+
+}
+
+#toolbar input{
+
+    padding:8px;
+
+    width:180px;
+
+    background:#303030;
+
+    color:white;
+
+    border:1px solid #555;
+
+    border-radius:6px;
+
+}
+
+#toolbar button{
+
+    padding:8px;
+
+    margin-left:5px;
+
+    background:#303030;
+
+    color:#f5c542;
+
+    border:1px solid #555;
+
+    border-radius:6px;
+
+    cursor:pointer;
+
+}
+
+
+#toolbar button:hover{
+
+    background:#f5c542;
+
+    color:#111;
+
+}
+
+.sun-pointer{
+    position:absolute;
+    font-size:35px;
+    left:50%;
+    top:50%;
+    transform-origin:0 0;
+}
+
+#sunCompassOverlay{
+
+    display:none;
+
+    position:absolute;
+
+    top:52%;
+    left:60%;
+
+    transform:translate(-50%,-50%);
+
+    width:550px;
+    height:550px;
+
+    background:transparent;
+
+    border-radius:50%;
+
+    border:3px solid rgba(0,0,0,0.4);
+
+    z-index:1000;
+
+    box-shadow:0 4px 20px rgba(0,0,0,0.3);
+
+    cursor:grab;
+
+}
+
+.compass-label{
+    position:absolute;
+    font-size:24px;
+    font-weight:bold;
+}
+
+.compass-north{
+    top:-35px;
+    left:50%;
+    transform:translateX(-50%);
+}
+
+.compass-south{
+    bottom:-35px;
+    left:50%;
+    transform:translateX(-50%);
+}
+
+.compass-east{
+    right:-35px;
+    top:50%;
+    transform:translateY(-50%);
+}
+
+.compass-west{
+    left:-35px;
+    top:50%;
+    transform:translateY(-50%);
+}
+
+.sun-position{
+    position:absolute;
+    left:50%;
+    top:50%;
+    transform-origin:0 0;
+    font-size:50px;
+}
+
+.sun-dot{
+
+    position:absolute;
+
+    width:26px;
+    height:26px;
+
+    background:gold;
+
+    border-radius:50%;
+
+    border:2px solid #cc9900;
+
+    left:50%;
+
+    top:-13px;
+
+    transform:translateX(-50%);
+}
+
+.sun-line{
+
+    position:absolute;
+
+    width:5px;
+
+    height:220px;
+
+    background: linear-gradient(
+    to bottom,
+    rgba(255,215,0,1),
+    rgba(255,215,0,0.2)
+);
+
+
+
+}
+
+.leaflet-control-zoom a{
+
+    background:#252525;
+
+    color:#f5c542;
+
+    border-color:#555;
+
+}
+
+
+.leaflet-control-zoom a:hover{
+
+    background:#303030;
+
+    color:white;
+
+}
+
+.leaflet-tile-pane {
+
+    filter:
+    brightness(0.85)
+    contrast(1.1);
+
+}
+
+.airport-details{
+
+    color:#aaa;
+
+    font-size:14px;
+
+    margin-top:-10px;
+
+    letter-spacing:1px;
+
+}
+
+/* Spot markers */
+
+.pin{
+
+    width:32px;
+
+    height:32px;
+
+    border-radius:50%;
+
+    border:3px solid white;
+
+    box-shadow:0 2px 8px rgba(0,0,0,0.5);
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    font-size:16px;
+
+}
+
+
+.pin.green{
+
+    background:#22c55e;
+
+}
+
+
+.pin.yellow{
+
+    background:#eab308;
+
+}
+
+
+.pin.red{
+
+    background:#ef4444;
+
+}
+
+#sunTimeControl{
+
+    color:#f5c542;
+
+}
+
+#sunTimeControl p{
+
+    color:#f5c542;
+
+    font-weight:bold;
+
+}
+
+#sunTimeSlider{
+
+    accent-color:#f5c542;
+
+}
+
+#sunTimeSlider{
+    cursor:ew-resize;
+}
+
+#liveButton{
+
+    background:#8b0000;
+    color:white;
+
+    border:1px solid #ff4d4d;
+
+    font-weight:bold;
+
+}
+
+#liveButton:hover{
+
+    background:#c40000;
+
+}
+
+.airport-image img{
+
+    width:100%;
+
+    height:180px;
+
+    object-fit:cover;
+
+    border-radius:12px;
+
+    border:2px solid #555;
+
+    margin-bottom:15px;
+
+}
+
+.carousel img{
+
+    width:100%;
+    height:180px;
+    object-fit:cover;
+    border-radius:12px;
+    border:2px solid #555;
+    margin-bottom:15px;
+
+}
+
+.user-location-dot {
+
+    width:16px;
+    height:16px;
+
+    background:#f5c542;
+
+    border:3px solid white;
+
+    border-radius:50%;
+
+    box-shadow:
+    0 0 10px rgba(245,197,66,0.8);
+
+}
+
+.photoContainer{
+
+    position:relative;
+    display:inline-block;
+
+}
+
+#photoCredit{
+
+    position:absolute;
+    bottom:20px;
+    left:10px;
+
+    background:rgba(0,0,0,0.45);
+
+    color:white;
+
+    padding:4px 8px;
+
+    border-radius:5px;
+
+    font-size:12px;
+
+    font-weight:500;
+
+    pointer-events:none;
+
+}
+
+@media (max-width:768px){
+
+    #sidebar{
+
+        position:fixed;
+
+        bottom:0;
+        left:0;
+
+        width:100%;
+
+        height:80vh;
+
+        transform:translateY(100%);
+
+        transition:0.3s ease;
+
+        z-index:2000;
+
+        border-left:none;
+
+        border-top:2px solid #d4af37;
+
+        border-radius:20px 20px 0 0;
+
+    }
+
+
+    #sidebar.open{
+
+        transform:translateY(0);
+
+    }
+
+
+    #sidebarToggle{
+
+        position:fixed;
+
+        bottom:20px;
+
+        right:20px;
+
+        z-index:3000;
+
+        width:55px;
+
+        height:55px;
+
+        border-radius:50%;
+
+        background:#252525;
+
+        color:#f5c542;
+
+        border:2px solid #f5c542;
+
+        font-size:24px;
+
+    }
+
+}
+
+@media (max-width:768px){
+
+    #sunCompassOverlay{
+
+        width:200px;
+        height:200px;
+
+        top:45%;
+        left:50%;
+
+    }
+
+
+    .sun-line{
+
+        height:80px;
+
+    }
+
+
+    .sun-dot{
+
+        width:18px;
+        height:18px;
+
+    }
+
+
+    .compass-label{
+
+        font-size:16px;
+
+    }
+
+}
+
+#sunCompassOverlay{
+
+    pointer-events:none;
+
+}
+
+#sidebarToggle{
+    display:none;
+}
+
+
+@media(max-width:768px){
+
+    #sidebarToggle{
+        display:block;
+    }
+
+}
+
+.carousel{
+
+    width:100%;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+
+}
+
+
+.photoContainer{
+
+    width:100%;
+
+}
+
+
+.photoContainer img{
+
+    width:100%;
+
+    height:auto;
+
+    max-height:300px;
+
+    object-fit:contain;
+
+    border-radius:12px;
+
+    display:block;
+
+}
+
+
+.photoButtons{
+
+    display:flex;
+
+    justify-content:center;
+
+    gap:20px;
+
+    margin-top:10px;
+
+}
+
+
+.photoButtons button{
+
+    background:#252525;
+
+    color:#f5c542;
+
+    border:2px solid #f5c542;
+
+    border-radius:8px;
+
+    padding:8px 15px;
+
+    cursor:pointer;
+
+    font-size:18px;
+
+}
+
+@media (max-width:768px){
+
+    #sunCompassOverlay{
+        width:280px;
+        height:280px;
+    }
+
+}

@@ -1,0 +1,14 @@
+[
+  {
+    "icao": "EGPK",
+    "name": "Glasgow Prestwick Airport",
+    "lat": 55.5079,
+    "lng": -4.5942
+  },
+  {
+    "icao": "EGPF",
+    "name": "Glasgow Airport",
+    "lat": 55.8719,
+    "lng": -4.4331
+  }
+]
