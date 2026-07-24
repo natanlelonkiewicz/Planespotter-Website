@@ -84,6 +84,22 @@ oninput="changeSunTime()"
 
 </div>
 
+<div id="welcomePopup">
+
+    <h3>✈ Welcome to Avspot</h3>
+
+    <p>
+    Click the ☰ button to open the menu and select an airport to begin.
+    </p>
+
+    <div class="popupArrow">▼</div>
+
+    <button onclick="closeWelcomePopup()">
+    Got it
+    </button>
+
+</div>
+
 <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/suncalc/1.9.0/suncalc.min.js"></script>
@@ -1111,6 +1127,8 @@ function showSunCompass(){
 
 function toggleSunCompass(){
 
+    if (!requireAirport()) return;
+
     var compass = document.getElementById("sunCompassOverlay");
 
     if(compass.style.display === "block"){
@@ -1124,15 +1142,17 @@ function toggleSunCompass(){
 
         compass.style.display="block";
 
-document.getElementById("sunTimeControl").style.display="block";
+        document.getElementById("sunTimeControl").style.display="block";
 
-updateSunCompass();
+        updateSunCompass();
 
     }
 
 }
 
 function updateSunCompass(){
+
+    if (!requireAirport()) return;
 
       if(!airport) return;
 
@@ -1846,6 +1866,8 @@ function toggleFlights(){
 
 async function loadFlights(){
 
+    if (!requireAirport()) return;
+
     if(!airport){
         return;
     }
@@ -2326,6 +2348,49 @@ function toggleSidebar(){
     sidebar.classList.toggle("open");
 
 }
+
+function requireAirport() {
+
+    if (!airport) {
+
+        alert("Please select an airport first.");
+
+        return false;
+    }
+
+    return true;
+}
+
+function closeWelcomePopup(){
+
+    document.getElementById("welcomePopup").style.display="none";
+
+    localStorage.setItem(
+        "avspotWelcomeSeen",
+        "true"
+    );
+
+}
+
+
+window.addEventListener("load", function(){
+
+    if(window.innerWidth <= 768){
+
+        if(localStorage.getItem("avspotWelcomeSeen")){
+
+            document.getElementById("welcomePopup").style.display="none";
+
+        }
+
+    }
+    else{
+
+        document.getElementById("welcomePopup").style.display="none";
+
+    }
+
+});
 
 </script>
 
