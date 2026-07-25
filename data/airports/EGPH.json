@@ -5,7 +5,7 @@
 
   "image": "https://pub-6411be86c46a44edb6371cd742f7819e.r2.dev/images/egph-airport.jpg",
   "airportCredits": [
-    "Unavailable"
+    "Corey Bunten"
 ],
 
   "lat": 55.949001,
@@ -119,10 +119,14 @@
         "notes": "Only runway 06 arrivals are visible here",
 
         "photos": [
-            "https://pub-6411be86c46a44edb6371cd742f7819e.r2.dev/images/06approach1.jpg"
+            "https://pub-6411be86c46a44edb6371cd742f7819e.r2.dev/images/06approach1.jpg",
+            "https://pub-6411be86c46a44edb6371cd742f7819e.r2.dev/images/06approach2.jpg",
+            "https://pub-6411be86c46a44edb6371cd742f7819e.r2.dev/images/06approach3.jpg"
         ],
 
         "photoCredits": [
+            "Corey Bunten",
+            "Corey Bunten",
             "Corey Bunten"
         ]
     },
