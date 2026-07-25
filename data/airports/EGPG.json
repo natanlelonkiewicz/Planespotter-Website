@@ -1,0 +1,139 @@
+{
+  "name": "Cumbernauld Airport",
+  "code": "EGPG",
+  "location": "Castlecary, Scotland",
+
+  "image": "https://pub-6411be86c46a44edb6371cd742f7819e.r2.dev/images/egpg-airport.jpg",
+  "airportCredits": [
+    "Unavailable"
+],
+
+  "lat": 55.974718,
+  "lng": -3.971380,
+
+  "runways": [
+    {
+      "name": "07/25",
+      "heading1": 70,
+      "heading2": 250
+    }
+  ],
+
+"spots": [
+    {
+        "name": "The Rock",
+        "lat": 55.974194,
+        "lng": -3.974064,
+
+        "direction": 160,
+
+        "bestForRunway": "25",
+
+        "recommendedFocalLength": "Runway: 100-300mm Apron: 35-200mm",
+        "parking": "Park somewhere along the side of Napier road. Co-ordinates: 55.974153, -3.969260",
+        "bestTimeToVisit": "Morning till late afternoon",
+        "notes": "Good location for all traffic using airport and aircraft parked on the apron",
+
+        "photos": [
+            "https://pub-6411be86c46a44edb6371cd742f7819e.r2.dev/images/rock1.jpg",
+            "https://pub-6411be86c46a44edb6371cd742f7819e.r2.dev/images/rock2.jpg",
+            "https://pub-6411be86c46a44edb6371cd742f7819e.r2.dev/images/rock3.jpg",
+            "https://pub-6411be86c46a44edb6371cd742f7819e.r2.dev/images/rock4.jpg",
+            "https://pub-6411be86c46a44edb6371cd742f7819e.r2.dev/images/rock5.jpg"
+        ],
+
+        "photoCredits": [
+            "Kristofer Rae",
+            "Kristofer Rae",
+            "Cameron Archibald",
+            "Cameron Archibald",
+            "Cameron Archibald"
+        ]
+    },
+
+    {
+        "name": "Terminal",
+        "lat": 55.974362,
+        "lng": -3.971565,
+
+        "direction": 160,
+
+        "recommendedFocalLength": "18-100mm",
+        "parking": "Car Park Available",
+        "bestTimeToVisit": "Late morning till early afternoon",
+        "notes": "None",
+
+        "photos": [
+            "https://pub-6411be86c46a44edb6371cd742f7819e.r2.dev/images/terminal1.jpg"
+        ],
+
+        "photoCredits": [
+            "Kristofer Rae"
+        ]
+    },
+
+    {
+        "name": "25 Approach",
+        "lat": 55.975162,
+        "lng": -3.967575,
+
+        "direction": 180,
+
+        "bestForRunway": "25",
+
+        "recommendedFocalLength": "100-300mm",
+        "parking": "Park somewhere along the side of Napier road. Co-ordinates: 55.974153, -3.969260",
+        "bestTimeToVisit": "Late morning till early afternoon",
+        "notes": [
+            "Only 25 arrivals are visible here"
+        ],
+
+        "photos": [
+            "https://pub-6411be86c46a44edb6371cd742f7819e.r2.dev/images/25approach1.jpg",
+            "https://pub-6411be86c46a44edb6371cd742f7819e.r2.dev/images/25approach2.jpg",
+            "https://pub-6411be86c46a44edb6371cd742f7819e.r2.dev/images/25approach3.jpg",
+            "https://pub-6411be86c46a44edb6371cd742f7819e.r2.dev/images/25approach4.jpg"
+        ],
+        
+        "photoCredits": [
+            "Cameron Archibald",
+            "Cameron Archibald",
+            "Cameron Archibald",
+            "Cameron Archibald"
+        ]
+    },
+
+    {
+        "name": "Northside",
+        "lat": 55.975929,
+        "lng": -3.972068,
+
+        "direction": 340,
+
+        "bestForRunway": "25",
+
+        "recommendedFocalLength": "100-300mm",
+        "parking": "Unavailable",
+        "bestTimeToVisit": "Evening",
+        "notes": [
+            "This location only has good light in summer"
+        ],
+
+        "photos": [
+            "https://pub-6411be86c46a44edb6371cd742f7819e.r2.dev/images/northside1.jpg",
+            "https://pub-6411be86c46a44edb6371cd742f7819e.r2.dev/images/northside2.jpg",
+            "https://pub-6411be86c46a44edb6371cd742f7819e.r2.dev/images/northside3.jpg",
+            "https://pub-6411be86c46a44edb6371cd742f7819e.r2.dev/images/northside4.jpg",
+            "https://pub-6411be86c46a44edb6371cd742f7819e.r2.dev/images/northside5.jpg"
+        ],
+        
+        "photoCredits": [
+            "Cameron Archibald",
+            "Cameron Archibald",
+            "Kristofer Rae",
+            "Kristofer Rae",
+            "Cameron Archibald"
+        ]
+    }
+]
+}

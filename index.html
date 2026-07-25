@@ -19,10 +19,18 @@
 
     <div id="toolbar">
 
-        <input 
-        type="text" 
+        <div class="searchContainer">
+
+    <input
+        id="airportSearch"
+        type="text"
         placeholder="Search airport..."
-        >
+        oninput="searchAirports()"
+    >
+
+    <div id="searchResults"></div>
+
+</div>
 
         <button onclick="toggleSunCompass()">
         ☀ Sun
@@ -2391,6 +2399,77 @@ window.addEventListener("load", function(){
     }
 
 });
+
+function searchAirports(){
+
+    var input = document.getElementById("airportSearch");
+
+    var search = input.value.toLowerCase();
+
+    var results = document.getElementById("searchResults");
+
+    if(search.length < 2){
+
+        results.innerHTML = "";
+        results.style.display = "none";
+
+        return;
+
+    }
+
+    var matches = airports.filter(function(airport){
+
+    return (
+
+        (airport.name || "").toLowerCase().includes(search)
+
+        ||
+
+        (airport.location || "").toLowerCase().includes(search)
+
+        ||
+
+        (airport.code || "").toLowerCase().includes(search)
+
+        ||
+
+        (airport.icao || "").toLowerCase().includes(search)
+
+    );
+
+});
+
+results.innerHTML = matches.map(function(airport){
+
+    return `
+    <div class="searchResult"
+    onclick="selectAirport('${airport.icao}')">
+
+        <b>${airport.name}</b><br>
+        ${airport.code} • ${airport.location}
+
+    </div>
+    `;
+
+}).join("");
+
+results.style.display = matches.length ? "block" : "none";
+
+}
+
+function selectAirport(icao){
+
+    var results = document.getElementById("searchResults");
+
+    results.innerHTML = "";
+
+    results.style.display = "none";
+
+    document.getElementById("airportSearch").value = "";
+
+    loadAirport(icao);
+
+}
 
 </script>
 

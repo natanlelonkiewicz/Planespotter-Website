@@ -835,3 +835,61 @@ h2{
     margin:10px 0;
 
 }
+
+#searchResults{
+
+    position:absolute;
+
+    top:100%;
+
+    left:0;
+
+    width:100%;
+
+    background:#252525;
+
+    border:2px solid #f5c542;
+
+    border-top:none;
+
+    border-radius:0 0 10px 10px;
+
+    z-index:99999;
+
+    max-height:250px;
+
+    overflow-y:auto;
+
+    display:none;
+
+}
+
+.searchResult{
+
+    padding:12px;
+
+    cursor:pointer;
+
+    color:white;
+
+    border-bottom:1px solid #3a3a3a;
+
+}
+
+.searchResult:last-child{
+
+    border-bottom:none;
+
+}
+
+.searchResult:hover{
+
+    background:#3a3a3a;
+
+}
+
+.searchContainer{
+
+    position:relative;
+
+}

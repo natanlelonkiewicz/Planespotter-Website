@@ -1,0 +1,131 @@
+{
+  "name": "RAF Lossiemouth",
+  "code": "EGQS",
+  "location": "Lossiemouth, Scotland",
+
+  "image": "https://pub-6411be86c46a44edb6371cd742f7819e.r2.dev/images/egqs-airport.jpg",
+  "airportCredits": [
+    "James Devlin"
+],
+
+  "lat": 57.708631,
+  "lng": -3.328975,
+
+  "runways": [
+    {
+      "name": "05/23",
+      "heading1": 50,
+      "heading2": 230
+    }
+  ],
+
+"spots": [
+    {
+        "name": "23 West",
+        "lat": 57.717157,
+        "lng": -3.322921,
+
+        "direction": 309,
+
+        "bestForRunway": "23",
+
+        "recommendedFocalLength": "35-200mm",
+        "parking": "Unavailable",
+        "bestTimeToVisit": "Morning till late afternoon",
+        "notes": "None",
+
+        "photos": [
+            "https://pub-6411be86c46a44edb6371cd742f7819e.r2.dev/images/23endwest1.jpg",
+            "https://pub-6411be86c46a44edb6371cd742f7819e.r2.dev/images/23endwest2.jpg"
+        ],
+
+        "photoCredits": [
+            "James Devlin",
+            "Cameron Sturgeon"
+        ]
+    },
+
+    {
+        "name": "23 East",
+        "lat": 57.716174,
+        "lng": -3.318703,
+
+        "direction": 103,
+
+        "bestForRunway": "23",
+
+        "recommendedFocalLength": "35-200mm",
+        "parking": "Unavailable",
+        "bestTimeToVisit": "Morning till late afternoon",
+        "notes": "None",
+
+        "photos": [
+            "https://pub-6411be86c46a44edb6371cd742f7819e.r2.dev/images/23endeast1.jpg",
+            "https://pub-6411be86c46a44edb6371cd742f7819e.r2.dev/images/23endeast2.jpg",
+            "https://pub-6411be86c46a44edb6371cd742f7819e.r2.dev/images/23endeast3.jpg",
+            "https://pub-6411be86c46a44edb6371cd742f7819e.r2.dev/images/23endeast4.jpg"
+        ],
+
+        "photoCredits": [
+            "Aiden Cassidy",
+            "James Devlin",
+            "James Devlin",
+            "Cameron Sturgeon"
+
+        ]
+    },
+
+    {
+        "name": "05 West",
+        "lat": 57.699253,
+        "lng": -3.355802,
+
+        "direction": 295,
+        
+        "bestForRunway": "05",
+
+
+        "recommendedFocalLength": "50-200mm",
+        "parking": "Unavailable",
+        "bestTimeToVisit": "Best during late afternoon and evening",
+        "notes": "None",
+
+        "photos": [
+            "https://pub-6411be86c46a44edb6371cd742f7819e.r2.dev/images/05endwest1.jpg"
+        ],
+
+        "photoCredits": [
+            "James Devlin"
+        ]
+    },
+
+    {
+        "name": "05 East",
+        "lat": 57.696963,
+        "lng": -3.352341,
+
+        "direction": 165,
+
+        "bestForRunway": "05",
+
+        "recommendedFocalLength": "100-300mm",
+        "parking": "Unavailable",
+        "bestTimeToVisit": "Best in the morning and early afternoon",
+        "notes": [
+            "None"
+        ],
+
+        "photos": [
+            "https://pub-6411be86c46a44edb6371cd742f7819e.r2.dev/images/05endeast1.jpg",
+            "https://pub-6411be86c46a44edb6371cd742f7819e.r2.dev/images/05endeast2.jpg",
+            "https://pub-6411be86c46a44edb6371cd742f7819e.r2.dev/images/05endeast3.jpg"
+        ],
+        
+        "photoCredits": [
+            "Aiden Cassidy",
+            "James Devlin",
+            "Aiden Cassidy"
+        ]
+    }
+]
+}

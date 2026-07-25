@@ -10,5 +10,23 @@
     "name": "Glasgow Airport",
     "lat": 55.8719,
     "lng": -4.4331
+  },
+  {
+    "icao": "EGPH",
+    "name": "Edinburgh Airport",
+    "lat": 55.949001,
+    "lng": -3.362185
+  },
+  {
+    "icao": "EGPG",
+    "name": "Cumbernauld Airport",
+    "lat": 55.974316,
+    "lng": -3.971546
+  },
+  {
+    "icao": "EGQS",
+    "name": "RAF Lossiemouth",
+    "lat": 57.708631,
+    "lng": -3.328975
   }
 ]
