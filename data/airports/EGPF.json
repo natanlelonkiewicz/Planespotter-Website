@@ -3,7 +3,7 @@
   "code": "EGPF",
   "location": "Paisley, Scotland",
 
-  "image": "https://pub-6411be86c46a44edb6371cd742f7819e.r2.dev/images/egpf-airport.jpg",
+  "image": "https://pub-6411be86c46a44edb6371cd742f7819e.r2.dev/egpf-airport.jpg",
   "airportCredits": [
     "Aiden Cassidy"
 ],
@@ -35,10 +35,10 @@
         "notes": "None",
 
         "photos": [
-            "https://pub-6411be86c46a44edb6371cd742f7819e.r2.dev/images/glamound1.jpg",
-            "https://pub-6411be86c46a44edb6371cd742f7819e.r2.dev/images/glamound2.jpg",
-            "https://pub-6411be86c46a44edb6371cd742f7819e.r2.dev/images/glamound3.jpg",
-            "https://pub-6411be86c46a44edb6371cd742f7819e.r2.dev/images/glamound4.jpg"
+            "https://pub-6411be86c46a44edb6371cd742f7819e.r2.dev/glamound1.jpg",
+            "https://pub-6411be86c46a44edb6371cd742f7819e.r2.dev/glamound2.jpg",
+            "https://pub-6411be86c46a44edb6371cd742f7819e.r2.dev/glamound3.jpg",
+            "https://pub-6411be86c46a44edb6371cd742f7819e.r2.dev/glamound4.jpg"
         ],
 
         "photoCredits": [
@@ -62,9 +62,9 @@
         "notes": "Involves shooting through fence",
 
         "photos": [
-            "https://pub-6411be86c46a44edb6371cd742f7819e.r2.dev/images/buteroad1.jpg",
-            "https://pub-6411be86c46a44edb6371cd742f7819e.r2.dev/images/buteroad2.jpg",
-            "https://pub-6411be86c46a44edb6371cd742f7819e.r2.dev/images/buteroad3.jpg"
+            "https://pub-6411be86c46a44edb6371cd742f7819e.r2.dev/buteroad1.jpg",
+            "https://pub-6411be86c46a44edb6371cd742f7819e.r2.dev/buteroad2.jpg",
+            "https://pub-6411be86c46a44edb6371cd742f7819e.r2.dev/buteroad3.jpg"
         ],
 
         "photoCredits": [
@@ -89,9 +89,9 @@
         "notes": "None",
 
         "photos": [
-            "https://pub-6411be86c46a44edb6371cd742f7819e.r2.dev/images/23approach1.jpg",
-            "https://pub-6411be86c46a44edb6371cd742f7819e.r2.dev/images/23approach2.jpg",
-            "https://pub-6411be86c46a44edb6371cd742f7819e.r2.dev/images/23approach3.jpg"
+            "https://pub-6411be86c46a44edb6371cd742f7819e.r2.dev/23approach1.jpg",
+            "https://pub-6411be86c46a44edb6371cd742f7819e.r2.dev/23approach2.jpg",
+            "https://pub-6411be86c46a44edb6371cd742f7819e.r2.dev/23approach3.jpg"
         ],
         
         "photoCredits": [
@@ -116,9 +116,9 @@
         "notes": "Involves shooting through fence",
 
         "photos": [
-            "https://pub-6411be86c46a44edb6371cd742f7819e.r2.dev/images/farm1.jpg",
-            "https://pub-6411be86c46a44edb6371cd742f7819e.r2.dev/images/farm2.jpg",
-            "https://pub-6411be86c46a44edb6371cd742f7819e.r2.dev/images/farm3.jpg"
+            "https://pub-6411be86c46a44edb6371cd742f7819e.r2.dev/farm1.jpg",
+            "https://pub-6411be86c46a44edb6371cd742f7819e.r2.dev/farm2.jpg",
+            "https://pub-6411be86c46a44edb6371cd742f7819e.r2.dev/farm3.jpg"
         ],
 
         "photoCredits": [
@@ -143,8 +143,8 @@
         "notes": "Only runway 05 arrivals visible here",
 
         "photos": [
-            "https://pub-6411be86c46a44edb6371cd742f7819e.r2.dev/images/05approach1.jpg",
-            "https://pub-6411be86c46a44edb6371cd742f7819e.r2.dev/images/05approach2.jpg"
+            "https://pub-6411be86c46a44edb6371cd742f7819e.r2.dev/05approach1.jpg",
+            "https://pub-6411be86c46a44edb6371cd742f7819e.r2.dev/05approach2.jpg"
         ],
 
         "photoCredits": [
@@ -168,7 +168,7 @@
         "notes": "May involve shooting through fence",
 
         "photos": [
-            "https://pub-6411be86c46a44edb6371cd742f7819e.r2.dev/images/loganair1.jpg"
+            "https://pub-6411be86c46a44edb6371cd742f7819e.r2.dev/loganair1.jpg"
         ],
 
         "photoCredits": [
@@ -192,8 +192,8 @@
         ],
 
         "photos": [
-            "https://pub-6411be86c46a44edb6371cd742f7819e.r2.dev/images/walkinshaw1.jpg",
-            "https://pub-6411be86c46a44edb6371cd742f7819e.r2.dev/images/walkinshaw2.jpg"
+            "https://pub-6411be86c46a44edb6371cd742f7819e.r2.dev/walkinshaw1.jpg",
+            "https://pub-6411be86c46a44edb6371cd742f7819e.r2.dev/walkinshaw2.jpg"
         ],
 
         "photoCredits": [
@@ -217,7 +217,7 @@
         "notes": "May involve shooting through fence",
 
         "photos": [
-            "https://pub-6411be86c46a44edb6371cd742f7819e.r2.dev/images/barnsford1.jpg"
+            "https://pub-6411be86c46a44edb6371cd742f7819e.r2.dev/barnsford1.jpg"
         ],
 
         "photoCredits": [

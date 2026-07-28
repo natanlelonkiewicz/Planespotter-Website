@@ -3,7 +3,7 @@
   "code": "EGPH",
   "location": "Ingliston, Scotland",
 
-  "image": "https://pub-6411be86c46a44edb6371cd742f7819e.r2.dev/images/egph-airport.jpg",
+  "image": "https://pub-6411be86c46a44edb6371cd742f7819e.r2.dev/egph-airport.jpg",
   "airportCredits": [
     "Corey Bunten"
 ],
@@ -35,10 +35,10 @@
         "notes": "Good location for a mix of approach, taxi and takeoff shots",
 
         "photos": [
-            "https://pub-6411be86c46a44edb6371cd742f7819e.r2.dev/images/edimound1.jpg",
-            "https://pub-6411be86c46a44edb6371cd742f7819e.r2.dev/images/edimound2.jpg",
-            "https://pub-6411be86c46a44edb6371cd742f7819e.r2.dev/images/edimound3.jpg",
-            "https://pub-6411be86c46a44edb6371cd742f7819e.r2.dev/images/edimound4.jpg"
+            "https://pub-6411be86c46a44edb6371cd742f7819e.r2.dev/edimound1.jpg",
+            "https://pub-6411be86c46a44edb6371cd742f7819e.r2.dev/edimound2.jpg",
+            "https://pub-6411be86c46a44edb6371cd742f7819e.r2.dev/edimound3.jpg",
+            "https://pub-6411be86c46a44edb6371cd742f7819e.r2.dev/edimound4.jpg"
         ],
 
         "photoCredits": [
@@ -50,7 +50,7 @@
     },
 
     {
-        "name": "Boathouse Brig",
+        "name": "Almondbank",
         "lat": 55.951028,
         "lng": -3.376898,
 
@@ -64,7 +64,7 @@
         "notes": "Involves shooting through fence",
 
         "photos": [
-            "https://pub-6411be86c46a44edb6371cd742f7819e.r2.dev/images/boathousebrig1.jpg"
+            "https://pub-6411be86c46a44edb6371cd742f7819e.r2.dev/boathousebrig1.jpg"
         ],
 
         "photoCredits": [
@@ -90,10 +90,10 @@
         ],
 
         "photos": [
-            "https://pub-6411be86c46a44edb6371cd742f7819e.r2.dev/images/holidayinn1.jpg",
-            "https://pub-6411be86c46a44edb6371cd742f7819e.r2.dev/images/holidayinn2.jpg",
-            "https://pub-6411be86c46a44edb6371cd742f7819e.r2.dev/images/holidayinn3.jpg",
-            "https://pub-6411be86c46a44edb6371cd742f7819e.r2.dev/images/holidayinn4.jpg"
+            "https://pub-6411be86c46a44edb6371cd742f7819e.r2.dev/holidayinn1.jpg",
+            "https://pub-6411be86c46a44edb6371cd742f7819e.r2.dev/holidayinn2.jpg",
+            "https://pub-6411be86c46a44edb6371cd742f7819e.r2.dev/holidayinn3.jpg",
+            "https://pub-6411be86c46a44edb6371cd742f7819e.r2.dev/holidayinn4.jpg"
         ],
         
         "photoCredits": [
@@ -119,9 +119,9 @@
         "notes": "Only runway 06 arrivals are visible here",
 
         "photos": [
-            "https://pub-6411be86c46a44edb6371cd742f7819e.r2.dev/images/06approach1.jpg",
-            "https://pub-6411be86c46a44edb6371cd742f7819e.r2.dev/images/06approach2.jpg",
-            "https://pub-6411be86c46a44edb6371cd742f7819e.r2.dev/images/06approach3.jpg"
+            "https://pub-6411be86c46a44edb6371cd742f7819e.r2.dev/06approach1.jpg",
+            "https://pub-6411be86c46a44edb6371cd742f7819e.r2.dev/06approach2.jpg",
+            "https://pub-6411be86c46a44edb6371cd742f7819e.r2.dev/06approach3.jpg"
         ],
 
         "photoCredits": [
@@ -146,8 +146,8 @@
         "notes": "Only runway 24 arrivals are visible here",
 
         "photos": [
-            "https://pub-6411be86c46a44edb6371cd742f7819e.r2.dev/images/24approach1.jpg",
-            "https://pub-6411be86c46a44edb6371cd742f7819e.r2.dev/images/24approach2.jpg"
+            "https://pub-6411be86c46a44edb6371cd742f7819e.r2.dev/24approach1.jpg",
+            "https://pub-6411be86c46a44edb6371cd742f7819e.r2.dev/24approach2.jpg"
         ],
 
         "photoCredits": [
@@ -171,7 +171,7 @@
         "notes": "Only runway 24 arrivals are visible here",
 
         "photos": [
-            "https://pub-6411be86c46a44edb6371cd742f7819e.r2.dev/images/rb1.jpg"
+            "https://pub-6411be86c46a44edb6371cd742f7819e.r2.dev/rb1.jpg"
         ],
 
         "photoCredits": [

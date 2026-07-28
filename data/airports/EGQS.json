@@ -3,7 +3,7 @@
   "code": "EGQS",
   "location": "Lossiemouth, Scotland",
 
-  "image": "https://pub-6411be86c46a44edb6371cd742f7819e.r2.dev/images/egqs-airport.jpg",
+  "image": "https://pub-6411be86c46a44edb6371cd742f7819e.r2.dev/egqs-airport.jpg",
   "airportCredits": [
     "James Devlin"
 ],
@@ -35,8 +35,8 @@
         "notes": "None",
 
         "photos": [
-            "https://pub-6411be86c46a44edb6371cd742f7819e.r2.dev/images/23endwest1.jpg",
-            "https://pub-6411be86c46a44edb6371cd742f7819e.r2.dev/images/23endwest2.jpg"
+            "https://pub-6411be86c46a44edb6371cd742f7819e.r2.dev/23endwest1.jpg",
+            "https://pub-6411be86c46a44edb6371cd742f7819e.r2.dev/23endwest2.jpg"
         ],
 
         "photoCredits": [
@@ -60,10 +60,10 @@
         "notes": "None",
 
         "photos": [
-            "https://pub-6411be86c46a44edb6371cd742f7819e.r2.dev/images/23endeast1.jpg",
-            "https://pub-6411be86c46a44edb6371cd742f7819e.r2.dev/images/23endeast2.jpg",
-            "https://pub-6411be86c46a44edb6371cd742f7819e.r2.dev/images/23endeast3.jpg",
-            "https://pub-6411be86c46a44edb6371cd742f7819e.r2.dev/images/23endeast4.jpg"
+            "https://pub-6411be86c46a44edb6371cd742f7819e.r2.dev/23endeast1.jpg",
+            "https://pub-6411be86c46a44edb6371cd742f7819e.r2.dev/23endeast2.jpg",
+            "https://pub-6411be86c46a44edb6371cd742f7819e.r2.dev/23endeast3.jpg",
+            "https://pub-6411be86c46a44edb6371cd742f7819e.r2.dev/23endeast4.jpg"
         ],
 
         "photoCredits": [
@@ -91,7 +91,7 @@
         "notes": "None",
 
         "photos": [
-            "https://pub-6411be86c46a44edb6371cd742f7819e.r2.dev/images/05endwest1.jpg"
+            "https://pub-6411be86c46a44edb6371cd742f7819e.r2.dev/05endwest1.jpg"
         ],
 
         "photoCredits": [
@@ -116,9 +116,9 @@
         ],
 
         "photos": [
-            "https://pub-6411be86c46a44edb6371cd742f7819e.r2.dev/images/05endeast1.jpg",
-            "https://pub-6411be86c46a44edb6371cd742f7819e.r2.dev/images/05endeast2.jpg",
-            "https://pub-6411be86c46a44edb6371cd742f7819e.r2.dev/images/05endeast3.jpg"
+            "https://pub-6411be86c46a44edb6371cd742f7819e.r2.dev/05endeast1.jpg",
+            "https://pub-6411be86c46a44edb6371cd742f7819e.r2.dev/05endeast2.jpg",
+            "https://pub-6411be86c46a44edb6371cd742f7819e.r2.dev/05endeast3.jpg"
         ],
         
         "photoCredits": [

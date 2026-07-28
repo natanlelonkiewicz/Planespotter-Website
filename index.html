@@ -114,7 +114,7 @@ oninput="changeSunTime()"
 
 <script>
 
-var map = L.map('map').setView([55.674818,-4.407905],9);
+var map = L.map('map').setView([55.674818,-4.407905],7);
 
 L.DomEvent.disableClickPropagation(
     document.getElementById("sunTimeControl")
@@ -880,8 +880,6 @@ async function drawWalkingRoute(
         );
 
 
-        // remove previous route
-
         if(walkingRoute){
 
             map.removeLayer(walkingRoute);
@@ -969,7 +967,6 @@ async function drawWalkingRoute(
 
 function displayAirports(){
 
-    // remove old markers
 
     airportMarkers.forEach(function(marker){
 
@@ -1039,7 +1036,6 @@ async function loadAirport(icao){
             13
         );
 
-        // Wait for weather before updating everything
         await updateWeather();
 
         updateSpotLighting();
@@ -1087,7 +1083,6 @@ function showSunCompass(){
 
     var degrees = sun.azimuth * (180 / Math.PI);
 
-    // Convert negative numbers
     if(degrees < 0){
         degrees += 360;
     }
@@ -1357,7 +1352,6 @@ function getLightingRating(
     sunAltitude
 ){
 
-    // No useful photography light below horizon
     if(sunAltitude < -6){
 
         return {
@@ -1764,7 +1758,6 @@ function liveSunTime(){
 
 function showSpotMarkers(spots){
 
-    // remove old spot markers
     spotMarkers.forEach(function(marker){
 
         map.removeLayer(marker);
@@ -1889,9 +1882,6 @@ async function loadFlights(){
         );
 
         const data = await response.json();
-
-
-        // remove old aircraft
 
         aircraftMarkers.forEach(function(marker){
 
@@ -2086,7 +2076,6 @@ flightTimer = setInterval(function () {
 
 }, 60000);
 
-// Keep sun live
 setInterval(function(){
 
     liveSunTime();
@@ -2094,7 +2083,6 @@ setInterval(function(){
 },60000);
 
 
-// Refresh weather every 10 minutes
 setInterval(function(){
 
     updateWeather().then(function(){
@@ -2232,7 +2220,6 @@ document.addEventListener("mousemove", function(e){
     var movement = e.clientX - startX;
 
 
-    // every 50 pixels = 1 hour
     var hourChange = Math.round(movement / 50);
 
 
@@ -2292,9 +2279,6 @@ function locateUser(){
 
         var accuracy = position.coords.accuracy;
 
-
-        // remove old location
-
         if(userMarker){
 
             map.removeLayer(userMarker);
@@ -2342,7 +2326,6 @@ function openSidebar(){
 
         sidebar.classList.add("open");
 
-        // scroll sidebar to top
         sidebar.scrollTop = 0;
 
     }

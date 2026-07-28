@@ -28,5 +28,17 @@
     "name": "RAF Lossiemouth",
     "lat": 57.708631,
     "lng": -3.328975
+  },
+  {
+    "icao": "EGPN",
+    "name": "Dundee Airport",
+    "lat": 56.452940,
+    "lng": -3.024466
+  },
+  {
+    "icao": "EGQL",
+    "name": "Leuchars Station",
+    "lat": 56.374990,
+    "lng": -2.863502
   }
 ]

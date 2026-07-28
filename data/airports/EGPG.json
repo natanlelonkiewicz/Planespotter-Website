@@ -3,7 +3,7 @@
   "code": "EGPG",
   "location": "Castlecary, Scotland",
 
-  "image": "https://pub-6411be86c46a44edb6371cd742f7819e.r2.dev/images/egpg-airport.jpg",
+  "image": "https://pub-6411be86c46a44edb6371cd742f7819e.r2.dev/egpg-airport.jpg",
   "airportCredits": [
     "Unavailable"
 ],
@@ -35,11 +35,11 @@
         "notes": "Good location for all traffic using airport and aircraft parked on the apron",
 
         "photos": [
-            "https://pub-6411be86c46a44edb6371cd742f7819e.r2.dev/images/rock1.jpg",
-            "https://pub-6411be86c46a44edb6371cd742f7819e.r2.dev/images/rock2.jpg",
-            "https://pub-6411be86c46a44edb6371cd742f7819e.r2.dev/images/rock3.jpg",
-            "https://pub-6411be86c46a44edb6371cd742f7819e.r2.dev/images/rock4.jpg",
-            "https://pub-6411be86c46a44edb6371cd742f7819e.r2.dev/images/rock5.jpg"
+            "https://pub-6411be86c46a44edb6371cd742f7819e.r2.dev/rock1.jpg",
+            "https://pub-6411be86c46a44edb6371cd742f7819e.r2.dev/rock2.jpg",
+            "https://pub-6411be86c46a44edb6371cd742f7819e.r2.dev/rock3.jpg",
+            "https://pub-6411be86c46a44edb6371cd742f7819e.r2.dev/rock4.jpg",
+            "https://pub-6411be86c46a44edb6371cd742f7819e.r2.dev/rock5.jpg"
         ],
 
         "photoCredits": [
@@ -64,7 +64,7 @@
         "notes": "None",
 
         "photos": [
-            "https://pub-6411be86c46a44edb6371cd742f7819e.r2.dev/images/terminal1.jpg"
+            "https://pub-6411be86c46a44edb6371cd742f7819e.r2.dev/terminal1.jpg"
         ],
 
         "photoCredits": [
@@ -89,10 +89,10 @@
         ],
 
         "photos": [
-            "https://pub-6411be86c46a44edb6371cd742f7819e.r2.dev/images/25approach1.jpg",
-            "https://pub-6411be86c46a44edb6371cd742f7819e.r2.dev/images/25approach2.jpg",
-            "https://pub-6411be86c46a44edb6371cd742f7819e.r2.dev/images/25approach3.jpg",
-            "https://pub-6411be86c46a44edb6371cd742f7819e.r2.dev/images/25approach4.jpg"
+            "https://pub-6411be86c46a44edb6371cd742f7819e.r2.dev/25approach1.jpg",
+            "https://pub-6411be86c46a44edb6371cd742f7819e.r2.dev/25approach2.jpg",
+            "https://pub-6411be86c46a44edb6371cd742f7819e.r2.dev/25approach3.jpg",
+            "https://pub-6411be86c46a44edb6371cd742f7819e.r2.dev/25approach4.jpg"
         ],
         
         "photoCredits": [
@@ -120,11 +120,11 @@
         ],
 
         "photos": [
-            "https://pub-6411be86c46a44edb6371cd742f7819e.r2.dev/images/northside1.jpg",
-            "https://pub-6411be86c46a44edb6371cd742f7819e.r2.dev/images/northside2.jpg",
-            "https://pub-6411be86c46a44edb6371cd742f7819e.r2.dev/images/northside3.jpg",
-            "https://pub-6411be86c46a44edb6371cd742f7819e.r2.dev/images/northside4.jpg",
-            "https://pub-6411be86c46a44edb6371cd742f7819e.r2.dev/images/northside5.jpg"
+            "https://pub-6411be86c46a44edb6371cd742f7819e.r2.dev/northside1.jpg",
+            "https://pub-6411be86c46a44edb6371cd742f7819e.r2.dev/northside2.jpg",
+            "https://pub-6411be86c46a44edb6371cd742f7819e.r2.dev/northside3.jpg",
+            "https://pub-6411be86c46a44edb6371cd742f7819e.r2.dev/northside4.jpg",
+            "https://pub-6411be86c46a44edb6371cd742f7819e.r2.dev/northside5.jpg"
         ],
         
         "photoCredits": [
