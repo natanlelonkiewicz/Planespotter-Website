@@ -1,0 +1,100 @@
+{
+  "name": "RAF Lakenheath",
+  "code": "EGUL",
+  "location": "Lakenheath, England",
+
+  "image": "https://pub-6411be86c46a44edb6371cd742f7819e.r2.dev/egul-airport.jpg",
+  "airportCredits": [
+    "Toby Pampols"
+],
+
+  "lat": 52.409347,
+  "lng": 0.560487,
+
+  "runways": [
+    {
+      "name": "05/23",
+      "heading1": 50,
+      "heading2": 230
+    }
+  ],
+
+"spots": [
+    {
+        "name": "Viewing Area",
+        "lat": 52.419666,
+        "lng": 0.579910,
+
+        "direction": 350,
+
+        "bestForRunway": "23",
+
+        "recommendedFocalLength": "70-300mm",
+        "parking": "Available",
+        "bestTimeToVisit": "Evening",
+        "notes": "None",
+
+        "photos": [
+            "https://pub-6411be86c46a44edb6371cd742f7819e.r2.dev/viewingarea1.jpg",
+            "https://pub-6411be86c46a44edb6371cd742f7819e.r2.dev/viewingarea2.jpg",
+            "https://pub-6411be86c46a44edb6371cd742f7819e.r2.dev/viewingarea3.jpg"
+        ],
+
+        "photoCredits": [
+            "Jack Grimason",
+            "Jack Grimason",
+            "Kayden Thorns"
+        ]
+    },
+
+    {
+        "name": "05 Approach",
+        "lat": 52.401476,
+        "lng": 0.539497,
+
+        "direction": 343,
+
+        "bestForRunway": "05",
+
+        "recommendedFocalLength": "200-400mm",
+        "parking": "Park at these co-ordinates: 52.400293, 0.528519",
+        "bestTimeToVisit": "Evening",
+        "notes": "Most popular quick climb spot",
+
+        "photos": [
+            "https://pub-6411be86c46a44edb6371cd742f7819e.r2.dev/05approachlakenheath1.jpg"
+        ],
+
+        "photoCredits": [
+            "Unavailable"
+        ]
+    },
+
+    {
+        "name": "23 Approach",
+        "lat": 52.417437,
+        "lng": 0.584096,
+
+        "direction": 136,
+
+        "bestForRunway": "23",
+
+        "recommendedFocalLength": "200-400mm",
+        "parking": "Park at viewing area: 52.419668, 0.579935",
+        "bestTimeToVisit": "1000 till 1500",
+        "notes": [
+            "Good location for morning and afternoon arrivals"
+        ],
+
+        "photos": [
+            "https://pub-6411be86c46a44edb6371cd742f7819e.r2.dev/23approachlakenheath1.jpg",
+            "https://pub-6411be86c46a44edb6371cd742f7819e.r2.dev/23approachlakenheath2.jpg"
+        ],
+        
+        "photoCredits": [
+            "Blair Macken",
+            "Blair Macken"
+        ]
+    }
+]
+}

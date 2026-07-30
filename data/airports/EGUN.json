@@ -1,0 +1,126 @@
+{
+  "name": "RAF Mildenhall",
+  "code": "EGUN",
+  "location": "Mildenhall, England",
+
+  "image": "https://pub-6411be86c46a44edb6371cd742f7819e.r2.dev/egun-airport.jpg",
+  "airportCredits": [
+    "Jack Grimason"
+],
+
+  "lat": 52.362493,
+  "lng": 0.482859,
+
+  "runways": [
+    {
+      "name": "10/28",
+      "heading1": 100,
+      "heading2": 280
+    }
+  ],
+
+"spots": [
+    {
+        "name": "Mound",
+        "lat": 52.356936,
+        "lng": 0.510788,
+
+        "direction": 182,
+
+        "bestForRunway": "28",
+
+        "recommendedFocalLength": "70-200mm",
+        "parking": "Unavailable",
+        "bestTimeToVisit": "Afternoon",
+        "notes": "Best for 28 arrivals if not bringing a ladder",
+
+        "photos": [
+            "https://pub-6411be86c46a44edb6371cd742f7819e.r2.dev/themound1.jpg",
+            "https://pub-6411be86c46a44edb6371cd742f7819e.r2.dev/themound2.jpg"
+        ],
+
+        "photoCredits": [
+            "Aiden Cassidy",
+            "Aiden Cassidy"
+        ]
+    },
+
+    {
+        "name": "Crash Gate",
+        "lat": 52.356629,
+        "lng": 0.500287,
+
+        "direction": 190,
+
+        "recommendedFocalLength": "30-70mm",
+        "parking": "Park along the side of the road",
+        "bestTimeToVisit": "Early afternoon",
+        "notes": [
+            "Great location for taxi shots",
+            "A ladder is required at this location"
+        ],
+
+        "photos": [
+            "https://pub-6411be86c46a44edb6371cd742f7819e.r2.dev/crashgatee1.jpg"
+        ],
+
+        "photoCredits": [
+            "Aiden Cassidy"
+        ]
+    },
+
+    {
+        "name": "The Nook/Trailer",
+        "lat": 52.364237,
+        "lng": 0.463081,
+
+        "direction": 200,
+
+        "bestForRunway": "10/28",
+
+        "recommendedFocalLength": "70-200mm",
+        "parking": "Available",
+        "bestTimeToVisit": "Late morning to early afternoon for runway 10. Afternoon till evening for runway 28 departures",
+        "notes": [
+            "The Nook is just at the start of the road and trailer is further up"
+        ],
+
+        "photos": [
+            "https://pub-6411be86c46a44edb6371cd742f7819e.r2.dev/trailer1.jpg",
+            "https://pub-6411be86c46a44edb6371cd742f7819e.r2.dev/trailer2.jpg",
+            "https://pub-6411be86c46a44edb6371cd742f7819e.r2.dev/trailer3.jpg"
+        ],
+        
+        "photoCredits": [
+            "Jack Grimason",
+            "EllisF. Photography",
+            "EllisF. Photography"
+        ]
+    },
+
+    {
+        "name": "28 Approach",
+        "lat": 52.357770,
+        "lng": 0.515235,
+
+        "direction": 284,
+
+        "bestForRunway": "28",
+
+        "recommendedFocalLength": "30-200mm",
+        "parking": "Unavailable",
+        "bestTimeToVisit": "Evening",
+        "notes": [
+            "Only runway 28 arrivals visible here"
+        ],
+
+        "photos": [
+            "https://pub-6411be86c46a44edb6371cd742f7819e.r2.dev/28approachmildenhall1.jpg"
+        ],
+        
+        "photoCredits": [
+            "Unavailable"
+        ]
+    }
+]
+}

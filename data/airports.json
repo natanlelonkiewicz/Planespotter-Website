@@ -40,5 +40,17 @@
     "name": "Leuchars Station",
     "lat": 56.374990,
     "lng": -2.863502
+  },
+  {
+    "icao": "EGUL",
+    "name": "RAF Lakenheath",
+    "lat": 52.409347,
+    "lng": 0.560487
+  },
+  {
+    "icao": "EGUN",
+    "name": "RAF Mildenhall",
+    "lat": 52.362493,
+    "lng": 0.482859
   }
 ]
