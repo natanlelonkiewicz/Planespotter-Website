@@ -65,7 +65,7 @@
         ],
 
         "photoCredits": [
-            "Aiden Cassidy"
+            "Unavailable"
         ]
     },
 
@@ -95,6 +95,31 @@
             "Jack Grimason",
             "EllisF. Photography",
             "EllisF. Photography"
+        ]
+    },
+
+    {
+        "name": "End Of Pollards Lane",
+        "lat": 52.363209,
+        "lng": 0.465479,
+
+        "direction": 252,
+
+        "bestForRunway": "28",
+
+        "recommendedFocalLength": "50-300mm",
+        "parking": "Park at trailer",
+        "bestTimeToVisit": "Late afternoon and evening",
+        "notes": [
+            "A ladder is required at this location"
+        ],
+
+        "photos": [
+            "https://pub-6411be86c46a44edb6371cd742f7819e.r2.dev/endofpollardslane1.jpg"
+        ],
+        
+        "photoCredits": [
+            "Aiden Cassidy"
         ]
     },
 
