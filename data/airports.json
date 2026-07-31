@@ -52,5 +52,11 @@
     "name": "RAF Mildenhall",
     "lat": 52.362493,
     "lng": 0.482859
+  },
+  {
+    "icao": "EGXC",
+    "name": "RAF Coningsby",
+    "lat": 53.092892,
+    "lng": -0.167902
   }
 ]

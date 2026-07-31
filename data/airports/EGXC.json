@@ -1,0 +1,155 @@
+{
+  "name": "RAF Coningsby",
+  "code": "EGXC",
+  "location": "Coningsby, England",
+
+  "image": "https://pub-6411be86c46a44edb6371cd742f7819e.r2.dev/egxc-airport.jpg",
+  "airportCredits": [
+    "Unavailable"
+],
+
+  "lat": 53.092892,
+  "lng": -0.167902,
+
+  "runways": [
+    {
+      "name": "07/25",
+      "heading1": 70,
+      "heading2": 250
+    }
+  ],
+
+"spots": [
+    {
+        "name": "End Of Reedham Lane",
+        "lat": 53.093006,
+        "lng": -0.155047,
+
+        "direction": 162,
+
+        "recommendedFocalLength": "70-150mm",
+        "parking": "Unavailable",
+        "bestTimeToVisit": "Late morning and early afternoon",
+        "notes": [
+            "A ladder is required at this location",
+            "Best for taxi shots"
+        ],
+
+        "photos": [
+            "https://pub-6411be86c46a44edb6371cd742f7819e.r2.dev/reedhamlane1.jpg"
+        ],
+
+        "photoCredits": [
+            "Unavailable"
+        ]
+    },
+
+    {
+        "name": "Old Beston Road",
+        "lat": 53.096120,
+        "lng": -0.163095,
+
+        "direction": 349,
+
+        "bestForRunway": "07/25",
+
+        "recommendedFocalLength": "Taxiway: 50-150mm. Runway: 150-300mm.",
+        "parking": "Park along the side of the road",
+        "bestTimeToVisit": "Evening",
+        "notes": [
+            "A ladder is required at this location"
+        ],
+
+        "photos": [
+            "https://pub-6411be86c46a44edb6371cd742f7819e.r2.dev/oldbestonroad1.jpg",
+            "https://pub-6411be86c46a44edb6371cd742f7819e.r2.dev/oldbestonroad2.jpg"
+        ],
+
+        "photoCredits": [
+            "Kayden Thorns",
+            "Kayden Thorns"
+        ]
+    },
+
+    {
+        "name": "25 Approach",
+        "lat": 53.096140,
+        "lng": -0.143327,
+
+        "direction": 174,
+
+        "bestForRunway": "25",
+
+        "recommendedFocalLength": "150-400mm",
+        "parking": "Available",
+        "bestTimeToVisit": "Early afternoon",
+        "notes": [
+            "Great for 25 arrivals"
+        ],
+
+        "photos": [
+            "https://pub-6411be86c46a44edb6371cd742f7819e.r2.dev/cby25approach1.jpg"
+        ],
+        
+        "photoCredits": [
+            "Unavailable"
+        ]
+    },
+
+    {
+        "name": "Runway 25 Fence",
+        "lat": 53.095965,
+        "lng": -0.145695,
+
+        "direction": 115,
+
+        "bestForRunway": "25",
+
+        "recommendedFocalLength": "70-200mm",
+        "parking": "Available at 25 Approach location. Co-ordinates: 53.096016, -0.143324",
+        "bestTimeToVisit": "Morning",
+        "notes": [
+            "A ladder is required at this location"
+        ],
+
+        "photos": [
+            "https://pub-6411be86c46a44edb6371cd742f7819e.r2.dev/25fence1.jpg"
+        ],
+        
+        "photoCredits": [
+            "Unavailable"
+        ]
+    },
+
+    {
+        "name": "Viewing Area",
+        "lat": 53.091854,
+        "lng": -0.185861,
+
+        "direction": 336,
+
+        "bestForRunway": "07",
+
+        "recommendedFocalLength": "100-300mm",
+        "parking": "Available",
+        "bestTimeToVisit": "Evening",
+        "notes": [
+            "Best location overall if trying to avoid hassle while parking"
+        ],
+
+        "photos": [
+            "https://pub-6411be86c46a44edb6371cd742f7819e.r2.dev/viewingareacby1.jpg",
+            "https://pub-6411be86c46a44edb6371cd742f7819e.r2.dev/viewingareacby2.jpg",
+            "https://pub-6411be86c46a44edb6371cd742f7819e.r2.dev/viewingareacby3.jpg",
+            "https://pub-6411be86c46a44edb6371cd742f7819e.r2.dev/viewingareacby4.jpg"
+        ],
+        
+        "photoCredits": [
+            "Jack Grimason",
+            "Jack Grimason",
+            "Jack Grimason",
+            "Felix Brown"
+        ]
+    }
+]
+}
