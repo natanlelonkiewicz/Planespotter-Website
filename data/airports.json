@@ -58,5 +58,11 @@
     "name": "RAF Coningsby",
     "lat": 53.092892,
     "lng": -0.167902
+  },
+  {
+    "icao": "EGCC",
+    "name": "Manchester Airport",
+    "lat": 53.355633,
+    "lng": -2.271681
   }
 ]

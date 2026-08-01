@@ -1,0 +1,184 @@
+{
+  "name": "Manchester Airport",
+  "code": "EGCC",
+  "location": "Manchester, England",
+
+  "image": "https://pub-6411be86c46a44edb6371cd742f7819e.r2.dev/docarpark1.jpg",
+  "airportCredits": [
+    "Harry Dixon"
+],
+
+  "lat": 53.355633,
+  "lng": -2.271681,
+
+  "runways": [
+    {
+      "name": "05/23",
+      "heading1": 50,
+      "heading2": 230
+    }
+  ],
+
+"spots": [
+    {
+        "name": "Wood Lane",
+        "lat": 53.338772,
+        "lng": -2.301383,
+
+        "direction": 316,
+
+        "bestForRunway": "05R/23L",
+
+        "recommendedFocalLength": "70-200mm",
+        "parking": "Unavailable",
+        "bestTimeToVisit": "Late Afternoon and evening",
+        "notes": [
+            "None"
+        ],
+
+        "photos": [
+            "https://pub-6411be86c46a44edb6371cd742f7819e.r2.dev/woodlane1.jpg",
+            "https://pub-6411be86c46a44edb6371cd742f7819e.r2.dev/woodlane2.jpg"
+        ],
+
+        "photoCredits": [
+            "Harry Dixon",
+            "Harry Dixon"
+        ]
+    },
+
+    {
+        "name": "Near Bollin Valley Way",
+        "lat": 53.348372,
+        "lng": -2.273714,
+
+        "direction": 137,
+
+        "bestForRunway": "05L/23R",
+
+        "recommendedFocalLength": "For 05L/23R: 200-300mm",
+        "parking": "Unavailable",
+        "bestTimeToVisit": "Morning till early afternoon",
+        "notes": [
+            "Runway 23L line-ups also visible here"
+        ],
+
+        "photos": [
+            "https://pub-6411be86c46a44edb6371cd742f7819e.r2.dev/bollinvly1.jpg",
+            "https://pub-6411be86c46a44edb6371cd742f7819e.r2.dev/bollinvly2.jpg"
+        ],
+
+        "photoCredits": [
+            "Harry Dixon",
+            "Harry Dixon"
+        ]
+    },
+
+    {
+        "name": "Near Altrincham Road",
+        "lat": 53.351837,
+        "lng": -2.265977,
+
+        "direction": 131,
+
+        "bestForRunway": "23R",
+
+        "recommendedFocalLength": "130-400mm",
+        "parking": "Unavailable",
+        "bestTimeToVisit": "Morning till early afternoon",
+        "notes": [
+            "Great for 25R arrivals"
+        ],
+
+        "photos": [
+            "https://pub-6411be86c46a44edb6371cd742f7819e.r2.dev/altrincham1.jpg",
+            "https://pub-6411be86c46a44edb6371cd742f7819e.r2.dev/altrincham2.jpg"
+        ],
+        
+        "photoCredits": [
+            "Harry Dixon",
+            "Harry Dixon"
+        ]
+    },
+
+    {
+        "name": "Car Park",
+        "lat": 53.361642,
+        "lng": -2.253950,
+
+        "direction": 134,
+
+        "bestForRunway": "23R",
+
+        "recommendedFocalLength": "70-200mm",
+        "parking": "Available",
+        "bestTimeToVisit": "Morning till early afternoon",
+        "notes": [
+            "Best for 23R arrivals"
+        ],
+
+        "photos": [
+            "https://pub-6411be86c46a44edb6371cd742f7819e.r2.dev/mancarpark1.jpg",
+            "https://pub-6411be86c46a44edb6371cd742f7819e.r2.dev/mancarpark2.jpg",
+            "https://pub-6411be86c46a44edb6371cd742f7819e.r2.dev/mancarpark3.jpg"
+        ],
+        
+        "photoCredits": [
+            "Harry Dixon",
+            "Harry Dixon",
+            "Harry Dixon"
+        ]
+    },
+
+    {
+        "name": "Terminal 3 Car Park",
+        "lat": 53.361811,
+        "lng": -2.269278,
+
+        "direction": 310,
+
+        "bestForRunway": "05L/23R",
+
+        "recommendedFocalLength": "100-300mm",
+        "parking": "Available",
+        "bestTimeToVisit": "Evening",
+        "notes": [
+            "None"
+        ],
+
+        "photos": [
+            "https://pub-6411be86c46a44edb6371cd742f7819e.r2.dev/t3carpark1.jpg",
+            "https://pub-6411be86c46a44edb6371cd742f7819e.r2.dev/t3carpark2.jpg"
+        ],
+        
+        "photoCredits": [
+            "Harry Dixon",
+            "Harry Dixon"
+        ]
+    },
+
+    {
+        "name": "Mid Stay Car Park",
+        "lat": 53.362770,
+        "lng": -2.274641,
+
+        "direction": 81,
+
+        "recommendedFocalLength": "100-300mm",
+        "parking": "Available",
+        "bestTimeToVisit": "Morning",
+        "notes": [
+            "Location provides a terminal 1 overview",
+            "Best location for night shooting"
+        ],
+
+        "photos": [
+            "https://pub-6411be86c46a44edb6371cd742f7819e.r2.dev/docarpark1.jpg"
+        ],
+        
+        "photoCredits": [
+            "Harry Dixon"
+        ]
+    }
+]
+}
