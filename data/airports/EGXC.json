@@ -62,10 +62,16 @@
 
         "photos": [
             "https://pub-6411be86c46a44edb6371cd742f7819e.r2.dev/oldbestonroad1.jpg",
-            "https://pub-6411be86c46a44edb6371cd742f7819e.r2.dev/oldbestonroad2.jpg"
+            "https://pub-6411be86c46a44edb6371cd742f7819e.r2.dev/oldbestonroad2.jpg",
+            "https://pub-6411be86c46a44edb6371cd742f7819e.r2.dev/oldbestonroad3.jpg",
+            "https://pub-6411be86c46a44edb6371cd742f7819e.r2.dev/oldbestonroad4.jpg",
+            "https://pub-6411be86c46a44edb6371cd742f7819e.r2.dev/oldbestonroad5.jpg"
         ],
 
         "photoCredits": [
+            "Lewis Tasker",
+            "Lewis Tasker",
+            "Lewis Tasker",
             "Kayden Thorns",
             "Kayden Thorns"
         ]
@@ -113,11 +119,13 @@
         ],
 
         "photos": [
-            "https://pub-6411be86c46a44edb6371cd742f7819e.r2.dev/25fence1.jpg"
+            "https://pub-6411be86c46a44edb6371cd742f7819e.r2.dev/25fence1.jpg",
+            "https://pub-6411be86c46a44edb6371cd742f7819e.r2.dev/25fence2.jpg"
         ],
         
         "photoCredits": [
-            "Unavailable"
+            "Lewis Tasker",
+            "Lewis Tasker"
         ]
     },
 
@@ -141,14 +149,16 @@
             "https://pub-6411be86c46a44edb6371cd742f7819e.r2.dev/viewingareacby1.jpg",
             "https://pub-6411be86c46a44edb6371cd742f7819e.r2.dev/viewingareacby2.jpg",
             "https://pub-6411be86c46a44edb6371cd742f7819e.r2.dev/viewingareacby3.jpg",
-            "https://pub-6411be86c46a44edb6371cd742f7819e.r2.dev/viewingareacby4.jpg"
+            "https://pub-6411be86c46a44edb6371cd742f7819e.r2.dev/viewingareacby4.jpg",
+            "https://pub-6411be86c46a44edb6371cd742f7819e.r2.dev/viewingareacby5.jpg"
         ],
         
         "photoCredits": [
             "Jack Grimason",
             "Jack Grimason",
             "Jack Grimason",
-            "Felix Brown"
+            "Felix Brown",
+            "Tristen F"
         ]
     }
 ]
