@@ -66,17 +66,13 @@
         "photos": [
             "https://pub-6411be86c46a44edb6371cd742f7819e.r2.dev/05approachlakenheath1.jpg",
             "https://pub-6411be86c46a44edb6371cd742f7819e.r2.dev/05approachlakenheath2.jpg",
-            "https://pub-6411be86c46a44edb6371cd742f7819e.r2.dev/05approachlakenheath3.jpg",
-            "https://pub-6411be86c46a44edb6371cd742f7819e.r2.dev/05approachlakenheath4.jpg",
-            "https://pub-6411be86c46a44edb6371cd742f7819e.r2.dev/05approachlakenheath5.jpg"
+            "https://pub-6411be86c46a44edb6371cd742f7819e.r2.dev/05approachlakenheath3.jpg"
         ],
 
         "photoCredits": [
             "Thomas Walker",
             "Thomas Walker",
-            "Thomas Walker",
-            "Reggie2011",
-            "Reggie2011"
+            "Thomas Walker"
         ]
     },
 
@@ -152,12 +148,16 @@
 
         "photos": [
             "https://pub-6411be86c46a44edb6371cd742f7819e.r2.dev/baseball1.jpg",
-            "https://pub-6411be86c46a44edb6371cd742f7819e.r2.dev/baseball2.jpg"
+            "https://pub-6411be86c46a44edb6371cd742f7819e.r2.dev/baseball2.jpg",
+            "https://pub-6411be86c46a44edb6371cd742f7819e.r2.dev/baseball3.jpg",
+            "https://pub-6411be86c46a44edb6371cd742f7819e.r2.dev/baseball4.jpg"
         ],
         
         "photoCredits": [
            "Innes Munro",
-           "Innes Munro"
+           "Innes Munro",
+           "Reggie2011",
+           "Reggie2011"
         ]
     }
 ]
