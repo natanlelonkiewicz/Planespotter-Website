@@ -179,6 +179,84 @@
         "photoCredits": [
             "Harry Dixon"
         ]
+    },
+
+    {
+        "name": "Road Runway Viewing",
+        "lat": 53.345101,
+        "lng": -2.279526,
+
+        "direction": 135,
+
+        "bestForRunway": "05R/23L",
+
+        "recommendedFocalLength": "70-200mm",
+        "parking": "Park on the layby next to roundabout: 53.343539, -2.279074",
+        "bestTimeToVisit": "Late morning to early afternoon",
+        "notes": [
+            "None"
+        ],
+
+        "photos": [
+            "https://pub-6411be86c46a44edb6371cd742f7819e.r2.dev/rrr1.jpg",
+            "https://pub-6411be86c46a44edb6371cd742f7819e.r2.dev/rrr2.jpg"
+        ],
+        
+        "photoCredits": [
+            "Finn.photography",
+            "Finn.photography"
+        ]
+    },
+
+    {
+        "name": "Runway Visitor Park",
+        "lat": 53.353217,
+        "lng": -2.283824,
+
+        "direction": 322,
+
+        "bestForRunway": "05L/23R",
+
+        "recommendedFocalLength": "70-200mm",
+        "parking": "Available",
+        "bestTimeToVisit": "Evening",
+        "notes": [
+            "Most popular location with benches, cafe and static aircraft including Concorde"
+        ],
+
+        "photos": [
+            "https://pub-6411be86c46a44edb6371cd742f7819e.r2.dev/name.jpg"
+        ],
+        
+        "photoCredits": [
+            "Unavailable"
+        ]
+    },
+
+    
+    {
+        "name": "05R Approach",
+        "lat": 53.329742,
+        "lng": -2.315313,
+
+        "direction": 51,
+
+        "bestForRunway": "05R",
+
+        "recommendedFocalLength": "30-200mm",
+        "parking": "Park at the layby along Lady Lane: 53.327738, -2.310590",
+        "bestTimeToVisit": "Morning",
+        "notes": [
+            "None"
+        ],
+
+        "photos": [
+            "https://pub-6411be86c46a44edb6371cd742f7819e.r2.dev/name.jpg"
+        ],
+        
+        "photoCredits": [
+            "Unavailable"
+        ]
     }
 ]
 }

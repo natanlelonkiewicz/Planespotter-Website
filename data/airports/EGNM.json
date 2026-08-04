@@ -1,0 +1,188 @@
+{
+  "name": "Leeds Bradford Airport",
+  "code": "EGNM",
+  "location": "Yeadon, England",
+
+  "image": "https://pub-6411be86c46a44edb6371cd742f7819e.r2.dev/leedscafe2.jpg",
+  "airportCredits": [
+    "Harryjw"
+],
+
+  "lat": 53.866353,
+  "lng": -1.661006,
+
+  "runways": [
+    {
+      "name": "14/32",
+      "heading1": 140,
+      "heading2": 320
+    }
+  ],
+
+"spots": [
+    {
+        "name": "Yeadon Moor Road",
+        "lat": 53.862530,
+        "lng": -1.661754,
+
+        "direction": 225,
+
+        "bestForRunway": "14/32",
+
+        "recommendedFocalLength": "150-300mm",
+        "parking": "Available",
+        "bestTimeToVisit": "Afternoon",
+        "notes": [
+            "A ladder is required here"
+        ],
+
+        "photos": [
+            "https://pub-6411be86c46a44edb6371cd742f7819e.r2.dev/ymr1.jpg",
+            "https://pub-6411be86c46a44edb6371cd742f7819e.r2.dev/ymr2.jpg",
+            "https://pub-6411be86c46a44edb6371cd742f7819e.r2.dev/ymr3.jpg"
+        ],
+
+        "photoCredits": [
+            "Harryjw",
+            "Harryjw",
+            "Harryjw"
+        ]
+    },
+
+    {
+        "name": "Golf Course",
+        "lat": 53.861310,
+        "lng": -1.656294,
+
+        "direction": 240,
+
+        "bestForRunway": "14/32",
+
+        "recommendedFocalLength": "70-200mm",
+        "parking": "Unavailable",
+        "bestTimeToVisit": "Afternoon",
+        "notes": [
+            "A ladder is required here"
+        ],
+
+        "photos": [
+            "https://pub-6411be86c46a44edb6371cd742f7819e.r2.dev/leedsgolf1.jpg",
+            "https://pub-6411be86c46a44edb6371cd742f7819e.r2.dev/leedsgolf2.jpg"
+        ],
+
+        "photoCredits": [
+            "Harryjw",
+            "Harryjw"
+        ]
+    },
+
+    {
+        "name": "Multiflight Cafe Bar",
+        "lat": 53.865440,
+        "lng": -1.667103,
+
+        "direction": 221,
+
+        "recommendedFocalLength": "50-150mm",
+        "parking": "Available",
+        "bestTimeToVisit": "Afternoon",
+        "notes": [
+            "Mainly light aircraft",
+            "Tall fence"
+        ],
+
+        "photos": [
+            "https://pub-6411be86c46a44edb6371cd742f7819e.r2.dev/leedscafe1.jpg",
+            "https://pub-6411be86c46a44edb6371cd742f7819e.r2.dev/leedscafe2.jpg",
+            "https://pub-6411be86c46a44edb6371cd742f7819e.r2.dev/leedscafe3.jpg"
+        ],
+        
+        "photoCredits": [
+            "Harryjw",
+            "Harryjw",
+            "Harryjw"
+        ]
+    },
+
+    {
+        "name": "Cemetery",
+        "lat": 53.872970,
+        "lng": -1.673693,
+
+        "direction": 250,
+
+        "bestForRunway": "14/32",
+
+        "recommendedFocalLength": "50-200mm",
+        "parking": "Available",
+        "bestTimeToVisit": "Afternoon and evening",
+        "notes": [
+            "Clear view of the runway without fences in the way"
+        ],
+
+        "photos": [
+            "https://pub-6411be86c46a44edb6371cd742f7819e.r2.dev/cemetery1.jpg",
+            "https://pub-6411be86c46a44edb6371cd742f7819e.r2.dev/cemetery2.jpg",
+            "https://pub-6411be86c46a44edb6371cd742f7819e.r2.dev/cemetery3.jpg"
+        ],
+        
+        "photoCredits": [
+            "Harryjw",
+            "Harryjw",
+            "Harryjw"
+        ]
+    },
+
+    {
+        "name": "Cemetery Road",
+        "lat": 53.871566,
+        "lng": -1.674942,
+
+        "direction": 256,
+
+        "bestForRunway": "32",
+
+        "recommendedFocalLength": "70-200mm",
+        "parking": "Park at the main cemetery viewing area: 53.872819, -1.673848",
+        "bestTimeToVisit": "Late afternoon and evening",
+        "notes": [
+            "Best for sky shots of aircraft taking off from runway 32"
+        ],
+
+        "photos": [
+            "https://pub-6411be86c46a44edb6371cd742f7819e.r2.dev/cemeteryroad1.jpg",
+            "https://pub-6411be86c46a44edb6371cd742f7819e.r2.dev/cemeteryroad2.jpg"
+        ],
+        
+        "photoCredits": [
+            "Harryjw",
+            "Harryjw"
+        ]
+    },
+
+    {
+        "name": "Warren House Lane",
+        "lat": 53.873023,
+        "lng": -1.665800,
+
+        "direction": 48,
+
+        "bestForRunway": "14",
+
+        "recommendedFocalLength": "150-400mm",
+        "parking": "Available",
+        "bestTimeToVisit": "Early morning before 0800",
+        "notes": [
+            "None"
+        ],
+
+        "photos": [
+            "https://pub-6411be86c46a44edb6371cd742f7819e.r2.dev/warrenhouselane1.jpg"
+        ],
+        
+        "photoCredits": [
+            "Harryjw"
+        ]
+    }
+]
+}

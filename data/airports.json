@@ -64,5 +64,11 @@
     "name": "Manchester Airport",
     "lat": 53.355633,
     "lng": -2.271681
+  },
+  {
+    "icao": "EGNM",
+    "name": "Leeds Bradford Airport",
+    "lat": 53.866353,
+    "lng": -1.661006
   }
 ]
