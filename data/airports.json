@@ -70,5 +70,17 @@
     "name": "Leeds Bradford Airport",
     "lat": 53.866353,
     "lng": -1.661006
+  },
+  {
+    "icao": "ETSN",
+    "name": "Neuburg Air Base",
+    "lat": 48.710884,
+    "lng": 11.215482
+  },
+  {
+    "icao": "ETSI",
+    "name": "Ingolstadt Manching Airfield",
+    "lat": 48.716231,
+    "lng": 11.535837 
   }
 ]

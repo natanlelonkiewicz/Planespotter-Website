@@ -119,11 +119,13 @@
         ],
 
         "photos": [
-            "https://pub-6411be86c46a44edb6371cd742f7819e.r2.dev/endofpollardslane1.jpg"
+            "https://pub-6411be86c46a44edb6371cd742f7819e.r2.dev/endofpollardslane1.jpg",
+            "https://pub-6411be86c46a44edb6371cd742f7819e.r2.dev/endofpollardslane2.jpg"
         ],
         
         "photoCredits": [
-            "Aiden Cassidy"
+            "Aiden Cassidy",
+            "Brad King"
         ]
     },
 

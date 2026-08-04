@@ -1,0 +1,85 @@
+{
+  "name": "Ingolstadt Manching Airfield",
+  "code": "ETSI",
+  "location": "Manching, Germany",
+
+  "image": "https://pub-6411be86c46a44edb6371cd742f7819e.r2.dev/etsifield1.jpg",
+  "airportCredits": [
+    "th3milit4rysp0tter"
+],
+
+  "lat": 48.716231,
+  "lng": 11.535837,
+
+  "runways": [
+    {
+      "name": "06/24",
+      "heading1": 60,
+      "heading2": 240
+    }
+  ],
+
+"spots": [
+    {
+        "name": "Field",
+        "lat": 48.708559,
+        "lng": 11.541315,
+
+        "direction": 152,
+
+        "bestForRunway": "06R/24L",
+
+        "recommendedFocalLength": "200-400mm",
+        "parking": "Available: 48.706846, 11.555522",
+        "bestTimeToVisit": "Morning and early afternoon",
+        "notes": [
+            "None"
+        ],
+
+        "photos": [
+            "https://pub-6411be86c46a44edb6371cd742f7819e.r2.dev/etsifield1.jpg",
+            "https://pub-6411be86c46a44edb6371cd742f7819e.r2.dev/etsifield2.jpg",
+            "https://pub-6411be86c46a44edb6371cd742f7819e.r2.dev/etsifield3.jpg",
+            "https://pub-6411be86c46a44edb6371cd742f7819e.r2.dev/etsifield4.jpg"
+        ],
+
+        "photoCredits": [
+            "th3milit4rysp0tter",
+            "th3milit4rysp0tter",
+            "th3milit4rysp0tter",
+            "th3milit4rysp0tter"
+        ]
+    },
+
+    {
+        "name": "Runway 24L End",
+        "lat": 48.712330,
+        "lng": 11.556288,
+
+        "direction": 154,
+
+        "bestForRunway": "24L",
+
+        "recommendedFocalLength": "200-500mm",
+        "parking": "Available: 48.706846, 11.555522",
+        "bestTimeToVisit": "Morning and early afternoon",
+        "notes": [
+            "None"
+        ],
+
+        "photos": [
+            "https://pub-6411be86c46a44edb6371cd742f7819e.r2.dev/24l1.jpg",
+            "https://pub-6411be86c46a44edb6371cd742f7819e.r2.dev/24l2.jpg",
+            "https://pub-6411be86c46a44edb6371cd742f7819e.r2.dev/24l3.jpg",
+            "https://pub-6411be86c46a44edb6371cd742f7819e.r2.dev/24l4.jpg"
+        ],
+
+        "photoCredits": [
+            "th3milit4rysp0tter",
+            "th3milit4rysp0tter",
+            "th3milit4rysp0tter",
+            "th3milit4rysp0tter"
+        ]
+    }
+]
+}
