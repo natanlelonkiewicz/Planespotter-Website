@@ -88,5 +88,17 @@
     "name": "Frankfurt Airport",
     "lat": 50.038744,
     "lng": 8.560420
+  },
+  {
+    "icao": "EBOS",
+    "name": "Ostend Bruges International Airport",
+    "lat": 51.199804,
+    "lng": 2.872862
+  },
+  {
+    "icao": "EGAC",
+    "name": "Belfast City Airport",
+    "lat": 54.618763,
+    "lng": -5.872007
   }
 ]

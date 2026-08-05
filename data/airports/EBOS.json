@@ -1,0 +1,150 @@
+{
+  "name": "Ostend Bruges International Airport",
+  "code": "EBOS",
+  "location": "Oostende, Belgium",
+
+  "image": "https://pub-6411be86c46a44edb6371cd742f7819e.r2.dev/Vliegclub1.jpg",
+  "airportCredits": [
+    "Gilles van Landeghem"
+],
+
+  "lat": 51.199804,
+  "lng": 2.872862,
+
+  "runways": [
+    {
+      "name": "08/26",
+      "heading1": 80,
+      "heading2": 260
+    }
+  ],
+
+"spots": [
+    {
+        "name": "Legeweg",
+        "lat": 51.198958,
+        "lng": 2.879728,
+
+        "direction": 161,
+
+        "bestForRunway": "08/26",
+
+        "recommendedFocalLength": "70-300mm",
+        "parking": "There is space on the layby for maybe 1 car but don't block the crash gate",
+        "bestTimeToVisit": "Late morning and early afternoon",
+        "notes": "None",
+
+        "photos": [
+            "https://pub-6411be86c46a44edb6371cd742f7819e.r2.dev/legeweg1.jpg",
+            "https://pub-6411be86c46a44edb6371cd742f7819e.r2.dev/legeweg2.jpg"
+        ],
+
+        "photoCredits": [
+            "Gilles van Landeghem",
+            "Gilles van Landeghem"
+        ]
+    },
+
+    {
+        "name": "Fleriskotstraat",
+        "lat": 51.194981,
+        "lng": 2.853997,
+
+        "direction": 163,
+
+        "bestForRunway": "08",
+
+        "recommendedFocalLength": "70-200mm",
+        "parking": "Available: 51.194384, 2.854761",
+        "bestTimeToVisit": "Late morning and early afternoon",
+        "notes": [
+            "None"
+        ],
+
+        "photos": [
+            "https://pub-6411be86c46a44edb6371cd742f7819e.r2.dev/Fleriskotstraat1.jpg",
+            "https://pub-6411be86c46a44edb6371cd742f7819e.r2.dev/Fleriskotstraat2.jpg"
+        ],
+
+        "photoCredits": [
+            "Gilles van Landeghem",
+            "Gilles van Landeghem"
+        ]
+    },
+
+    {
+        "name": "Noordzee Vliegclub",
+        "lat": 51.199984, 
+        "lng": 2.854742,
+
+        "direction": 323,
+
+        "bestForRunway": "08/26",
+
+        "recommendedFocalLength": "150-300mm",
+        "parking": "Available",
+        "bestTimeToVisit": "Evening",
+        "notes": [
+            "None"
+        ],
+
+        "photos": [
+            "https://pub-6411be86c46a44edb6371cd742f7819e.r2.dev/Vliegclub1.jpg"
+        ],
+        
+        "photoCredits": [
+            "Gilles van Landeghem"
+        ]
+    },
+
+    {
+        "name": "N341",
+        "lat": 51.205323,
+        "lng": 2.892166,
+
+        "direction": 352,
+
+        "bestForRunway": "26",
+
+        "recommendedFocalLength": "100-300mm",
+        "parking": "Unavailable",
+        "bestTimeToVisit": "Evening",
+        "notes": [
+            "None"
+        ],
+
+        "photos": [
+            "https://pub-6411be86c46a44edb6371cd742f7819e.r2.dev/n3411.jpg"
+        ],
+        
+        "photoCredits": [
+            "Gilles van Landeghem"
+        ]
+    },
+
+    {
+        "name": "Field",
+        "lat": 51.199497, 
+        "lng": 2.892962,
+
+        "direction": 162,
+
+        "bestForRunway": "26",
+
+        "recommendedFocalLength": "100-300mm",
+        "parking": "Unavailable",
+        "bestTimeToVisit": "Late morning and early afternoon for arrivals/departures. Evening for parked aircraft",
+        "notes": [
+            "None"
+        ],
+
+        "photos": [
+            "https://pub-6411be86c46a44edb6371cd742f7819e.r2.dev/ostendfield1.jpg"
+        ],
+        
+        "photoCredits": [
+            "Gilles van Landeghem"
+        ]
+    }
+]
+}
