@@ -1,0 +1,135 @@
+{
+  "name": "Frankfurt Airport",
+  "code": "EDDF",
+  "location": "Flughafen, Germany",
+
+  "image": "https://pub-6411be86c46a44edb6371cd742f7819e.r2.dev/startbahn6.jpg",
+  "airportCredits": [
+    "eddw_alex"
+],
+
+  "lat": 50.038744,
+  "lng": 8.560420,
+
+  "runways": [
+    {
+      "name": "07/25",
+      "heading1": 70,
+      "heading2": 250
+    }
+  ],
+
+"spots": [
+    {
+        "name": "Aussichtsplattform Zeppelinheim",
+        "lat": 50.039512,
+        "lng": 8.596869,
+
+        "direction": 133,
+
+        "bestForRunway": "25L Arrivals",
+
+        "recommendedFocalLength": "Taxiway: 30-70mm, Arrivals: 70-200mm",
+        "parking": "Available: 50.037412, 8.602835",
+        "bestTimeToVisit": "Taxiway: Morning. Arrivals: Late morning and early Afternoon",
+        "notes": "Great for 25L Arrivals and taxi shots",
+
+        "photos": [
+            "https://pub-6411be86c46a44edb6371cd742f7819e.r2.dev/aussichtsplattform1.jpg"
+        ],
+
+        "photoCredits": [
+            "jk.fotografie"
+        ]
+    },
+
+    {
+        "name": "Affenfelsen",
+        "lat": 50.021632,
+        "lng": 8.523174,
+
+        "direction": 263,
+
+        "bestForRunway": "09R/18",
+
+        "recommendedFocalLength": "70-200mm",
+        "parking": "Available: 50.022299, 8.520063",
+        "bestTimeToVisit": "Good light from around 1600",
+        "notes": [
+            "Runway 18 is a departures only runway"
+        ],
+
+        "photos": [
+            "https://pub-6411be86c46a44edb6371cd742f7819e.r2.dev/startbahn1.jpg",
+            "https://pub-6411be86c46a44edb6371cd742f7819e.r2.dev/startbahn2.jpg",
+            "https://pub-6411be86c46a44edb6371cd742f7819e.r2.dev/startbahn3.jpg",
+            "https://pub-6411be86c46a44edb6371cd742f7819e.r2.dev/startbahn4.jpg",
+            "https://pub-6411be86c46a44edb6371cd742f7819e.r2.dev/startbahn5.jpg",
+            "https://pub-6411be86c46a44edb6371cd742f7819e.r2.dev/startbahn6.jpg"
+        ],
+
+        "photoCredits": [
+            "jk.fotografie",
+            "jk.fotografie",
+            "eddw_alex",
+            "eddw_alex",
+            "eddw_alex",
+            "eddw_alex"
+        ]
+    },
+
+    {
+        "name": "Crash Gate At 07L",
+        "lat": 50.035577,
+        "lng": 8.502434,
+
+        "direction": 155,
+
+        "bestForRunway": "07L",
+
+        "recommendedFocalLength": "Taxiway: 18-50mm, Runway: 50-200mm",
+        "parking": "Available: 50.035237, 8.487897",
+        "bestTimeToVisit": "Late morning and early afternoon",
+        "notes": [
+            "A ladder is required at this location"
+        ],
+
+        "photos": [
+            "https://pub-6411be86c46a44edb6371cd742f7819e.r2.dev/cg07l1.jpg",
+            "https://pub-6411be86c46a44edb6371cd742f7819e.r2.dev/cg07l2.jpg",
+            "https://pub-6411be86c46a44edb6371cd742f7819e.r2.dev/cg07l3.jpg"
+        ],
+        
+        "photoCredits": [
+            "jk.fotografie",
+            "jk.fotografie",
+            "jk.fotografie"
+        ]
+    },
+
+    {
+        "name": "Runway 07L End",
+        "lat": 50.034063,
+        "lng": 8.492324,
+
+        "direction": 155,
+
+        "bestForRunway": "07L",
+
+        "recommendedFocalLength": "50-150mm",
+        "parking": "Available: 50.035237, 8.487897",
+        "bestTimeToVisit": "Late morning and early afternoon",
+        "notes": [
+            "None"
+        ],
+
+        "photos": [
+            "https://pub-6411be86c46a44edb6371cd742f7819e.r2.dev/07lend1.jpg"
+        ],
+        
+        "photoCredits": [
+            "jk.fotografie"
+        ]
+    }
+]
+}

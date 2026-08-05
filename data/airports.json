@@ -81,6 +81,12 @@
     "icao": "ETSI",
     "name": "Ingolstadt Manching Airfield",
     "lat": 48.716231,
-    "lng": 11.535837 
+    "lng": 11.535837
+  },
+  {
+    "icao": "EDDF",
+    "name": "Frankfurt Airport",
+    "lat": 50.038744,
+    "lng": 8.560420
   }
 ]
