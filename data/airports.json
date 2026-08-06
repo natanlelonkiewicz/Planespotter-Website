@@ -100,5 +100,17 @@
     "name": "Belfast City Airport",
     "lat": 54.618763,
     "lng": -5.872007
+  },
+  {
+    "icao": "EBBR",
+    "name": "Brussels Airport",
+    "lat": 50.900141,
+    "lng": 4.486441
+  },
+  {
+    "icao": "ENZV",
+    "name": "Stavanger Sola Airport",
+    "lat": 58.880145,
+    "lng": 5.631808
   }
 ]

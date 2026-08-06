@@ -1,0 +1,204 @@
+{
+  "name": "Stavanger Sola Airport",
+  "code": "ENZV",
+  "location": "Sola, Norway",
+
+  "image": "https://pub-6411be86c46a44edb6371cd742f7819e.r2.dev/brucps.jpg",
+  "airportCredits": [
+    "Gilles van Landeghem"
+],
+
+  "lat": 58.880145,
+  "lng": 5.631808,
+
+  "runways": [
+    {
+      "name": "18/36",
+      "heading1": 180,
+      "heading2": 360
+    },
+    {
+      "name": "10/28",
+      "heading1": 100,
+      "heading2": 280
+    }
+  ],
+
+"spots": [
+    {
+        "name": "Bike Path",
+        "lat": 58.894745,
+        "lng": 5.632787,
+
+        "direction": 272,
+
+        "bestForRunway": "18",
+
+        "recommendedFocalLength": "70-200mm",
+        "parking": "Available at the museum: 58.897182, 5.632363",
+        "bestTimeToVisit": "1600 Onwards",
+        "notes": "None",
+
+        "photos": [
+            "https://pub-6411be86c46a44edb6371cd742f7819e.r2.dev/stavangerbikepath1.jpg",
+            "https://pub-6411be86c46a44edb6371cd742f7819e.r2.dev/stavangerbikepath2.jpg",
+            "https://pub-6411be86c46a44edb6371cd742f7819e.r2.dev/stavangerbikepath3.jpg",
+            "https://pub-6411be86c46a44edb6371cd742f7819e.r2.dev/stavangerbikepath4.jpg",
+            "https://pub-6411be86c46a44edb6371cd742f7819e.r2.dev/stavangerbikepath5.jpg",
+            "https://pub-6411be86c46a44edb6371cd742f7819e.r2.dev/stavangerbikepath6.jpg",
+            "https://pub-6411be86c46a44edb6371cd742f7819e.r2.dev/stavangerbikepath7.jpg",
+            "https://pub-6411be86c46a44edb6371cd742f7819e.r2.dev/stavangerbikepath8.jpg"
+        ],
+
+        "photoCredits": [
+            "Sverre Grønås",
+            "Sverre Grønås",
+            "Viljar Espeland",
+            "Sverre Grønås",
+            "Patrick kvamme",
+            "Sverre Grønås",
+            "Sverre Grønås",
+            "Sverre Grønås"
+        ]
+    },
+
+    {
+        "name": "Gravel Path (36 Approach West)",
+        "lat": 58.866214,
+        "lng": 5.635446,
+
+        "direction": 210,
+
+        "bestForRunway": "36",
+
+        "recommendedFocalLength": "50-300mm",
+        "parking": "Unavailable",
+        "bestTimeToVisit": "Taxiway: 1100-1600. Approach: 1700-2100",
+        "notes": [
+            "None"
+        ],
+
+        "photos": [
+            "https://pub-6411be86c46a44edb6371cd742f7819e.r2.dev/gravelpath1.jpg",
+            "https://pub-6411be86c46a44edb6371cd742f7819e.r2.dev/gravelpath2.jpg"
+        ],
+
+        "photoCredits": [
+            "Oliver Vatle",
+            "Viljar Espeland "
+        ]
+    },
+
+    {
+        "name": "36 Approach East",
+        "lat": 58.866506,
+        "lng": 5.640333,
+
+        "direction": 99,
+
+        "bestForRunway": "86",
+
+        "recommendedFocalLength": "50-200mm",
+        "parking": "Unavailable",
+        "bestTimeToVisit": "Good in the morning till around 1000",
+        "notes": [
+            "None"
+        ],
+
+        "photos": [
+            "https://pub-6411be86c46a44edb6371cd742f7819e.r2.dev/bru361.jpg"
+        ],
+        
+        "photoCredits": [
+            "Viljar Espeland"
+        ]
+    },
+
+    {
+        "name": "The Hill",
+        "lat": 58.896335,
+        "lng": 5.640928,
+
+        "direction": 87,
+
+        "bestForRunway": "18",
+
+        "recommendedFocalLength": "70-300mm",
+        "parking": "Available: 58.894633, 5.643032",
+        "bestTimeToVisit": "Best in the morning till around 1000",
+        "notes": [
+            "None"
+        ],
+
+        "photos": [
+            "https://pub-6411be86c46a44edb6371cd742f7819e.r2.dev/stavanger1.jpg",
+            "https://pub-6411be86c46a44edb6371cd742f7819e.r2.dev/stavanger2.jpg",
+            "https://pub-6411be86c46a44edb6371cd742f7819e.r2.dev/stavanger3.jpg"
+        ],
+        
+        "photoCredits": [
+            "Sverre Grønås",
+            "Sverre Grønås",
+            "Viljar Espeland"
+        ]
+    },
+
+    {
+        "name": "Spotting Tower",
+        "lat": 58.888622,
+        "lng": 5.632038,
+
+        "direction": 270,
+
+        "bestForRunway": "18/36",
+
+        "recommendedFocalLength": "100-400mm",
+        "parking": "Available",
+        "bestTimeToVisit": "From 1700 till sunset",
+        "notes": [
+            "None"
+        ],
+
+        "photos": [
+            "https://pub-6411be86c46a44edb6371cd742f7819e.r2.dev/statower1.jpg",
+            "https://pub-6411be86c46a44edb6371cd742f7819e.r2.dev/statower2.jpg",
+            "https://pub-6411be86c46a44edb6371cd742f7819e.r2.dev/statower3.jpg"
+        ],
+        
+        "photoCredits": [
+            "Viljar Espeland",
+            "Viljar Espeland",
+            "Nikolai liaset Omdal"
+        ]
+    },
+
+    {
+        "name": "Flight Safety Staircase",
+        "lat": 58.890801,
+        "lng": 5.632194,
+
+        "direction": 270,
+
+        "bestForRunway": "18/36",
+
+        "recommendedFocalLength": "Parked Aircraft: 18-50mm. Runway Photos: 100-400mm",
+        "parking": "Available",
+        "bestTimeToVisit": "From 1700 till sunset",
+        "notes": [
+            "None"
+        ],
+
+        "photos": [
+            "https://pub-6411be86c46a44edb6371cd742f7819e.r2.dev/sss1.jpg",
+            "https://pub-6411be86c46a44edb6371cd742f7819e.r2.dev/sss2.jpg",
+            "https://pub-6411be86c46a44edb6371cd742f7819e.r2.dev/sss3.jpg"
+        ],
+        
+        "photoCredits": [
+            "Jon Kristian Isaksen",
+            "David Sipos",
+            "Nikolai liaset Omdal"
+        ]
+    }
+]
+}
