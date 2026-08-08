@@ -655,6 +655,22 @@ h2{
 
 }
 
+@media (max-width: 768px) {
+
+    .leaflet-control-attribution {
+        display: block !important;
+        visibility: visible !important;
+        opacity: 1 !important;
+
+        font-size: 10px !important;
+        padding: 2px 5px !important;
+
+        bottom: 0 !important;
+        right: 0 !important;
+    }
+
+}
+
 #sunCompassOverlay{
 
     pointer-events:none;
@@ -968,4 +984,38 @@ body {
 
 .site-footer span {
     color: #777;
+}
+
+@media (max-width: 768px) {
+
+    .site-footer {
+        bottom: 3px;
+        left: 5px;
+
+        padding: 3px 6px;
+
+        font-size: 9px;
+        border-radius: 4px;
+    }
+
+    .site-footer a {
+        margin: 0 3px;
+    }
+
+    .site-footer span {
+        margin: 0;
+    }
+
+    .leaflet-control-attribution {
+        display: block !important;
+        visibility: visible !important;
+        opacity: 1 !important;
+
+        font-size: 9px !important;
+        padding: 2px 4px !important;
+
+        bottom: 0 !important;
+        right: 0 !important;
+    }
+
 }
