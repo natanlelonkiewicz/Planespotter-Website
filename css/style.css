@@ -958,8 +958,8 @@ body {
 
 .site-footer {
     position: fixed;
-    bottom: 5px;
     left: 10px;
+    bottom: 10px;
 
     z-index: 10000;
 
