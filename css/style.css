@@ -957,10 +957,10 @@ body {
 }
 
 /* =========================
-   AVSPOT FOOTER
+   DESKTOP FOOTER
    ========================= */
 
-.site-footer {
+#desktopFooter {
     position: fixed;
     bottom: 10px;
     left: 10px;
@@ -973,47 +973,62 @@ body {
     border-radius: 6px;
 
     font-size: 12px;
+    color: #777;
 }
 
-.site-footer a {
+#desktopFooter a {
     color: #e0e0e0;
     text-decoration: none;
     margin: 0 5px;
 }
 
-.site-footer .desktop-only {
-    color: #e0e0e0 !important;
-}
-
-.site-footer a:hover {
+#desktopFooter a:hover {
     color: #f5c542;
     text-decoration: underline;
 }
 
 
 /* =========================
-   MOBILE
+   MOBILE FOOTER
    ========================= */
+
+#mobileFooter {
+    display: none;
+}
+
 
 @media screen and (max-width: 768px) {
 
-    .site-footer {
-        bottom: 3px;
-        left: 5px;
-
-        padding: 3px 6px;
-
-        font-size: 9px;
-
-        border-radius: 4px;
-    }
-
-    .desktop-only {
+    #desktopFooter {
         display: none;
     }
 
-    .site-footer a {
+    #mobileFooter {
+        display: block;
+
+        position: fixed;
+        bottom: 3px;
+        left: 5px;
+
+        z-index: 10000;
+
+        padding: 3px 6px;
+
+        background: rgba(25, 25, 25, 0.88);
+        border-radius: 4px;
+
+        font-size: 9px;
+        color: #777;
+    }
+
+    #mobileFooter a {
+        color: #e0e0e0;
+        text-decoration: none;
         margin: 0 3px;
+    }
+
+    #mobileFooter a:hover {
+        color: #f5c542;
     }
 
 
@@ -1024,8 +1039,6 @@ body {
 
         right: 3px !important;
         bottom: 3px !important;
-
-        display: block !important;
 
         background: white !important;
         color: #333 !important;
@@ -1041,50 +1054,5 @@ body {
     .leaflet-control-attribution a {
         color: #0078a8 !important;
     }
-
-    /* =========================
-   FINAL AVSPOT FOOTER FIX
-   ========================= */
-
-.site-footer {
-    color: #777 !important;
-}
-
-.site-footer .footer-copy {
-    color: #777 !important;
-}
-
-.site-footer a {
-    color: #e0e0e0 !important;
-    text-decoration: none;
-}
-
-.site-footer .desktop-only {
-    color: #e0e0e0 !important;
-}
-
-.site-footer a:hover {
-    color: #f5c542 !important;
-}
-
-@media screen and (max-width: 768px) {
-
-    .site-footer {
-        color: #777 !important;
-    }
-
-    .site-footer .footer-copy {
-        color: #777 !important;
-    }
-
-    .site-footer a {
-        color: #e0e0e0 !important;
-    }
-
-    .site-footer .desktop-only {
-        display: none !important;
-    }
-
-}
 
 }
