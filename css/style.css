@@ -960,7 +960,6 @@ body {
     position: fixed;
     bottom: 10px;
     left: 10px;
-
     z-index: 10000;
 
     padding: 5px 9px;
@@ -982,16 +981,16 @@ body {
     text-decoration: underline;
 }
 
+
+/* MOBILE */
+
 @media screen and (max-width: 768px) {
 
     .site-footer {
         bottom: 3px;
         left: 5px;
-
         padding: 3px 6px;
-
         font-size: 9px;
-
         border-radius: 4px;
     }
 
@@ -1002,5 +1001,76 @@ body {
     .site-footer a {
         margin: 0 3px;
     }
+
+
+    /* Leaflet attribution */
+
+    .leaflet-control-attribution {
+        position: fixed !important;
+
+        right: 3px !important;
+        bottom: 3px !important;
+
+        display: block !important;
+
+        background: white !important;
+        color: #333 !important;
+
+        font-size: 9px !important;
+        padding: 3px 5px !important;
+
+        border-radius: 3px !important;
+
+        z-index: 10001 !important;
+    }
+
+    .leaflet-control-attribution a {
+        color: #0078a8 !important;
+    }
+
+    /* =========================
+   FINAL AVSPOT FOOTER FIX
+   ========================= */
+
+.site-footer {
+    color: #777 !important;
+}
+
+.site-footer .footer-copy {
+    color: #777 !important;
+}
+
+.site-footer a {
+    color: #e0e0e0 !important;
+    text-decoration: none;
+}
+
+.site-footer .desktop-only {
+    color: #e0e0e0 !important;
+}
+
+.site-footer a:hover {
+    color: #f5c542 !important;
+}
+
+@media screen and (max-width: 768px) {
+
+    .site-footer {
+        color: #777 !important;
+    }
+
+    .site-footer .footer-copy {
+        color: #777 !important;
+    }
+
+    .site-footer a {
+        color: #e0e0e0 !important;
+    }
+
+    .site-footer .desktop-only {
+        display: none !important;
+    }
+
+}
 
 }
