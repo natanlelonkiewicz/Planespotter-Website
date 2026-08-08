@@ -981,6 +981,10 @@ body {
     margin: 0 5px;
 }
 
+.site-footer .desktop-only {
+    color: #e0e0e0;
+}
+
 .site-footer a:hover {
     color: #f5c542;
     text-decoration: underline;
