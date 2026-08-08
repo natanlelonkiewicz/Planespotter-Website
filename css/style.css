@@ -1029,3 +1029,19 @@ body {
     }
 
 }
+
+.mobile-footer {
+    display: none;
+}
+
+@media (max-width: 768px) {
+
+    .desktop-footer {
+        display: none;
+    }
+
+    .mobile-footer {
+        display: inline;
+    }
+
+}
