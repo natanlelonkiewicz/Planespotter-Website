@@ -960,6 +960,7 @@ body {
     position: fixed;
     bottom: 10px;
     left: 10px;
+
     z-index: 10000;
 
     padding: 5px 9px;
@@ -968,14 +969,6 @@ body {
     border-radius: 6px;
 
     font-size: 12px;
-}
-
-.footer-desktop {
-    display: inline !important;
-}
-
-.footer-mobile {
-    display: none !important;
 }
 
 .site-footer a {
@@ -989,7 +982,6 @@ body {
     text-decoration: underline;
 }
 
-
 @media screen and (max-width: 768px) {
 
     .site-footer {
@@ -1000,18 +992,11 @@ body {
 
         font-size: 9px;
 
-        background: rgba(25, 25, 25, 0.88);
         border-radius: 4px;
-
-        z-index: 10000;
     }
 
-    .footer-desktop {
-        display: none !important;
-    }
-
-    .footer-mobile {
-        display: inline !important;
+    .desktop-only {
+        display: none;
     }
 
     .site-footer a {
