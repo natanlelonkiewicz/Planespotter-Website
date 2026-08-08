@@ -1042,4 +1042,49 @@ body {
         color: #0078a8 !important;
     }
 
+    /* =========================
+   FINAL AVSPOT FOOTER FIX
+   ========================= */
+
+.site-footer {
+    color: #777 !important;
+}
+
+.site-footer .footer-copy {
+    color: #777 !important;
+}
+
+.site-footer a {
+    color: #e0e0e0 !important;
+    text-decoration: none;
+}
+
+.site-footer .desktop-only {
+    color: #e0e0e0 !important;
+}
+
+.site-footer a:hover {
+    color: #f5c542 !important;
+}
+
+@media screen and (max-width: 768px) {
+
+    .site-footer {
+        color: #777 !important;
+    }
+
+    .site-footer .footer-copy {
+        color: #777 !important;
+    }
+
+    .site-footer a {
+        color: #e0e0e0 !important;
+    }
+
+    .site-footer .desktop-only {
+        display: none !important;
+    }
+
+}
+
 }
