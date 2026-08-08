@@ -958,8 +958,8 @@ body {
 
 .site-footer {
     position: fixed;
+    bottom: 5px;
     left: 10px;
-    bottom: 10px;
 
     z-index: 10000;
 
@@ -969,7 +969,10 @@ body {
     border-radius: 6px;
 
     font-size: 12px;
-    display: block;
+}
+
+.footer-mobile {
+    display: none;
 }
 
 .site-footer a {
@@ -990,58 +993,25 @@ body {
 @media (max-width: 768px) {
 
     .site-footer {
-        position: fixed;
-
         bottom: 3px;
         left: 5px;
 
         padding: 3px 6px;
-
         font-size: 9px;
 
         border-radius: 4px;
+    }
 
-        z-index: 10000;
+    .footer-desktop {
+        display: none;
+    }
+
+    .footer-mobile {
+        display: inline;
     }
 
     .site-footer a {
         margin: 0 3px;
-    }
-
-    .site-footer span {
-        margin: 0;
-    }
-
-    .leaflet-control-attribution {
-        position: fixed !important;
-
-        right: 5px !important;
-        bottom: 3px !important;
-
-        display: block !important;
-        visibility: visible !important;
-        opacity: 1 !important;
-
-        z-index: 10000 !important;
-
-        font-size: 9px !important;
-        padding: 2px 4px !important;
-    }
-
-}
-
-.mobile-footer {
-    display: none;
-}
-
-@media (max-width: 768px) {
-
-    .desktop-footer {
-        display: none;
-    }
-
-    .mobile-footer {
-        display: inline;
     }
 
 }
