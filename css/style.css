@@ -964,7 +964,6 @@ body {
     position: fixed;
     bottom: 10px;
     left: 10px;
-
     z-index: 10000;
 
     padding: 5px 9px;
@@ -975,12 +974,12 @@ body {
     font-size: 12px;
 }
 
-/* Desktop footer shown by default */
+/* Desktop version */
 .footer-desktop {
     display: inline !important;
 }
 
-/* Mobile footer hidden by default */
+/* Mobile version hidden on desktop */
 .footer-mobile {
     display: none !important;
 }
@@ -996,10 +995,6 @@ body {
     text-decoration: underline;
 }
 
-.site-footer span {
-    color: #777;
-}
-
 
 /* =========================
    MOBILE FOOTER
@@ -1008,13 +1003,10 @@ body {
 @media (max-width: 768px) {
 
     .site-footer {
-        position: fixed;
-
         bottom: 3px;
         left: 5px;
 
         padding: 3px 6px;
-
         font-size: 9px;
 
         background: rgba(25, 25, 25, 0.88);
@@ -1023,22 +1015,18 @@ body {
         z-index: 10000;
     }
 
-    /* Hide desktop version */
+    /* Hide desktop footer */
     .footer-desktop {
         display: none !important;
     }
 
-    /* Show shorter mobile version */
+    /* Show mobile footer */
     .footer-mobile {
         display: inline !important;
     }
 
     .site-footer a {
         margin: 0 3px;
-    }
-
-    .site-footer span {
-        margin: 0;
     }
 
 
