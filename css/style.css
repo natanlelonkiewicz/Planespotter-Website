@@ -975,6 +975,10 @@ body {
     font-size: 12px;
 }
 
+.mobile-label {
+    display: none;
+}
+
 .site-footer a {
     color: #e0e0e0;
     text-decoration: none;
@@ -1004,10 +1008,20 @@ body {
         border-radius: 4px;
     }
 
+    .desktop-label {
+        display: none;
+    }
+
+    .mobile-label {
+        display: inline;
+    }
+
     .site-footer a {
         margin: 0 3px;
     }
 
+
+    /* Leaflet attribution */
 
     .leaflet-control-attribution {
         position: fixed !important;
