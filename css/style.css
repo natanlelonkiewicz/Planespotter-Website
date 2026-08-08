@@ -957,10 +957,10 @@ body {
 }
 
 /* =========================
-   AVSPOT FOOTER
+   DESKTOP FOOTER
    ========================= */
 
-.site-footer {
+#desktopFooter {
     position: fixed;
     bottom: 10px;
     left: 10px;
@@ -973,70 +973,62 @@ body {
     border-radius: 6px;
 
     font-size: 12px;
-    color: #777 !important;
+    color: #777;
 }
 
-.footer-copy {
-    color: #777 !important;
-}
-
-.separator {
-    color: #777 !important;
-    margin: 0 3px;
-}
-
-.site-footer a {
-    color: #e0e0e0 !important;
+#desktopFooter a {
+    color: #e0e0e0;
     text-decoration: none;
-    margin: 0 2px;
+    margin: 0 5px;
 }
 
-.site-footer a:hover {
-    color: #f5c542 !important;
+#desktopFooter a:hover {
+    color: #f5c542;
     text-decoration: underline;
 }
 
 
-/* Desktop adds the longer wording */
-
-.footer-about::after {
-    content: " Us";
-}
-
-.footer-contact::after {
-    content: " Us";
-}
-
-.footer-privacy::after {
-    content: " Policy";
-}
-
-
 /* =========================
-   MOBILE
+   MOBILE FOOTER
    ========================= */
+
+#mobileFooter {
+    display: none;
+}
+
 
 @media screen and (max-width: 768px) {
 
-    .site-footer {
+    #desktopFooter {
+        display: none;
+    }
+
+    #mobileFooter {
+        display: block;
+
+        position: fixed;
         bottom: 3px;
         left: 5px;
 
+        z-index: 10000;
+
         padding: 3px 6px;
 
-        font-size: 9px;
+        background: rgba(25, 25, 25, 0.88);
         border-radius: 4px;
+
+        font-size: 9px;
+        color: #777;
     }
 
-    /* Remove desktop additions */
-    .footer-about::after,
-    .footer-contact::after,
-    .footer-privacy::after {
-        content: "";
+    #mobileFooter a {
+        color: #e0e0e0;
+        text-decoration: none;
+        margin: 0 3px;
     }
 
-    .site-footer a {
-        margin: 0 2px;
+    #mobileFooter a:hover {
+        color: #f5c542;
     }
 
 
@@ -1047,8 +1039,6 @@ body {
 
         right: 3px !important;
         bottom: 3px !important;
-
-        display: block !important;
 
         background: white !important;
         color: #333 !important;
