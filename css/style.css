@@ -990,6 +990,8 @@ body {
 @media (max-width: 768px) {
 
     .site-footer {
+        position: fixed;
+
         bottom: 3px;
         left: 5px;
 
