@@ -982,7 +982,7 @@ body {
 }
 
 .site-footer .desktop-only {
-    color: #e0e0e0;
+    color: #e0e0e0 !important;
 }
 
 .site-footer a:hover {
