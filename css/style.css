@@ -964,6 +964,7 @@ body {
     position: fixed;
     bottom: 10px;
     left: 10px;
+
     z-index: 10000;
 
     padding: 5px 9px;
@@ -972,14 +973,6 @@ body {
     border-radius: 6px;
 
     font-size: 12px;
-}
-
-.footer-desktop {
-    display: inline !important;
-}
-
-.footer-mobile {
-    display: none !important;
 }
 
 .site-footer a {
@@ -1001,37 +994,20 @@ body {
 @media screen and (max-width: 768px) {
 
     .site-footer {
-        position: fixed;
-
         bottom: 3px;
         left: 5px;
 
         padding: 3px 6px;
 
-        background: rgba(25, 25, 25, 0.88);
-        border-radius: 4px;
-
         font-size: 9px;
 
-        z-index: 10000;
-    }
-
-    .footer-desktop {
-        display: none !important;
-    }
-
-    .footer-mobile {
-        display: inline !important;
+        border-radius: 4px;
     }
 
     .site-footer a {
         margin: 0 3px;
     }
 
-
-    /* =========================
-       LEAFLET ATTRIBUTION
-       ========================= */
 
     .leaflet-control-attribution {
         position: fixed !important;
@@ -1040,10 +1016,6 @@ body {
         bottom: 3px !important;
 
         display: block !important;
-        visibility: visible !important;
-        opacity: 1 !important;
-
-        z-index: 10001 !important;
 
         background: white !important;
         color: #333 !important;
@@ -1052,6 +1024,8 @@ body {
         padding: 3px 5px !important;
 
         border-radius: 3px !important;
+
+        z-index: 10001 !important;
     }
 
     .leaflet-control-attribution a {
