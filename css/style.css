@@ -1013,15 +1013,19 @@ body {
     }
 
     .leaflet-control-attribution {
+        position: fixed !important;
+
+        right: 5px !important;
+        bottom: 3px !important;
+
         display: block !important;
         visibility: visible !important;
         opacity: 1 !important;
 
+        z-index: 10000 !important;
+
         font-size: 9px !important;
         padding: 2px 4px !important;
-
-        bottom: 0 !important;
-        right: 0 !important;
     }
 
 }
