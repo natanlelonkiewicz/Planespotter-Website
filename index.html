@@ -149,7 +149,10 @@ var weather = {
     description: "Loading...",
     windSpeed: "--",
     windDirection: "--",
-    cloudCover: "--"
+    cloudCover: "--",
+    lowCloud: "--",
+    midCloud: "--",
+    highCloud: "--"
 };
 
 var spotMarkers = [];
@@ -469,6 +472,12 @@ ${weather.windDirection}°
 <p>
 ☁ Cloud:
 ${weather.cloudCover}%
+</p>
+
+<p style="font-size:13px; opacity:0.8; margin-top:-8px;">
+Low: ${weather.lowCloud}% ·
+Mid: ${weather.midCloud}% ·
+High: ${weather.highCloud}%
 </p>
 
 <hr>
@@ -1352,9 +1361,14 @@ function getRunwayInUse(){
 function getLightingRating(
     sunBearing,
     cameraBearing,
-    sunAltitude
+    sunAltitude,
+    cloudCover,
+    lowCloud,
+    midCloud,
+    highCloud
 ){
 
+    // 🌙 Night
     if(sunAltitude < -6){
 
         return {
@@ -1367,7 +1381,7 @@ function getLightingRating(
     }
 
 
-    // Twilight
+    // 🌅 Twilight / very low light
     if(sunAltitude >= -6 && sunAltitude <= 5){
 
         return {
@@ -1380,11 +1394,72 @@ function getLightingRating(
     }
 
 
+    // Make sure cloud values are numbers
+
+    lowCloud = Number(lowCloud) || 0;
+    midCloud = Number(midCloud) || 0;
+    highCloud = Number(highCloud) || 0;
+
+
+    /*
+        DETERMINE WHETHER CLOUDS ARE BLOCKING
+        DIRECT SUNLIGHT
+    */
+
+
+    var heavyOvercast =
+        lowCloud >= 80
+        ||
+        (lowCloud >= 60 && midCloud >= 70);
+
+
+    /*
+        HEAVY OVERCAST
+
+        Direction of the sun doesn't matter much
+        because the sunlight is being scattered
+        by the cloud layer.
+
+        Therefore every spotting location gets
+        the same basic lighting condition.
+    */
+
+
+    if(heavyOvercast){
+
+        return {
+            emoji:"☁️",
+            stars:"★★★☆☆",
+            text:"Overcast",
+            score:50
+        };
+
+    }
+
+
+    /*
+        CALCULATE SUN DIRECTION
+
+        From here down, direct sunlight is still
+        potentially reaching the ground.
+    */
+
 
     let difference = Math.abs(
         sunBearing - cameraBearing
     );
 
+
+    if(difference > 180){
+
+        difference = 360 - difference;
+
+    }
+
+
+    /*
+        SUN ALTITUDE BONUS
+    */
 
     let altitudeBonus = 0;
 
@@ -1396,22 +1471,118 @@ function getLightingRating(
     }
 
 
-    if(sunAltitude >=20 && sunAltitude <45){
+    if(sunAltitude >= 20 && sunAltitude < 45){
 
         altitudeBonus = 10;
 
     }
 
 
-    if(difference > 180){
+    /*
+        PARTLY CLOUDY
 
-        difference = 360 - difference;
+        There is enough cloud to soften or
+        interrupt sunlight, but not enough to
+        completely remove directional light.
+    */
+
+
+    var partlyCloudy =
+        lowCloud >= 40
+        ||
+        midCloud >= 70;
+
+
+    if(partlyCloudy){
+
+        if(difference <= 45){
+
+            return {
+                emoji:"⛅",
+                stars:"★★★★☆",
+                text:"Favourable light",
+                score:75 + altitudeBonus
+            };
+
+        }
+
+
+        if(difference <= 110){
+
+            return {
+                emoji:"⛅",
+                stars:"★★★☆☆",
+                text:"Diffused light",
+                score:55 + altitudeBonus
+            };
+
+        }
+
+
+        return {
+            emoji:"⛅",
+            stars:"★★☆☆☆",
+            text:"Poor light",
+            score:35 + altitudeBonus
+        };
 
     }
 
 
+    /*
+        HIGH CLOUD
 
-    if(difference <=45){
+        High cloud usually doesn't eliminate
+        directional sunlight.
+
+        Therefore the sun direction still matters.
+    */
+
+
+    if(highCloud >= 70){
+
+        if(difference <= 45){
+
+            return {
+                emoji:"🌤️",
+                stars:"★★★★☆",
+                text:"Filtered sunlight",
+                score:80 + altitudeBonus
+            };
+
+        }
+
+
+        if(difference <= 110){
+
+            return {
+                emoji:"🌤️",
+                stars:"★★★☆☆",
+                text:"Soft light",
+                score:60 + altitudeBonus
+            };
+
+        }
+
+
+        return {
+            emoji:"🌤️",
+            stars:"★★☆☆☆",
+            text:"Poor light",
+            score:35 + altitudeBonus
+        };
+
+    }
+
+
+    /*
+        CLEAR SKY
+
+        Normal directional lighting system.
+    */
+
+
+    if(difference <= 45){
 
         return {
             emoji:"🟢",
@@ -1423,7 +1594,7 @@ function getLightingRating(
     }
 
 
-    if(difference <=110){
+    if(difference <= 110){
 
         return {
             emoji:"🟡",
@@ -1433,7 +1604,6 @@ function getLightingRating(
         };
 
     }
-
 
 
     return {
@@ -1507,7 +1677,11 @@ sun.altitude * 180 / Math.PI;
     spot.lighting = getLightingRating(
         sunBearing,
         spot.direction,
-        sunAltitude
+        sunAltitude,
+        weather.cloudCover,
+        weather.lowCloud,
+        weather.midCloud,
+        weather.highCloud
     );
 
     updateSpotMarker(spot);
@@ -1539,7 +1713,7 @@ async function updateWeather(){
         "https://api.open-meteo.com/v1/forecast"
         + "?latitude=" + airport.lat
         + "&longitude=" + airport.lng
-        + "&current=temperature_2m,weather_code,wind_speed_10m,wind_direction_10m,cloud_cover";
+        + "&current=temperature_2m,weather_code,wind_speed_10m,wind_direction_10m,cloud_cover,cloud_cover_low,cloud_cover_mid,cloud_cover_high";
 
 
         var response = await fetch(url);
@@ -1569,6 +1743,15 @@ async function updateWeather(){
 
         weather.cloudCover =
             data.current.cloud_cover;
+
+        weather.lowCloud =
+            data.current.cloud_cover_low;
+            
+        weather.midCloud =
+            data.current.cloud_cover_mid;
+
+        weather.highCloud =
+            data.current.cloud_cover_high;
 
 
         weather.description =
@@ -2458,6 +2641,24 @@ function selectAirport(icao){
 }
 
 </script>
+
+<footer class="site-footer">
+
+    <span>© 2026 Avspot</span>
+
+    <span>•</span>
+
+    <a href="about.html">About Us</a>
+
+    <span>•</span>
+
+    <a href="contact.html">Contact Us</a>
+
+    <span>•</span>
+
+    <a href="privacy.html">Privacy Policy</a>
+
+</footer>
 
 </body>
 </html>
