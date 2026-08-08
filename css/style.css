@@ -956,9 +956,13 @@ body {
     background: #1e1e1e;
 }
 
+/* =========================
+   AVSPOT FOOTER
+   ========================= */
+
 .site-footer {
     position: fixed;
-    bottom: 5px;
+    bottom: 10px;
     left: 10px;
 
     z-index: 10000;
@@ -971,8 +975,14 @@ body {
     font-size: 12px;
 }
 
+/* Desktop footer shown by default */
+.footer-desktop {
+    display: inline !important;
+}
+
+/* Mobile footer hidden by default */
 .footer-mobile {
-    display: none;
+    display: none !important;
 }
 
 .site-footer a {
@@ -990,28 +1000,69 @@ body {
     color: #777;
 }
 
+
+/* =========================
+   MOBILE FOOTER
+   ========================= */
+
 @media (max-width: 768px) {
 
     .site-footer {
+        position: fixed;
+
         bottom: 3px;
         left: 5px;
 
         padding: 3px 6px;
+
         font-size: 9px;
 
+        background: rgba(25, 25, 25, 0.88);
         border-radius: 4px;
+
+        z-index: 10000;
     }
 
+    /* Hide desktop version */
     .footer-desktop {
-        display: none;
+        display: none !important;
     }
 
+    /* Show shorter mobile version */
     .footer-mobile {
-        display: inline;
+        display: inline !important;
     }
 
     .site-footer a {
         margin: 0 3px;
+    }
+
+    .site-footer span {
+        margin: 0;
+    }
+
+
+    /* =========================
+       LEAFLET ATTRIBUTION
+       ========================= */
+
+    .leaflet-control-attribution {
+        position: fixed !important;
+
+        right: 3px !important;
+        bottom: 3px !important;
+
+        display: block !important;
+        visibility: visible !important;
+        opacity: 1 !important;
+
+        z-index: 10001 !important;
+
+        font-size: 9px !important;
+        padding: 2px 4px !important;
+
+        background: rgba(25, 25, 25, 0.88) !important;
+        border-radius: 4px !important;
     }
 
 }
