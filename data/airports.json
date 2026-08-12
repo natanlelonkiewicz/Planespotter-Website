@@ -118,5 +118,11 @@
     "name": "Newtownards Aerodrome",
     "lat": 54.582313,
     "lng": -5.690756
+  },
+  {
+    "icao": "EDDL",
+    "name": "Düsseldorf Airport",
+    "lat": 51.288250,
+    "lng": 6.770034
   }
 ]
