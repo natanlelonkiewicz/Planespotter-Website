@@ -112,5 +112,11 @@
     "name": "Stavanger Sola Airport",
     "lat": 58.880145,
     "lng": 5.631808
+  },
+  {
+    "icao": "EGAD",
+    "name": "Newtownards Aerodrome",
+    "lat": 54.582313,
+    "lng": -5.690756
   }
 ]

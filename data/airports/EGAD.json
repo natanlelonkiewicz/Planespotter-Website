@@ -1,0 +1,141 @@
+{
+  "name": "Newtownards Aerodrome",
+  "code": "EGAD",
+  "location": "Newtownards, Northern Ireland",
+
+  "image": "https://pub-6411be86c46a44edb6371cd742f7819e.r2.dev/docarpark1.jpg",
+  "airportCredits": [
+    "Harry Dixon"
+],
+
+  "lat": 54.582313,
+  "lng": -5.690756,
+
+  "runways": [
+    {
+      "name": "03/12",
+      "heading1": 30,
+      "heading2": 120
+    },
+    {
+      "name": "08/26",
+      "heading1": 80,
+      "heading2": 260
+    },
+    {
+      "name": "15/33",
+      "heading1": 150,
+      "heading2": 330
+    }
+  ],
+
+"spots": [
+    {
+        "name": "Fence",
+        "lat": 54.585373,
+        "lng": -5.684058,
+
+        "direction": 95,
+
+        "recommendedFocalLength": "70-200mm",
+        "parking": "Available: 54.584525, -5.683453",
+        "bestTimeToVisit": "Morning",
+        "notes": [
+            "None"
+        ],
+
+        "photos": [
+            "https://pub-6411be86c46a44edb6371cd742f7819e.r2.dev/egadfence1.jpg",
+            "https://pub-6411be86c46a44edb6371cd742f7819e.r2.dev/egadfence2.jpg",
+            "https://pub-6411be86c46a44edb6371cd742f7819e.r2.dev/egadfence3.jpg"
+        ],
+
+        "photoCredits": [
+            "Lucas Finney",
+            "Lucas Finney",
+            "Lucas Finney"
+        ]
+    },
+
+    {
+        "name": "Helipad",
+        "lat": 54.584101,
+        "lng": -5.684241,
+
+        "direction": 60,
+
+        "recommendedFocalLength": "50-300mm",
+        "parking": "Available",
+        "bestTimeToVisit": "Early Morning",
+        "notes": [
+            "None"
+        ],
+
+        "photos": [
+            "https://pub-6411be86c46a44edb6371cd742f7819e.r2.dev/helipad1.jpg",
+            "https://pub-6411be86c46a44edb6371cd742f7819e.r2.dev/helipad2.jpg",
+            "https://pub-6411be86c46a44edb6371cd742f7819e.r2.dev/helipad3.jpg"
+        ],
+
+        "photoCredits": [
+            "Lucas Finney",
+            "Lucas Finney",
+            "Lucas Finney"
+        ]
+    },
+
+    {
+        "name": "Ramp Spot",
+        "lat": 54.584387,
+        "lng": -5.684227,
+
+        "direction": 145,
+
+        "recommendedFocalLength": "70-200mm",
+        "parking": "Available",
+        "bestTimeToVisit": "Late morning to early afternoon",
+        "notes": [
+            "None"
+        ],
+
+        "photos": [
+            "https://pub-6411be86c46a44edb6371cd742f7819e.r2.dev/rampspot1.jpg",
+            "https://pub-6411be86c46a44edb6371cd742f7819e.r2.dev/rampspot2.jpg",
+            "https://pub-6411be86c46a44edb6371cd742f7819e.r2.dev/rampspot3.jpg"
+        ],
+
+        "photoCredits": [
+            "Lucas Finney",
+            "Lucas Finney",
+            "Lucas Finney"
+        ]
+    },
+
+    {
+        "name": "Runway 33 End",
+        "lat": 54.579977,
+        "lng": -5.687579,
+
+        "direction": 146,
+
+        "bestForRunway": "33",
+
+        "recommendedFocalLength": "Takeoffs: 150-200mm. Landings: 50-150mm",
+        "parking": "Unavailable",
+        "bestTimeToVisit": "Late morning to early afternoon",
+        "notes": [
+            "Lighting score assumes photo's are taken facing runway 33 so if it shows backlit then light is still good for approaches"
+        ],
+
+        "photos": [
+            "https://pub-6411be86c46a44edb6371cd742f7819e.r2.dev/rwy331.jpg",
+            "https://pub-6411be86c46a44edb6371cd742f7819e.r2.dev/rwy332.jpg"
+        ],
+
+        "photoCredits": [
+            "Lucas Finney",
+            "Lucas Finney"
+        ]
+    }
+]
+}
