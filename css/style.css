@@ -1384,3 +1384,12 @@ body {
     transform: none;
 
 }
+
+@media (max-width:768px){
+
+    #toolbar{
+        left:15px;
+        right:70px;
+    }
+
+}
