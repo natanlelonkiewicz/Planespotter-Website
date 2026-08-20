@@ -1399,3 +1399,21 @@ body {
     }
 
 }
+
+@media screen and (max-width: 768px) {
+
+    #toolbar {
+        position: absolute !important;
+        top: 15px !important;
+        left: 15px !important;
+        right: 75px !important;
+        width: auto !important;
+        box-sizing: border-box !important;
+    }
+
+    #toolbar input {
+        width: calc(100% - 5px) !important;
+        box-sizing: border-box !important;
+    }
+
+}
