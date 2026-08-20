@@ -1075,29 +1075,41 @@ body {
 
 #accountButton {
     position: absolute;
-
     top: 15px;
     right: 15px;
-
     width: 45px;
     height: 45px;
-
     background: #252525;
     border: 2px solid #f5c542;
     border-radius: 10px;
-
     display: flex;
     align-items: center;
     justify-content: center;
-
     padding: 0;
     cursor: pointer;
-
     z-index: 2000;
+    transition: background 0.2s ease, transform 0.15s ease;
+}
 
-    transition:
-        background 0.2s ease,
-        transform 0.15s ease;
+#accountButton svg {
+    width: 24px;
+    height: 24px;
+    stroke: #9a9a9a;
+}
+
+#accountButton:hover {
+    background: #303030;
+}
+
+#accountButton:active {
+    transform: scale(0.95);
+}
+
+@media (max-width: 768px) {
+    #accountButton {
+        top: 15px;
+        right: 15px;
+    }
 }
 
 #accountButton svg {
