@@ -72,6 +72,198 @@ oninput="changeSunTime()"
 
 </div>
 
+<button id="accountButton" class="account-button" aria-label="Account">
+        <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+        >
+            <path d="M20 21a8 8 0 0 0-16 0"/>
+            <circle cx="12" cy="7" r="4"/>
+        </svg>
+    </button>
+
+</div>
+
+<div id="accountPopup">
+
+    <!-- WELCOME SCREEN -->
+
+    <div id="accountWelcome">
+
+        <button id="closeAccountPopup" aria-label="Close">
+            ×
+        </button>
+
+        <div class="account-popup-icon">
+            <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+            >
+                <path d="M20 21a8 8 0 0 0-16 0"></path>
+                <circle cx="12" cy="7" r="4"></circle>
+            </svg>
+        </div>
+
+        <h2>Welcome to Avspot</h2>
+
+        <p>
+            Sign in or create an account to write reviews,
+            submit locations and contribute to Avspot.
+        </p>
+
+        <button class="account-login-btn" id="loginButton">
+            Log in
+        </button>
+
+        <button class="account-register-btn" id="registerButton">
+            Create account
+        </button>
+
+    </div>
+
+
+    <!-- LOGIN SCREEN -->
+
+    <div id="loginScreen" class="account-screen">
+
+        <button class="backAccountButton" onclick="showAccountWelcome()">
+            ← Back
+        </button>
+
+        <h2>Log in</h2>
+
+        <p>Welcome back to Avspot.</p>
+
+        <form id="loginForm">
+
+            <input
+                type="email"
+                id="loginEmail"
+                placeholder="Email address"
+                required
+            >
+
+            <input
+                type="password"
+                id="loginPassword"
+                placeholder="Password"
+                required
+            >
+
+            <button type="submit" class="account-login-btn">
+                Log in
+            </button>
+
+        </form>
+
+        <p class="switchAccountText">
+            Don't have an account?
+            <button type="button" id="goToRegister">
+                Create one
+            </button>
+        </p>
+
+    </div>
+
+
+    <!-- REGISTER SCREEN -->
+
+    <div id="registerScreen" class="account-screen">
+
+        <button class="backAccountButton" onclick="showAccountWelcome()">
+            ← Back
+        </button>
+
+        <h2>Create your account</h2>
+
+        <p>Join Avspot and start contributing.</p>
+
+        <form id="registerForm">
+
+            <input
+                type="text"
+                id="registerUsername"
+                placeholder="Username"
+                required
+            >
+
+            <input
+                type="email"
+                id="registerEmail"
+                placeholder="Email address"
+                required
+            >
+
+            <input
+                type="password"
+                id="registerPassword"
+                placeholder="Password"
+                required
+            >
+
+            <input
+                type="password"
+                id="registerPasswordConfirm"
+                placeholder="Confirm password"
+                required
+            >
+
+            <button type="submit" class="account-login-btn">
+                Create account
+            </button>
+
+        </form>
+
+        <p class="switchAccountText">
+            Already have an account?
+            <button type="button" id="goToLogin">
+                Log in
+            </button>
+        </p>
+
+    </div>
+
+    <div id="loggedInScreen" class="account-screen">
+
+    <button class="backAccountButton" onclick="showAccountWelcome()">
+        ← Back
+    </button>
+
+    <div class="account-popup-icon">
+        <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+        >
+            <path d="M20 21a8 8 0 0 0-16 0"></path>
+            <circle cx="12" cy="7" r="4"></circle>
+        </svg>
+    </div>
+
+    <h2 id="loggedInUsername">Your Account</h2>
+
+    <p id="loggedInEmail"></p>
+
+    <button id="logoutButton" class="account-register-btn">
+        Log out
+    </button>
+
+</div>
+
 </div>
 
 <button id="sidebarToggle" onclick="toggleSidebar()">
@@ -112,7 +304,17 @@ oninput="changeSunTime()"
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/suncalc/1.9.0/suncalc.min.js"></script>
 
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
 <script>
+
+const SUPABASE_URL = "https://tfshpcjfcibynsbdxztn.supabase.co";
+const SUPABASE_KEY = "sb_publishable_97SyMugx0LKqTgE7RjI8lw_UPHD7Wfl";
+
+const supabaseClient = window.supabase.createClient(
+    SUPABASE_URL,
+    SUPABASE_KEY
+);
 
 var map = L.map('map').setView([54.530183, -2.876855],6);
 
@@ -161,6 +363,8 @@ var airport = null;
 var marker;
 
 var userMarker = null;
+
+var favouriteAirport = null;
 
 var userLocationIcon = L.divIcon({
 
@@ -341,6 +545,13 @@ ${airport.location}
 
 </p>
 
+<button
+    id="favouriteAirportButton"
+    class="favourite-airport-button"
+>
+    ⭐ Set as favourite airport
+</button>
+
 <div class="photoContainer airport-image">
 
 <img 
@@ -498,6 +709,19 @@ ${getWeatherAdvice()}
 `;
 
 updateCurrentTime();
+
+
+const favouriteButton =
+    document.getElementById("favouriteAirportButton");
+
+if (favouriteButton) {
+
+    favouriteButton.addEventListener(
+        "click",
+        saveFavouriteAirport
+    );
+
+}
 
 }
 
@@ -1026,6 +1250,8 @@ async function loadAirport(icao){
         );
 
         var data = await response.json();
+
+        data.icao = icao;
 
         airport = data;
 
@@ -2189,8 +2415,6 @@ ${longitude.toFixed(4)}
 
 }
 
-var flightTimer;
-
 function getWeatherAdvice(){
 
     var now = new Date();
@@ -2637,7 +2861,508 @@ function selectAirport(icao){
 
 }
 
+const accountButton = document.getElementById("accountButton");
+const accountPopup = document.getElementById("accountPopup");
+const closeAccountPopup = document.getElementById("closeAccountPopup");
+
+const accountWelcome = document.getElementById("accountWelcome");
+const loginScreen = document.getElementById("loginScreen");
+const registerScreen = document.getElementById("registerScreen");
+const loggedInScreen = document.getElementById("loggedInScreen");
+
+const loginButton = document.getElementById("loginButton");
+const registerButton = document.getElementById("registerButton");
+
+const goToRegister = document.getElementById("goToRegister");
+const goToLogin = document.getElementById("goToLogin");
+const registerForm = document.getElementById("registerForm");
+const loginForm = document.getElementById("loginForm");
+
+registerForm.addEventListener("submit", async function (e) {
+
+    e.preventDefault();
+
+    const username = document.getElementById("registerUsername").value.trim();
+    const email = document.getElementById("registerEmail").value.trim();
+    const password = document.getElementById("registerPassword").value;
+    const confirmPassword = document.getElementById("registerPasswordConfirm").value;
+
+    if (password !== confirmPassword) {
+        alert("Your passwords do not match.");
+        return;
+    }
+
+    if (username.length < 3) {
+        alert("Your username must be at least 3 characters long.");
+        return;
+    }
+
+    const submitButton = registerForm.querySelector("button[type='submit']");
+
+    submitButton.disabled = true;
+    submitButton.textContent = "Creating account...";
+
+    try {
+        const { data, error } = await supabaseClient.auth.signUp({
+    email: email,
+    password: password,
+
+    options: {
+        data: {
+            username: username
+        }
+    }
+});
+
+        if (error) {
+            throw error;
+        }
+
+console.log("SIGNUP USER:", data.user);
+console.log("SIGNUP SESSION:", data.session);
+
+        if (!data.user) {
+            throw new Error("Account could not be created.");
+        }
+
+        alert("Your Avspot account has been created!");
+
+        registerForm.reset();
+
+        showLogin();
+
+    } catch (error) {
+
+        console.error("Registration error:", error);
+
+        alert(error.message);
+
+    } finally {
+
+        submitButton.disabled = false;
+        submitButton.textContent = "Create account";
+
+    }
+
+});
+
+
+
+async function checkAuthState() {
+
+    const {
+        data: { session },
+        error
+    } = await supabaseClient.auth.getSession();
+
+
+    if (error) {
+
+        console.error(
+            "Auth state error:",
+            error
+        );
+
+        return;
+
+    }
+
+
+    if (!session) {
+
+        console.log(
+            "No user logged in."
+        );
+
+        return;
+
+    }
+
+
+    console.log(
+        "User is logged in:",
+        session.user
+    );
+
+
+    showLoggedInAccount(
+        session.user
+    );
+
+
+    const {
+        data: profile,
+        error: profileError
+    } = await supabaseClient
+
+        .from("profiles")
+
+        .select("favourite_airport")
+
+        .eq(
+            "id",
+            session.user.id
+        )
+
+        .maybeSingle();
+
+
+    if (profileError) {
+
+        console.error(
+            "Favourite airport loading error:",
+            profileError
+        );
+
+        return;
+
+    }
+
+
+    if (
+    profile &&
+    profile.favourite_airport
+) {
+
+    console.log(
+        "Loading favourite airport:",
+        profile.favourite_airport
+    );
+
+    favouriteAirport = profile.favourite_airport;
+
+    loadAirport(
+        profile.favourite_airport
+    );
+
+    setTimeout(() => {
+
+        const favouriteButton =
+            document.getElementById(
+                "favouriteAirportButton"
+            );
+
+        if (favouriteButton) {
+
+            favouriteButton.textContent =
+                "⭐ Favourite airport";
+
+        }
+
+    }, 100);
+
+}
+
+}
+
+checkAuthState();
+
+async function saveFavouriteAirport() {
+
+    if (!airport) {
+
+        alert("Please select an airport first.");
+        return;
+
+    }
+
+
+    const {
+        data: { session }
+    } = await supabaseClient.auth.getSession();
+
+
+    if (!session) {
+
+        alert("Please log in to set a favourite airport.");
+        return;
+
+    }
+
+
+    const favouriteButton =
+        document.getElementById(
+            "favouriteAirportButton"
+        );
+
+
+    if (favouriteButton) {
+
+        favouriteButton.disabled = true;
+
+        favouriteButton.textContent =
+            "Saving...";
+
+    }
+
+
+    console.log(
+        "Saving favourite:",
+        airport.icao
+    );
+
+    console.log(
+        "User ID:",
+        session.user.id
+    );
+
+
+    const { data, error } = await supabaseClient
+
+        .from("profiles")
+
+        .update({
+
+            favourite_airport: airport.icao
+
+        })
+
+        .eq(
+            "id",
+            session.user.id
+        )
+
+        .select();
+
+        console.log("CURRENT USER ID:", session.user.id);
+
+
+    console.log(
+        "Favourite update result:",
+        data
+    );
+
+    console.log(
+        "Favourite update error:",
+        error
+    );
+
+
+    if (error) {
+
+        console.error(
+            "Favourite airport error:",
+            error
+        );
+
+        alert(error.message);
+
+        if (favouriteButton) {
+
+            favouriteButton.disabled = false;
+
+            favouriteButton.textContent =
+                "☆ Set as favourite airport";
+
+        }
+
+        return;
+
+    }
+
+
+    if (!data || data.length === 0) {
+
+        console.error(
+            "No profile row was updated."
+        );
+
+        alert(
+            "Your profile could not be updated."
+        );
+
+        if (favouriteButton) {
+
+            favouriteButton.disabled = false;
+
+            favouriteButton.textContent =
+                "☆ Set as favourite airport";
+
+        }
+
+        return;
+
+    }
+
+
+    favouriteAirport = airport.icao;
+
+
+    if (favouriteButton) {
+
+        favouriteButton.disabled = false;
+
+        favouriteButton.textContent =
+            "⭐ Favourite airport";
+
+    }
+
+
+    alert(
+        airport.name +
+        " is now your favourite airport!"
+    );
+
+}
+
+loginForm.addEventListener("submit", async function (e) {
+
+    e.preventDefault();
+
+    const email = document.getElementById("loginEmail").value.trim();
+    const password = document.getElementById("loginPassword").value;
+
+    const submitButton = loginForm.querySelector("button[type='submit']");
+
+    submitButton.disabled = true;
+    submitButton.textContent = "Logging in...";
+
+    try {
+
+        const { data, error } =
+            await supabaseClient.auth.signInWithPassword({
+                email: email,
+                password: password
+            });
+
+        if (error) {
+            throw error;
+        }
+
+        console.log("Logged in:", data.user);
+
+        loginForm.reset();
+
+        showLoggedInAccount(data.user);
+
+    } catch (error) {
+
+        console.error("Login error:", error);
+
+        alert(error.message);
+
+    } finally {
+
+        submitButton.disabled = false;
+        submitButton.textContent = "Log in";
+
+    }
+
+});
+
+
+function showAccountWelcome() {
+
+    accountWelcome.style.display = "block";
+
+    loginScreen.classList.remove("active");
+    registerScreen.classList.remove("active");
+    loggedInScreen.classList.remove("active");
+
+}
+
+
+function showLogin() {
+
+    accountWelcome.style.display = "none";
+
+    loginScreen.classList.add("active");
+    registerScreen.classList.remove("active");
+
+}
+
+
+function showRegister() {
+
+    accountWelcome.style.display = "none";
+
+    loginScreen.classList.remove("active");
+    registerScreen.classList.add("active");
+
+}
+
+function showLoggedInAccount(user) {
+
+    accountWelcome.style.display = "none";
+    loginScreen.classList.remove("active");
+    registerScreen.classList.remove("active");
+
+    loggedInScreen.classList.add("active");
+
+    document.getElementById("loggedInEmail").textContent =
+        user.email || "";
+
+    document.getElementById("loggedInUsername").textContent =
+        "Your Account";
+
+}
+
+accountButton.addEventListener("click", async function () {
+
+    accountPopup.classList.toggle("open");
+
+    if (!accountPopup.classList.contains("open")) {
+        return;
+    }
+
+    const { data: { session } } =
+        await supabaseClient.auth.getSession();
+
+    if (session) {
+
+        showLoggedInAccount(session.user);
+
+    } else {
+
+        showAccountWelcome();
+
+    }
+
+});
+
+
+closeAccountPopup.addEventListener("click", function () {
+
+    accountPopup.classList.remove("open");
+
+});
+
+
+loginButton.addEventListener("click", showLogin);
+
+registerButton.addEventListener("click", showRegister);
+
+goToRegister.addEventListener("click", showRegister);
+
+goToLogin.addEventListener("click", showLogin);
+
+document.getElementById("logoutButton").addEventListener(
+    "click",
+    async function () {
+
+        const { error } =
+            await supabaseClient.auth.signOut();
+
+        if (error) {
+
+            console.error("Logout error:", error);
+            alert(error.message);
+            return;
+
+        }
+
+        location.reload();
+
+    }
+);
+
 </script>
+
+</div>
+
+</div>
+
+<footer class="site-footer">
 
 <footer class="site-footer">
 

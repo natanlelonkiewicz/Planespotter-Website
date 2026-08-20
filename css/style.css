@@ -1031,7 +1031,7 @@ body {
     /* =========================
    FINAL AVSPOT FOOTER FIX
    ========================= */
-
+}
 .site-footer {
     color: #777 !important;
 }
@@ -1072,5 +1072,315 @@ body {
     }
 
 }
+
+#accountButton {
+    position: absolute;
+
+    top: 15px;
+    right: 15px;
+
+    width: 45px;
+    height: 45px;
+
+    background: #252525;
+    border: 2px solid #f5c542;
+    border-radius: 10px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 0;
+    cursor: pointer;
+
+    z-index: 2000;
+
+    transition:
+        background 0.2s ease,
+        transform 0.15s ease;
+}
+
+#accountButton svg {
+    width: 24px;
+    height: 24px;
+    stroke: #9a9a9a;
+}
+
+#accountButton:hover {
+    background: #303030;
+}
+
+#accountButton:active {
+    transform: scale(0.95);
+}
+
+@media (max-width: 768px) {
+    #accountButton {
+        top: 15px;
+        right: 15px;
+    }
+}
+
+#accountPopup {
+    display: none;
+
+    position: absolute;
+
+    top: 70px;
+    right: 15px;
+
+    width: 320px;
+
+    background: #252525;
+    color: white;
+
+    border: 1px solid #555;
+    border-radius: 14px;
+
+    padding: 25px;
+
+    box-sizing: border-box;
+
+    z-index: 3000;
+
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.45);
+
+    text-align: center;
+}
+
+#accountPopup.open {
+    display: block;
+}
+
+#closeAccountPopup {
+    position: absolute;
+
+    top: 8px;
+    right: 12px;
+
+    background: transparent;
+    border: none;
+
+    color: #999;
+
+    font-size: 26px;
+
+    cursor: pointer;
+}
+
+#closeAccountPopup:hover {
+    color: white;
+}
+
+.account-popup-icon {
+    width: 60px;
+    height: 60px;
+
+    margin: 0 auto 15px;
+
+    background: #181818;
+
+    border-radius: 50%;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.account-popup-icon svg {
+    width: 32px;
+    height: 32px;
+
+    stroke: #aaa;
+}
+
+#accountPopup h2 {
+    margin: 0 0 10px;
+
+    color: #f5c542;
+
+    font-size: 22px;
+}
+
+#accountPopup p {
+    color: #aaa;
+
+    line-height: 1.5;
+
+    font-size: 14px;
+
+    margin-bottom: 22px;
+}
+
+.account-login-btn,
+.account-register-btn {
+    width: 100%;
+
+    padding: 11px;
+
+    border-radius: 8px;
+
+    font-size: 15px;
+
+    font-weight: bold;
+
+    cursor: pointer;
+
+    margin-top: 8px;
+}
+
+.account-login-btn {
+    background: #f5c542;
+    color: #111;
+
+    border: none;
+}
+
+.account-login-btn:hover {
+    background: #ffd95e;
+}
+
+.account-register-btn {
+    background: transparent;
+    color: #f5c542;
+
+    border: 1px solid #f5c542;
+}
+
+.account-register-btn:hover {
+    background: #f5c542;
+    color: #111;
+}
+
+.account-screen {
+    display: none;
+}
+
+.account-screen.active {
+    display: block;
+}
+
+.backAccountButton {
+    background: transparent;
+    border: none;
+
+    color: #aaa;
+
+    cursor: pointer;
+
+    font-size: 14px;
+
+    padding: 0;
+
+    margin-bottom: 20px;
+
+    float: left;
+}
+
+.backAccountButton:hover {
+    color: #f5c542;
+}
+
+#loginForm,
+#registerForm {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+
+    clear: both;
+}
+
+#loginForm input,
+#registerForm input {
+    width: 100%;
+
+    box-sizing: border-box;
+
+    padding: 12px;
+
+    background: #181818;
+
+    color: white;
+
+    border: 1px solid #555;
+
+    border-radius: 8px;
+
+    outline: none;
+
+    font-size: 14px;
+}
+
+#loginForm input:focus,
+#registerForm input:focus {
+    border-color: #f5c542;
+}
+
+.switchAccountText {
+    margin-top: 20px !important;
+
+    font-size: 13px !important;
+}
+
+.switchAccountText button {
+    background: none;
+    border: none;
+
+    color: #f5c542;
+
+    cursor: pointer;
+
+    padding: 0;
+
+    font-size: inherit;
+}
+
+.switchAccountText button:hover {
+    text-decoration: underline;
+}
+
+.favourite-airport-button {
+
+    width: 100%;
+
+    padding: 10px 14px;
+
+    margin: 8px 0 12px 0;
+
+    background: transparent;
+
+    color: white;
+
+    border: 1.5px solid #f5c542;
+
+    border-radius: 20px;
+
+    font-size: 14px;
+
+    font-weight: 600;
+
+    cursor: pointer;
+
+    transition:
+        background 0.2s,
+        transform 0.2s;
+
+}
+
+.favourite-airport-button:hover {
+
+    background: rgba(245, 197, 66, 0.12);
+
+    transform: translateY(-1px);
+
+}
+
+.favourite-airport-button:disabled {
+
+    opacity: 0.6;
+
+    cursor: default;
+
+    transform: none;
 
 }
