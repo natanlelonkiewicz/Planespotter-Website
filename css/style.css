@@ -1390,6 +1390,12 @@ body {
     #toolbar{
         left:15px;
         right:70px;
+        width:auto;
+    }
+
+    #toolbar input{
+        width:calc(100% - 5px);
+        box-sizing:border-box;
     }
 
 }
