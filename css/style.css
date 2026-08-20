@@ -1426,6 +1426,10 @@ body {
     overflow: hidden !important;
 
     z-index: 5000 !important;
+
+    cursor: pointer;
+
+    transition: background 0.2s ease, transform 0.15s ease;
 }
 
 #accountButton svg {
@@ -1439,7 +1443,6 @@ body {
     max-height: 24px !important;
 
     flex: none !important;
-
     display: block !important;
 
     stroke: #9a9a9a !important;
@@ -1454,13 +1457,8 @@ body {
 }
 
 @media (max-width: 768px) {
-
     #accountButton {
         top: 15px !important;
         right: 15px !important;
-
-        width: 45px !important;
-        height: 45px !important;
     }
-
 }
