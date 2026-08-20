@@ -1385,35 +1385,22 @@ body {
 
 }
 
-@media (max-width:768px){
-
-    #toolbar{
-        left:15px;
-        right:70px;
-        width:auto;
-    }
-
-    #toolbar input{
-        width:calc(100% - 5px);
-        box-sizing:border-box;
-    }
-
-}
-
-@media screen and (max-width: 768px) {
+@media (max-width: 768px) {
 
     #toolbar {
-        position: absolute !important;
+        left: 10px !important;
+        right: 65px !important;
         top: 15px !important;
-        left: 15px !important;
-        right: 75px !important;
-        width: auto !important;
-        box-sizing: border-box !important;
+        padding: 7px !important;
     }
 
     #toolbar input {
-        width: calc(100% - 5px) !important;
-        box-sizing: border-box !important;
+        width: 130px !important;
+    }
+
+    #toolbar button {
+        padding: 7px !important;
+        margin-left: 2px !important;
     }
 
 }
