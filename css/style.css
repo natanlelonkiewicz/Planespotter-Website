@@ -1462,3 +1462,125 @@ body {
         right: 15px !important;
     }
 }
+
+/* =========================
+   AVSPOT DESKTOP LAYOUT FIX
+   ========================= */
+
+html,
+body {
+    width: 100%;
+    height: 100%;
+    margin: 0;
+}
+
+#container {
+    display: flex !important;
+    flex-direction: row !important;
+    width: 100% !important;
+    height: 100vh !important;
+    overflow: hidden !important;
+}
+
+#map {
+    position: relative !important;
+    flex: 1 1 auto !important;
+    width: auto !important;
+    height: 100vh !important;
+    min-width: 0 !important;
+}
+
+#sidebar {
+    flex: 0 0 350px !important;
+    width: 350px !important;
+    height: 100vh !important;
+    box-sizing: border-box !important;
+}
+
+/* Account button */
+
+#accountButton {
+    position: absolute !important;
+    top: 15px !important;
+    right: 15px !important;
+
+    width: 45px !important;
+    height: 45px !important;
+    min-width: 45px !important;
+    max-width: 45px !important;
+    min-height: 45px !important;
+    max-height: 45px !important;
+
+    padding: 0 !important;
+    margin: 0 !important;
+
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+
+    box-sizing: border-box !important;
+    overflow: hidden !important;
+
+    background: #252525 !important;
+    border: 2px solid #f5c542 !important;
+    border-radius: 10px !important;
+
+    z-index: 5000 !important;
+}
+
+#accountButton svg {
+    display: block !important;
+
+    width: 24px !important;
+    height: 24px !important;
+
+    min-width: 24px !important;
+    min-height: 24px !important;
+    max-width: 24px !important;
+    max-height: 24px !important;
+
+    flex: 0 0 24px !important;
+
+    margin: 0 !important;
+    padding: 0 !important;
+
+    stroke: #9a9a9a !important;
+}
+
+/* Desktop only */
+@media screen and (min-width: 769px) {
+
+    #container {
+        flex-direction: row !important;
+    }
+
+    #map {
+        flex: 1 1 auto !important;
+        width: auto !important;
+        height: 100vh !important;
+        min-width: 0 !important;
+    }
+
+    #sidebar {
+        flex: 0 0 350px !important;
+        width: 350px !important;
+        height: 100vh !important;
+    }
+
+}
+
+/* Keep existing mobile layout untouched */
+@media screen and (max-width: 768px) {
+
+    #container {
+        display: flex !important;
+        width: 100% !important;
+        height: 100vh !important;
+    }
+
+    #map {
+        width: 100% !important;
+        height: 100vh !important;
+    }
+
+}
