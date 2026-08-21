@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Add an Airport | Avspot</title>
+
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+
+<div class="add-airport-page">
+
+    <h1>Add an Airport</h1>
+
+    <p class="add-airport-intro">
+        Help grow Avspot by submitting an airport and its spotting locations.
+        Your submission will be reviewed before being added.
+    </p>
+
+
+    <form id="airportSubmissionForm">
+
+
+        <section class="submission-section">
+
+            <h2>Airport Information</h2>
+
+            <label for="airportName">Airport Name</label>
+            <input
+                type="text"
+                id="airportName"
+                placeholder="e.g. Manchester Airport"
+                required
+            >
+
+            <label for="airportICAO">ICAO Code</label>
+            <input
+                type="text"
+                id="airportICAO"
+                placeholder="e.g. EGCC"
+                maxlength="4"
+                required
+            >
+
+            <label for="airportLocation">Location</label>
+            <input
+                type="text"
+                id="airportLocation"
+                placeholder="e.g. Manchester, England"
+                required
+            >
+
+            <div class="coordinate-row">
+
+                <div>
+                    <label for="airportLat">Latitude</label>
+                    <input
+                        type="number"
+                        id="airportLat"
+                        step="any"
+                        placeholder="53.355633"
+                        required
+                    >
+                </div>
+
+                <div>
+                    <label for="airportLng">Longitude</label>
+                    <input
+                        type="number"
+                        id="airportLng"
+                        step="any"
+                        placeholder="-2.271681"
+                        required
+                    >
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <section class="submission-section">
+
+            <h2>Airport Photo</h2>
+
+            <label for="airportImage">
+                Upload Airport Photo
+            </label>
+
+            <input
+                type="file"
+                id="airportImage"
+                accept="image/*"
+            >
+
+            <p class="upload-help">
+                Images larger than 1400px will automatically be resized.
+            </p>
+
+            <label for="airportPhotoCredit">
+                Photo Credit
+            </label>
+
+            <input
+                type="text"
+                id="airportPhotoCredit"
+                placeholder="Photographer name"
+            >
+
+        </section>
+
+
+        <section class="submission-section">
+
+            <h2>Runways</h2>
+
+            <div id="runwaysContainer"></div>
+
+            <button
+                type="button"
+                class="add-item-button"
+                id="addRunwayButton"
+            >
+                + Add Runway
+            </button>
+
+        </section>
+
+
+
+        <section class="submission-section">
+
+            <h2>Spotting Locations</h2>
+
+            <div id="spotsContainer"></div>
+
+            <button
+                type="button"
+                class="add-item-button"
+                id="addSpotButton"
+            >
+                + Add Spotting Location
+            </button>
+
+        </section>
+
+
+        <button
+            type="submit"
+            class="submit-airport-button"
+        >
+            Submit Airport
+        </button>
+
+    </form>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="js/supabase.js"></script>
+<script src="js/add-airport.js"></script>
+
+</body>
+</html>

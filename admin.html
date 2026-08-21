@@ -1,0 +1,1059 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+>
+
+<title>Avspot Admin</title>
+
+<link
+    rel="stylesheet"
+    href="css/style.css"
+>
+
+<style>
+
+.admin-container{
+    max-width:1100px;
+    margin:40px auto;
+    padding:20px;
+}
+
+.admin-submission{
+    background:#1b1b1b;
+    border:1px solid #333;
+    border-radius:12px;
+    padding:20px;
+    margin-bottom:20px;
+}
+
+.admin-submission h3{
+    margin-top:0;
+}
+
+.admin-submission-buttons{
+    display:flex;
+    gap:10px;
+    flex-wrap:wrap;
+    margin-top:15px;
+}
+
+.admin-submission button{
+    padding:10px 16px;
+    border:none;
+    border-radius:7px;
+    cursor:pointer;
+    font-weight:bold;
+}
+
+.review-button{
+    background:#444;
+    color:white;
+}
+
+.approve-button{
+    background:#2e7d32;
+    color:white;
+}
+
+.reject-button{
+    background:#b71c1c;
+    color:white;
+}
+
+.submission-preview{
+    display:none;
+    margin-top:20px;
+    padding-top:20px;
+    border-top:1px solid #444;
+}
+
+.submission-preview.open{
+    display:block;
+}
+
+.preview-section{
+    margin-bottom:25px;
+}
+
+.preview-section h4{
+    margin-bottom:10px;
+    font-size:18px;
+}
+
+.preview-airport-image{
+    width:100%;
+    max-width:700px;
+    max-height:400px;
+    object-fit:cover;
+    border-radius:10px;
+    display:block;
+}
+
+.preview-credit{
+    font-size:13px;
+    opacity:0.7;
+    margin-top:5px;
+}
+
+.preview-card{
+    background:#111;
+    border:1px solid #333;
+    border-radius:10px;
+    padding:15px;
+    margin-bottom:15px;
+}
+
+.preview-spot-image{
+    width:100%;
+    max-width:500px;
+    max-height:300px;
+    object-fit:cover;
+    border-radius:8px;
+    display:block;
+    margin-top:10px;
+}
+
+.preview-list{
+    margin:5px 0;
+    padding-left:20px;
+}
+
+.no-image{
+    background:#292929;
+    padding:30px;
+    border-radius:8px;
+    opacity:0.7;
+}
+
+</style>
+
+</head>
+
+
+<body>
+
+<div class="admin-container">
+
+    <h1>Avspot Admin</h1>
+
+    <p id="adminStatus">
+        Checking admin access...
+    </p>
+
+
+    <div id="adminContent" style="display:none;">
+
+        <h2>Airport Submissions</h2>
+
+        <div id="submissionList">
+            Loading submissions...
+        </div>
+
+    </div>
+
+</div>
+
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<script src="js/supabase.js"></script>
+
+
+<script>
+
+
+const ADMIN_USER_ID = "5fc5f32a-7c05-4090-8a64-c1981b6dcd56";
+
+
+
+async function checkAdmin(){
+
+    const {
+        data: { session },
+        error
+    } = await supabaseClient.auth.getSession();
+
+
+    if(error){
+
+        console.error(error);
+
+        document.getElementById("adminStatus").textContent =
+            "Unable to check account.";
+
+        return;
+
+    }
+
+
+    if(!session){
+
+        document.getElementById("adminStatus").textContent =
+            "You must be logged in.";
+
+        return;
+
+    }
+
+
+    if(session.user.id !== ADMIN_USER_ID){
+
+        document.getElementById("adminStatus").textContent =
+            "Access denied.";
+
+        return;
+
+    }
+
+
+    document.getElementById("adminStatus").textContent =
+        "Admin access granted.";
+
+    document.getElementById("adminContent").style.display =
+        "block";
+
+
+    loadSubmissions();
+
+}
+
+
+
+
+async function loadSubmissions(){
+
+    const submissionList =
+        document.getElementById("submissionList");
+
+
+    const {
+        data,
+        error
+    } = await supabaseClient
+
+        .from("airport_submissions")
+
+        .select("*")
+
+        .eq("status", "pending")
+
+        .order(
+            "created_at",
+            {
+                ascending:false
+            }
+        );
+
+
+    if(error){
+
+        console.error(
+            "Submission loading error:",
+            error
+        );
+
+        submissionList.innerHTML =
+            "<p>Unable to load submissions.</p>";
+
+        return;
+
+    }
+
+
+    if(!data || data.length === 0){
+
+        submissionList.innerHTML =
+            "<p>No pending submissions.</p>";
+
+        return;
+
+    }
+
+
+    submissionList.innerHTML =
+        data.map(function(submission){
+
+            return `
+
+            <div class="admin-submission">
+
+                <h3>
+                    ${escapeHtml(submission.airport_name)}
+                </h3>
+
+                <p>
+                    <b>ICAO:</b>
+                    ${escapeHtml(submission.icao || "")}
+                </p>
+
+                <p>
+                    <b>Location:</b>
+                    ${escapeHtml(submission.location || "")}
+                </p>
+
+                <p>
+                    <b>Submitted:</b>
+                    ${new Date(
+                        submission.created_at
+                    ).toLocaleString()}
+                </p>
+
+
+                <div class="admin-submission-buttons">
+
+                    <button
+                        class="review-button"
+                        onclick="togglePreview('${submission.id}')"
+                    >
+                        👁 Review submission
+                    </button>
+
+
+                    <button
+                        class="approve-button"
+                        onclick="approveSubmission('${submission.id}')"
+                    >
+                        ✅ Approve
+                    </button>
+
+
+                    <button
+                        class="reject-button"
+                        onclick="rejectSubmission('${submission.id}')"
+                    >
+                        ❌ Reject
+                    </button>
+
+                </div>
+
+
+                <div
+                    id="preview-${submission.id}"
+                    class="submission-preview"
+                >
+
+                    ${buildSubmissionPreview(submission)}
+
+                </div>
+
+            </div>
+
+            `;
+
+        }).join("");
+
+}
+
+
+
+
+function togglePreview(id){
+
+    const preview =
+        document.getElementById(
+            "preview-" + id
+        );
+
+
+    if(!preview){
+        return;
+    }
+
+
+    preview.classList.toggle("open");
+
+
+    const button =
+        preview.parentElement.querySelector(
+            ".review-button"
+        );
+
+
+    if(preview.classList.contains("open")){
+
+        button.textContent =
+            "✖ Close review";
+
+    }
+    else{
+
+        button.textContent =
+            "👁 Review submission";
+
+    }
+
+}
+
+
+
+
+function buildSubmissionPreview(submission){
+
+    let html = "";
+
+
+
+    html += `
+
+    <div class="preview-section">
+
+        <h4>✈ Airport Information</h4>
+
+        <p>
+            <b>Name:</b>
+            ${escapeHtml(submission.airport_name || "—")}
+        </p>
+
+        <p>
+            <b>ICAO:</b>
+            ${escapeHtml(submission.icao || "—")}
+        </p>
+
+        <p>
+            <b>Location:</b>
+            ${escapeHtml(submission.location || "—")}
+        </p>
+
+        <p>
+            <b>Latitude:</b>
+            ${escapeHtml(String(submission.airport_lat ?? "—"))}
+        </p>
+
+        <p>
+            <b>Longitude:</b>
+            ${escapeHtml(String(submission.airport_lng ?? "—"))}
+        </p>
+
+    </div>
+
+    `;
+
+
+
+    html += `
+
+    <div class="preview-section">
+
+        <h4>🖼 Airport Photo</h4>
+
+        ${
+            submission.airport_img
+            ?
+
+            `
+            <img
+                class="preview-airport-image"
+                src="${escapeAttribute(submission.airport_img)}"
+                alt="Airport photo"
+            >
+
+            <div class="preview-credit">
+
+                ${
+                    escapeHtml(
+                        submission.airport_credits || ""
+                    )
+                }
+
+            </div>
+            `
+
+            :
+
+            `
+            <div class="no-image">
+                No airport image submitted.
+            </div>
+            `
+        }
+
+    </div>
+
+    `;
+
+
+    html += `
+
+    <div class="preview-section">
+
+        <h4>🛫 Runways</h4>
+
+        ${buildRunwaysPreview(submission.runways)}
+
+    </div>
+
+    `;
+
+
+
+    html += `
+
+    <div class="preview-section">
+
+        <h4>📍 Spotting Locations</h4>
+
+        ${buildSpotsPreview(submission.spots)}
+
+    </div>
+
+    `;
+
+
+    html += `
+
+    <div class="admin-submission-buttons">
+
+        <button
+            class="approve-button"
+            onclick="approveSubmission('${submission.id}')"
+        >
+            ✅ Approve Airport
+        </button>
+
+        <button
+            class="reject-button"
+            onclick="rejectSubmission('${submission.id}')"
+        >
+            ❌ Reject Airport
+        </button>
+
+    </div>
+
+    `;
+
+
+    return html;
+
+}
+
+
+
+
+function buildRunwaysPreview(runways){
+
+    if(!runways){
+
+        return `
+        <div class="no-image">
+            No runway information submitted.
+        </div>
+        `;
+
+    }
+
+
+    let data = runways;
+
+
+    if(typeof data === "string"){
+
+        try{
+
+            data = JSON.parse(data);
+
+        }
+
+        catch(error){
+
+            return `
+            <pre>${escapeHtml(data)}</pre>
+            `;
+
+        }
+
+    }
+
+
+    if(!Array.isArray(data)){
+
+        return `
+        <pre>${escapeHtml(
+            JSON.stringify(data,null,2)
+        )}</pre>
+        `;
+
+    }
+
+
+    if(data.length === 0){
+
+        return `
+        <div class="no-image">
+            No runways submitted.
+        </div>
+        `;
+
+    }
+
+
+    return data.map(function(runway,index){
+
+        return `
+
+        <div class="preview-card">
+
+            <b>
+                Runway ${index + 1}
+            </b>
+
+            <p>
+                ${
+                    runway.name
+                    ?
+                    "<b>Name:</b> " +
+                    escapeHtml(runway.name)
+                    :
+                    ""
+                }
+            </p>
+
+            <p>
+                ${
+                    runway.heading1 !== undefined
+                    ?
+                    "<b>Heading 1:</b> " +
+                    escapeHtml(String(runway.heading1)) +
+                    "°"
+                    :
+                    ""
+                }
+            </p>
+
+            <p>
+                ${
+                    runway.heading2 !== undefined
+                    ?
+                    "<b>Heading 2:</b> " +
+                    escapeHtml(String(runway.heading2)) +
+                    "°"
+                    :
+                    ""
+                }
+            </p>
+
+        </div>
+
+        `;
+
+    }).join("");
+
+}
+
+
+
+
+function buildSpotsPreview(spots){
+
+    if(!spots){
+
+        return `
+        <div class="no-image">
+            No spotting locations submitted.
+        </div>
+        `;
+
+    }
+
+
+    let data = spots;
+
+
+    if(typeof data === "string"){
+
+        try{
+
+            data = JSON.parse(data);
+
+        }
+
+        catch(error){
+
+            return `
+            <pre>${escapeHtml(data)}</pre>
+            `;
+
+        }
+
+    }
+
+
+    if(!Array.isArray(data)){
+
+        return `
+        <pre>${escapeHtml(
+            JSON.stringify(data,null,2)
+        )}</pre>
+        `;
+
+    }
+
+
+    if(data.length === 0){
+
+        return `
+        <div class="no-image">
+            No spotting locations submitted.
+        </div>
+        `;
+
+    }
+
+
+    return data.map(function(spot,index){
+
+        let photos = spot.photos || [];
+
+
+        if(!Array.isArray(photos)){
+
+            photos = [photos];
+
+        }
+
+
+        return `
+
+        <div class="preview-card">
+
+            <h4>
+                📍 ${escapeHtml(
+                    spot.name ||
+                    "Spot " + (index + 1)
+                )}
+            </h4>
+
+
+            <p>
+                <b>Latitude:</b>
+                ${escapeHtml(
+                    String(spot.lat ?? "—")
+                )}
+            </p>
+
+
+            <p>
+                <b>Longitude:</b>
+                ${escapeHtml(
+                    String(spot.lng ?? "—")
+                )}
+            </p>
+
+
+            <p>
+                <b>Direction:</b>
+                ${escapeHtml(
+                    String(spot.direction ?? "—")
+                )}°
+            </p>
+
+
+            <p>
+                <b>Best for runway:</b>
+                ${escapeHtml(
+                    String(
+                        spot.bestForRunway ??
+                        "—"
+                    )
+                )}
+            </p>
+
+
+            <p>
+                <b>Recommended focal length:</b>
+                ${escapeHtml(
+                    spot.recommendedFocalLength ??
+                    "—"
+                )}
+            </p>
+
+
+            <p>
+                <b>Parking:</b>
+                ${escapeHtml(
+                    spot.parking ??
+                    "—"
+                )}
+            </p>
+
+
+            <p>
+                <b>Best time to visit:</b>
+                ${escapeHtml(
+                    spot.bestTimeToVisit ??
+                    "—"
+                )}
+            </p>
+
+
+            ${
+                Array.isArray(spot.notes)
+
+                ?
+
+                `
+                <p>
+                    <b>Notes:</b>
+                </p>
+
+                <ul class="preview-list">
+
+                    ${
+                        spot.notes.map(function(note){
+
+                            return `
+                            <li>
+                                ${escapeHtml(note)}
+                            </li>
+                            `;
+
+                        }).join("")
+                    }
+
+                </ul>
+                `
+
+                :
+
+                `
+                <p>
+                    <b>Notes:</b>
+                    ${escapeHtml(
+                        spot.notes || "—"
+                    )}
+                </p>
+                `
+            }
+
+
+            <h4>📸 Spot Photos</h4>
+
+
+            ${
+                photos.length > 0
+
+                ?
+
+                photos.map(function(photo,photoIndex){
+
+                    return `
+
+                    <div style="margin-bottom:15px;">
+
+                        <img
+                            class="preview-spot-image"
+                            src="${escapeAttribute(photo)}"
+                            alt="Spot photo"
+                        >
+
+                        ${
+                            spot.photoCredits &&
+                            spot.photoCredits[photoIndex]
+
+                            ?
+
+                            `
+                            <div class="preview-credit">
+
+                                Credit:
+                                ${escapeHtml(
+                                    spot.photoCredits[photoIndex]
+                                )}
+
+                            </div>
+                            `
+
+                            :
+
+                            ""
+                        }
+
+                    </div>
+
+                    `;
+
+                }).join("")
+
+                :
+
+                `
+                <div class="no-image">
+                    No photos submitted.
+                </div>
+                `
+            }
+
+        </div>
+
+        `;
+
+    }).join("");
+
+}
+
+
+
+
+function escapeHtml(value){
+
+    if(value === null || value === undefined){
+
+        return "";
+
+    }
+
+
+    return String(value)
+
+        .replace(/&/g,"&amp;")
+
+        .replace(/</g,"&lt;")
+
+        .replace(/>/g,"&gt;")
+
+        .replace(/"/g,"&quot;")
+
+        .replace(/'/g,"&#039;");
+
+}
+
+
+
+
+function escapeAttribute(value){
+
+    return escapeHtml(value);
+
+}
+
+
+
+
+async function approveSubmission(id){
+
+    if(!confirm(
+        "Approve this airport submission?"
+    )){
+
+        return;
+
+    }
+
+
+    const {
+        error
+    } = await supabaseClient
+
+        .from("airport_submissions")
+
+        .update({
+
+            status:"approved"
+
+        })
+
+        .eq(
+            "id",
+            id
+        );
+
+
+    if(error){
+
+        console.error(
+            "Approval error:",
+            error
+        );
+
+        alert(
+            "Could not approve submission."
+        );
+
+        return;
+
+    }
+
+
+    alert(
+        "Airport approved."
+    );
+
+
+    loadSubmissions();
+
+}
+
+
+
+
+async function rejectSubmission(id){
+
+    if(!confirm(
+        "Reject this airport submission?"
+    )){
+
+        return;
+
+    }
+
+
+    const {
+        error
+    } = await supabaseClient
+
+        .from("airport_submissions")
+
+        .update({
+
+            status:"rejected"
+
+        })
+
+        .eq(
+            "id",
+            id
+        );
+
+
+    if(error){
+
+        console.error(
+            "Rejection error:",
+            error
+        );
+
+        alert(
+            "Could not reject submission."
+        );
+
+        return;
+
+    }
+
+
+    alert(
+        "Airport rejected."
+    );
+
+
+    loadSubmissions();
+
+}
+
+
+
+
+checkAdmin();
+
+
+</script>
+
+</body>
+
+</html>

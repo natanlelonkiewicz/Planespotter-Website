@@ -260,9 +260,13 @@ oninput="changeSunTime()"
 
     <p id="loggedInEmail"></p>
 
-    <button id="logoutButton" class="account-register-btn">
-        Log out
-    </button>
+<button id="addAirportButton" class="account-add-airport-btn">
+    ✈ Add Airport
+</button>
+
+<button id="logoutButton" class="account-register-btn">
+    Log out
+</button>
 
 </div>
 
@@ -313,7 +317,7 @@ oninput="changeSunTime()"
 const SUPABASE_URL = "https://tfshpcjfcibynsbdxztn.supabase.co";
 const SUPABASE_KEY = "sb_publishable_97SyMugx0LKqTgE7RjI8lw_UPHD7Wfl";
 
-const supabaseClient = window.supabase.createClient(
+window.supabaseClient = window.supabase.createClient(
     SUPABASE_URL,
     SUPABASE_KEY
 );
@@ -738,27 +742,124 @@ async function loadAirportList(){
 
     try{
 
+        // Load the normal Avspot airports
         var response = await fetch(
             "data/airports.json"
         );
 
+        var normalAirports = await response.json();
 
-        airports = await response.json();
+
+        // Load approved community airports
+        const {
+            data: submissions,
+            error
+        } = await supabaseClient
+
+            .from("airport_submissions")
+
+            .select("*")
+
+            .eq("status", "approved");
+
+
+        if(error){
+
+            console.error(
+                "Approved airport loading error:",
+                error
+            );
+
+            // Still show normal airports if Supabase fails
+            airports = normalAirports;
+
+            displayAirports();
+
+            return;
+
+        }
 
 
         console.log(
-            "Airports loaded:",
+            "Approved community airports:",
+            submissions
+        );
+
+
+        // Convert Supabase submissions into
+        // the same structure as airports.json
+
+        const communityAirports =
+            (submissions || []).map(function(submission){
+
+                return {
+
+                    name:
+                        submission.airport_name,
+
+                    icao:
+                        submission.icao,
+
+                    code:
+                        submission.icao,
+
+                    location:
+                        submission.location,
+
+                    lat:
+                        submission.airport_lat,
+
+                    lng:
+                        submission.airport_lng,
+
+                    image:
+                        submission.airport_image,
+
+                    airportCredits:
+                        submission.airport_credits
+                        ?
+                        [submission.airport_credits]
+                        :
+                        [],
+
+                    runways:
+                        submission.runways || [],
+
+                    spots:
+                        submission.spots || [],
+
+                    flightRadius:
+                        50,
+
+                    community:
+                        true
+
+                };
+
+            });
+
+
+        // Combine normal + approved airports
+
+        airports = [
+            ...normalAirports,
+            ...communityAirports
+        ];
+
+
+        console.log(
+            "All Avspot airports:",
             airports
         );
 
-        displayAirports();
 
+        displayAirports();
 
     }
 
     catch(error){
 
-        console.log(
+        console.error(
             "Airport loading error:",
             error
         );
@@ -1247,39 +1348,166 @@ async function loadAirport(icao){
 
     try{
 
-        var response = await fetch(
-            "data/airports/" + icao + ".json"
-        );
+        /*
+        Check whether this is an approved
+        community airport.
+        */
 
-        var data = await response.json();
+        const {
+            data: submission,
+            error: submissionError
+        } = await supabaseClient
 
-        data.icao = icao;
+            .from("airport_submissions")
 
-        airport = data;
+            .select("*")
+
+            .eq("icao", icao)
+
+            .eq("status", "approved")
+
+            .maybeSingle();
+
+
+        if(submissionError){
+
+            console.error(
+                "Community airport lookup error:",
+                submissionError
+            );
+
+        }
+
+
+        /*
+        COMMUNITY AIRPORT
+        */
+
+        if(submission){
+
+            airport = {
+
+                name:
+                    submission.airport_name,
+
+                icao:
+                    submission.icao,
+
+                code:
+                    submission.icao,
+
+                location:
+                    submission.location,
+
+                lat:
+                    submission.airport_lat,
+
+                lng:
+                    submission.airport_lng,
+
+                image:
+                    submission.airport_image,
+
+                airportCredits:
+                    submission.airport_credits
+                    ?
+                    [submission.airport_credits]
+                    :
+                    [],
+
+                runways:
+                    submission.runways || [],
+
+                spots:
+                    submission.spots || [],
+
+                flightRadius:
+                    50,
+
+                community:
+                    true
+
+            };
+
+
+            console.log(
+                "Loaded community airport:",
+                airport
+            );
+
+
+        }
+
+        /*
+        NORMAL AVSPOT AIRPORT
+        */
+
+        else{
+
+            var response = await fetch(
+                "data/airports/" + icao + ".json"
+            );
+
+
+            if(!response.ok){
+
+                throw new Error(
+                    "Airport JSON not found: " + icao
+                );
+
+            }
+
+
+            var data =
+                await response.json();
+
+
+            data.icao = icao;
+
+            airport = data;
+
+
+            console.log(
+                "Loaded normal airport:",
+                airport
+            );
+
+        }
+
 
         currentAirportPhotoIndex = 0;
 
-        console.log("Loaded airport:", airport);
+        spots = airport.spots || [];
 
-        spots = airport.spots;
 
-        showSpotMarkers(airport.spots);
+        showSpotMarkers(
+            spots
+        );
+
 
         map.flyTo(
+
             [
                 airport.lat,
                 airport.lng
             ],
+
             13
+
         );
+
 
         await updateWeather();
 
+
         updateSpotLighting();
+
 
         renderSidebar();
 
+
         liveSunTime();
+
 
         loadFlights();
 
@@ -1287,7 +1515,7 @@ async function loadAirport(icao){
 
     catch(error){
 
-        console.log(
+        console.error(
             "Airport load error:",
             error
         );
@@ -3354,6 +3582,19 @@ document.getElementById("logoutButton").addEventListener(
         }
 
         location.reload();
+
+    }
+);
+
+const addAirportButton =
+    document.getElementById("addAirportButton");
+
+addAirportButton.addEventListener(
+    "click",
+    function () {
+
+        window.location.href =
+            "add-airport.html";
 
     }
 );
