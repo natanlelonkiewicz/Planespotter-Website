@@ -1850,3 +1850,44 @@ body {
 .account-add-airport-btn:active {
     transform: scale(0.98);
 }
+
+/* ADD AIRPORT DESKTOP FIX */
+
+.add-airport-page {
+    display: block !important;
+    width: 100% !important;
+    max-width: 950px !important;
+    margin: 0 auto !important;
+    padding: 50px 25px 80px !important;
+    box-sizing: border-box !important;
+}
+
+.add-airport-page form {
+    display: block !important;
+    width: 100% !important;
+}
+
+.add-airport-page .submission-section {
+    display: block !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
+}
+
+.add-airport-page .add-item-button {
+    display: block !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
+}
+
+.add-airport-page .submit-airport-button {
+    display: block !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
+}
+
+.add-airport-page input,
+.add-airport-page textarea,
+.add-airport-page select {
+    box-sizing: border-box !important;
+    max-width: 100% !important;
+}
