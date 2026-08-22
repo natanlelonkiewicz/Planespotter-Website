@@ -223,6 +223,14 @@ function addSpot() {
 
             </p>
 
+            <label>Photo Credit</label>
+
+            <input
+            type="text"
+            class="spot-photo-credit"
+            placeholder="Photographer name"
+            >
+
         </div>
 
     `;
@@ -904,11 +912,11 @@ for (const card of spotCards) {
                 : ["None"],
 
 
-        photos:
-            photoUrls,
+        photos: photoUrls,
 
-
-        photoCredits: []
+        photoCredits: photoUrls.map(() =>
+            card.querySelector(".spot-photo-credit").value.trim()
+    )
 
     });
 
