@@ -1915,13 +1915,13 @@ body {
     color: #ff8c00 !important;
 }
 
-.add-airshow-button {
+.account-add-airport-btn.add-airshow-button {
     background: #2b2b2b !important;
     border: 2px solid #f5c542 !important;
     color: #ff8c00 !important;
 }
 
-.add-airshow-button:hover {
+.account-add-airport-btn.add-airshow-button:hover {
     background: #383838 !important;
     color: #ffa333 !important;
 }
