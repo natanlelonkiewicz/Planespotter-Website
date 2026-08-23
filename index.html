@@ -260,6 +260,14 @@ oninput="changeSunTime()"
 
     <p id="loggedInEmail"></p>
 
+<button
+    type="button"
+    class="account-add-airport-btn add-airshow-button"
+    onclick="window.location.href='add-airshow.html'"
+>
+    ➕ Submit an Airshow
+</button>
+
 <button id="addAirportButton" class="account-add-airport-btn">
     ✈ Add Airport
 </button>
@@ -366,11 +374,33 @@ var activeRunway = "";
 
 var airport = null;
 
+var currentAirshow = null;
+
 var marker;
 
 var userMarker = null;
 
 var favouriteAirport = null;
+
+var airshowIcon = L.icon({
+
+    iconUrl:
+        "https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-orange.png",
+
+    shadowUrl:
+        "https://unpkg.com/leaflet@1.9.4/dist/images/marker-shadow.png",
+
+    iconSize: [25, 41],
+
+    iconAnchor: [12, 41],
+
+    popupAnchor: [1, -34],
+
+    shadowSize: [41, 41],
+
+    className: "airshow-marker-icon"
+
+});
 
 var userLocationIcon = L.divIcon({
 
@@ -621,28 +651,47 @@ rankedSpots.length > 0 && rankedSpots[0].lighting
 <h3>📍 Best Spotting Locations</h3>
 
 
-${rankedSpots.map((spot,index)=>`
+${rankedSpots.map((spot,index)=>{
 
-<div 
-class="spot-card ${
-    spot.lighting
-    ?
-    spot.lighting.text === "Excellent"
-    ? "excellent"
-    :
-    spot.lighting.text === "Side lighting"
-    ? "side"
-    :
-    "backlit"
-    :
-    ""
-}"
+    var lightingClass = "";
+
+    if(spot.lighting){
+
+        if(
+            spot.lighting.text === "Excellent"
+        ){
+
+            lightingClass = "excellent";
+
+        }
+
+        else if(
+            spot.lighting.text === "Side lighting" ||
+            spot.lighting.text === "Diffused light" ||
+            spot.lighting.text === "Favourable light"
+        ){
+
+            lightingClass = "side";
+
+        }
+
+        else{
+
+            lightingClass = "backlit";
+
+        }
+
+    }
+
+    return `
+
+<div
+class="spot-card ${lightingClass}"
 onclick="showSpot(rankedSpots[${index}])">
 
 <h3 style="margin:0;">
 ${spot.name}
 </h3>
-
 
 <p style="margin:5px 0;">
 ${
@@ -656,13 +705,11 @@ spot.lighting.stars
 }
 </p>
 
-
-
-
 </div>
 
-`).join("")}
+`;
 
+}).join("")}
 
 <hr>
 
@@ -734,6 +781,12 @@ if (favouriteButton) {
 var airports = [];
 
 var airportMarkers = [];
+
+var airshows = [];
+
+var airshowMarkers = [];
+
+var airshowSpotMarkers = [];
 
 
 async function loadAirportList(){
@@ -868,8 +921,54 @@ async function loadAirportList(){
 
 }
 
+async function loadAirshows() {
+
+    try {
+
+        const {
+            data,
+            error
+        } = await supabaseClient
+            .from("airshow_submissions")
+            .select("*")
+            .eq("status", "approved");
+
+        if (error) {
+
+            console.error(
+                "Approved airshow loading error:",
+                error
+            );
+
+            return;
+
+        }
+
+        airshows = data || [];
+
+        console.log(
+            "Loaded approved airshows:",
+            airshows
+        );
+
+        displayAirshows();
+
+    }
+
+    catch (error) {
+
+        console.error(
+            "Airshow loading error:",
+            error
+        );
+
+    }
+
+}
 
 loadAirportList();
+
+loadAirshows();
 
 function showSpot(spot){
 
@@ -1344,14 +1443,571 @@ function displayAirports(){
 
 }
 
+function displayAirshows(){
+
+    airshowMarkers.forEach(function(marker){
+
+        map.removeLayer(marker);
+
+    });
+
+    airshowMarkers = [];
+
+
+    airshows.forEach(function(airshow){
+
+        var marker = L.marker(
+            [airshow.lat, airshow.lng],
+            {
+                icon: airshowIcon
+            }
+        );
+
+        marker.addTo(map);
+
+
+        marker.on("click", function(){
+
+            showAirshow(airshow);
+
+});
+
+
+        airshowMarkers.push(marker);
+
+    });
+
+}
+
+function displayAirshowSpots(airshow){
+
+
+    airshowSpotMarkers.forEach(function(marker){
+
+        map.removeLayer(marker);
+
+    });
+
+    airshowSpotMarkers = [];
+
+
+    if(!airshow.spots || !Array.isArray(airshow.spots)){
+        return;
+    }
+
+
+    var date = new Date();
+
+    var slider =
+        document.getElementById("sunTimeSlider");
+
+    if(slider){
+
+        date.setHours(
+            parseInt(slider.value)
+        );
+
+    }
+
+
+    airshow.spots.forEach(function(spot){
+
+        if(
+            typeof spot.lat !== "number" ||
+            typeof spot.lng !== "number"
+        ){
+            return;
+        }
+
+
+        var lighting = null;
+
+
+        if(typeof spot.direction === "number"){
+
+            var sunBearing =
+                getSunBearing(
+                    date,
+                    spot.lat,
+                    spot.lng
+                );
+
+
+            var sun =
+                SunCalc.getPosition(
+                    date,
+                    spot.lat,
+                    spot.lng
+                );
+
+
+            var sunAltitude =
+                sun.altitude * 180 / Math.PI;
+
+
+            lighting =
+                getLightingRating(
+                    sunBearing,
+                    spot.direction,
+                    sunAltitude,
+                    weather.cloudCover,
+                    weather.lowCloud,
+                    weather.midCloud,
+                    weather.highCloud
+                );
+
+        }
+
+
+        spot.lighting = lighting;
+
+
+
+        var markerClass = "red";
+
+
+        if(lighting){
+
+            if(lighting.text === "Excellent"){
+
+                markerClass = "green";
+
+            }
+
+            else if(
+    lighting.text === "Side lighting" ||
+    lighting.text === "Diffused light" ||
+    lighting.text === "Favourable light"
+){
+
+    markerClass = "yellow";
+
+}
+            else if(lighting.text === "Backlit"){
+
+                markerClass = "red";
+
+            }
+
+        }
+
+
+        var marker = L.marker(
+
+            [spot.lat, spot.lng],
+
+            {
+
+                icon: L.divIcon({
+
+                    className: "",
+
+                    html:
+                        `<div class="pin ${markerClass}">
+                            📸
+                        </div>`,
+
+                    iconSize: [32,32],
+
+                    iconAnchor: [16,16]
+
+                })
+
+            }
+
+        );
+
+
+        marker.addTo(map);
+
+
+        marker.on("click", function(){
+
+            showAirshowSpot(
+                spot,
+                airshow
+            );
+
+        });
+
+
+        airshowSpotMarkers.push(marker);
+
+    });
+
+}
+
+function showAirshow(airshow){
+
+    airport = null;
+
+
+    spotMarkers.forEach(function(marker){
+
+        map.removeLayer(marker);
+
+    });
+
+    spotMarkers = [];
+
+
+    openSidebar();
+
+    currentAirshow = airshow;
+
+    map.flyTo(
+    [
+        airshow.lat,
+        airshow.lng
+    ],
+    13
+);
+
+    displayAirshowSpots(airshow);
+
+
+    const spots = airshow.spots || [];
+
+
+    document.getElementById("sidebar").innerHTML = `
+
+        <h2>${airshow.name}</h2>
+
+        <p class="airport-details">
+            📍 ${airshow.location}
+        </p>
+
+        ${
+            airshow.image
+            ?
+            `
+            <div class="photoContainer">
+
+                <img
+                    src="${airshow.image}"
+                    alt="${airshow.name}"
+                >
+
+                ${
+                    airshow.photo_credit
+                    ?
+                    `
+                    <div id="photoCredit">
+                        ${airshow.photo_credit}
+                    </div>
+                    `
+                    :
+                    ""
+                }
+
+            </div>
+            `
+            :
+            ""
+        }
+
+        <hr>
+
+        <h3>📅 Dates</h3>
+
+        <p>
+            ${formatAirshowDate(airshow.start_date)}
+            ${
+                airshow.end_date
+                ? " - " + formatAirshowDate(airshow.end_date)
+                : ""
+            }
+        </p>
+
+        <hr>
+
+        <h3>About This Airshow</h3>
+
+        <p>
+            ${airshow.description || "No description available."}
+        </p>
+
+        <hr>
+
+        <h3>✈️ Confirmed Aircraft</h3>
+
+        <div id="confirmedAircraft">
+
+            ${
+                airshow.confirmed_aircraft &&
+                airshow.confirmed_aircraft.length
+
+                ?
+
+                airshow.confirmed_aircraft.map(function(aircraft){
+
+                    return `
+                        <div class="spot-card">
+                            ${aircraft}
+                        </div>
+                    `;
+
+                }).join("")
+
+                :
+
+                "<p>No aircraft confirmed yet.</p>"
+            }
+
+        </div>
+
+        <hr>
+
+        <h3>📸 Spotting Locations</h3>
+
+        <div id="airshowSpots">
+
+            ${
+                spots.length
+
+                ?
+
+                spots.map(function(spot, index){
+
+                    var lightingClass = "backlit";
+
+                    var lightingText =
+                        spot.lighting
+                        ? spot.lighting.text
+                        : "";
+
+                    if(lightingText === "Excellent"){
+
+                        lightingClass = "excellent";
+
+                    }
+
+                    else if(
+                        lightingText === "Side lighting" ||
+                        lightingText === "Diffused light" ||
+                        lightingText === "Favourable light"
+                    ){
+
+                        lightingClass = "side";
+
+                    }
+
+
+                    return `
+
+                        <div
+                            class="spot-card airshow-spot-card ${lightingClass}"
+                            id="airshowSpot${index}"
+                            onclick="showAirshowSpot(
+                                currentAirshow.spots[${index}],
+                                currentAirshow
+                            )"
+                            style="cursor:pointer;"
+                        >
+
+                            <h3>
+                                ${spot.name}
+                            </h3>
+
+                            <p>
+
+                                <b>Lighting:</b>
+
+                                <span class="airshow-spot-lighting">
+
+                                    ${
+                                        spot.lighting
+                                        ?
+                                        spot.lighting.stars +
+                                        " " +
+                                        spot.lighting.text
+                                        :
+                                        "Lighting direction not set"
+                                    }
+
+                                </span>
+
+                            </p>
+
+                            ${
+                                spot.description
+                                ?
+                                `<p>${spot.description}</p>`
+                                :
+                                ""
+                            }
+
+                            ${
+                                spot.bestForRunway
+                                ?
+                                `<p><b>Best For:</b> ${spot.bestForRunway}</p>`
+                                :
+                                ""
+                            }
+
+                            ${
+                                spot.recommendedFocalLength
+                                ?
+                                `<p><b>Focal Length:</b> ${spot.recommendedFocalLength}</p>`
+                                :
+                                ""
+                            }
+
+                            ${
+                                spot.parking
+                                ?
+                                `<p><b>Parking:</b> ${spot.parking}</p>`
+                                :
+                                ""
+                            }
+
+                            ${
+                                spot.bestTimeToVisit
+                                ?
+                                `<p><b>Best Time:</b> ${spot.bestTimeToVisit}</p>`
+                                :
+                                ""
+                            }
+
+                        </div>
+
+                    `;
+
+                }).join("")
+
+                :
+
+                "<p>No spotting locations have been added yet.</p>"
+            }
+
+        </div>
+
+    `;
+
+}
+
+function showAirshowSpot(spot, airshow){
+
+    var lightingClass = "backlit";
+
+    if(spot.lighting){
+
+        if(spot.lighting.text === "Excellent"){
+
+            lightingClass = "excellent";
+
+        }
+
+        else if(spot.lighting.text === "Side lighting"){
+
+            lightingClass = "side";
+
+        }
+
+        else if(spot.lighting.text === "Backlit"){
+
+            lightingClass = "backlit";
+
+        }
+
+    }
+
+    openSidebar();
+
+    currentSpot = spot;
+
+    currentPhotos = spot.photos || [];
+
+    currentPhotoIndex = 0;
+
+
+    map.flyTo(
+        [spot.lat, spot.lng],
+        17
+    );
+
+
+    document.getElementById("sidebar").innerHTML = `
+
+        <h2>${spot.name}</h2>
+
+        <p class="airport-details">
+            📍 ${airshow.name}
+        </p>
+
+        <hr>
+
+        <p><b>Lighting</b></p>
+
+        <p>
+            ${
+                spot.lighting
+                ?
+                spot.lighting.stars + " " + spot.lighting.text
+                :
+                "Calculating..."
+            }
+        </p>
+
+        <hr>
+
+        <p><b>Recommended Focal Length</b></p>
+
+        <p>
+            ${spot.recommendedFocalLength || "Not specified"}
+        </p>
+
+        <hr>
+
+        <p><b>Parking</b></p>
+
+        <p>
+            ${spot.parking || "Not specified"}
+        </p>
+
+        <hr>
+
+        <p><b>Best Time To Visit</b></p>
+
+        <p>
+            ${spot.bestTimeToVisit || "Not specified"}
+        </p>
+
+        <hr>
+
+        <p><b>Notes</b></p>
+
+        <p>
+            ${
+                Array.isArray(spot.notes)
+                ?
+                spot.notes.map(function(note){
+                    return "• " + note + "<br>";
+                }).join("")
+                :
+                spot.notes || "None"
+            }
+        </p>
+
+    `;
+
+}
+
 async function loadAirport(icao){
+
+    currentAirshow = null;
+
+airshowSpotMarkers.forEach(function(marker){
+
+    map.removeLayer(marker);
+
+});
+
+airshowSpotMarkers = [];
 
     try{
 
-        /*
-        Check whether this is an approved
-        community airport.
-        */
+        
 
         const {
             data: submission,
@@ -1379,9 +2035,6 @@ async function loadAirport(icao){
         }
 
 
-        /*
-        COMMUNITY AIRPORT
-        */
 
         if(submission){
 
@@ -1438,9 +2091,6 @@ async function loadAirport(icao){
 
         }
 
-        /*
-        NORMAL AVSPOT AIRPORT
-        */
 
         else{
 
@@ -1595,22 +2245,34 @@ function showSunCompass(){
 
 function toggleSunCompass(){
 
-    if (!requireAirport()) return;
+    if(!airport && !currentAirshow){
+        alert("Please select an airport or airshow first.");
+        return;
+    }
 
-    var compass = document.getElementById("sunCompassOverlay");
+    var compass =
+        document.getElementById(
+            "sunCompassOverlay"
+        );
+
 
     if(compass.style.display === "block"){
 
-        compass.style.display="none";
+        compass.style.display = "none";
 
-        document.getElementById("sunTimeControl").style.display="none";
+        document.getElementById(
+            "sunTimeControl"
+        ).style.display = "none";
 
     }
+
     else{
 
-        compass.style.display="block";
+        compass.style.display = "block";
 
-        document.getElementById("sunTimeControl").style.display="block";
+        document.getElementById(
+            "sunTimeControl"
+        ).style.display = "block";
 
         updateSunCompass();
 
@@ -1620,100 +2282,170 @@ function toggleSunCompass(){
 
 function updateSunCompass(){
 
-    if (!requireAirport()) return;
+    // Allow the sun tool to work for either
+    // an airport OR an airshow
 
-      if(!airport) return;
-
-    var lat = airport.lat;
-    var lng = airport.lng;
-
-    var now = new Date();
-
-var slider = document.getElementById("sunTimeSlider");
-
-if(slider){
-    now.setHours(parseInt(slider.value));
-    now.setMinutes(0);
-}
-
-    var sun = SunCalc.getPosition(
-        now,
-        lat,
-        lng
-    );
+    if(!airport && !currentAirshow){
+        return;
+    }
 
 
-    var degrees = sun.azimuth * (180 / Math.PI);
+    // Use the selected airport or airshow
 
-degrees = degrees + 180;
-
-if(degrees >= 360){
-    degrees -= 360;
-}
-
-    document.getElementById("sunCompassOverlay").innerHTML = `
-
-<div class="compass-label compass-north">
-N
-</div>
-
-<div class="compass-label compass-south">
-S
-</div>
-
-<div class="compass-label compass-east">
-E
-</div>
-
-<div class="compass-label compass-west">
-W
-</div>
+    var location =
+        airport || currentAirshow;
 
 
-<div class="sun-position"
-style="
-transform:
-translate(-50%,-50%)
-rotate(${degrees}deg)
-translateY(${window.innerWidth <= 768 ? -160 : -240}px);
-">
+    var lat =
+        location.lat;
 
-<div class="sun-dot"></div>
-
-<div class="sun-line"></div>
-
-</div>
+    var lng =
+        location.lng;
 
 
-<div style="
-position:absolute;
-bottom:-65px;
-width:100%;
-text-align:center;
-font-size:24px;
-font-weight:bold;
-">
-${Math.round(degrees)}<span style="font-size:14px;">°</span>
-</div>
+    var now =
+        new Date();
 
-`;
+
+    var slider =
+        document.getElementById(
+            "sunTimeSlider"
+        );
+
+
+    if(slider){
+
+        now.setHours(
+            parseInt(slider.value)
+        );
+
+        now.setMinutes(0);
+
+    }
+
+
+    var sun =
+        SunCalc.getPosition(
+            now,
+            lat,
+            lng
+        );
+
+
+    var degrees =
+        sun.azimuth *
+        (180 / Math.PI);
+
+
+    degrees =
+        degrees + 180;
+
+
+    if(degrees >= 360){
+
+        degrees -= 360;
+
+    }
+
+
+    document.getElementById(
+        "sunCompassOverlay"
+    ).innerHTML = `
+
+        <div class="compass-label compass-north">
+            N
+        </div>
+
+        <div class="compass-label compass-south">
+            S
+        </div>
+
+        <div class="compass-label compass-east">
+            E
+        </div>
+
+        <div class="compass-label compass-west">
+            W
+        </div>
+
+
+        <div
+            class="sun-position"
+            style="
+                transform:
+                translate(-50%,-50%)
+                rotate(${degrees}deg)
+                translateY(
+                    ${window.innerWidth <= 768
+                        ? -160
+                        : -240}px
+                );
+            "
+        >
+
+            <div class="sun-dot"></div>
+
+            <div class="sun-line"></div>
+
+        </div>
+
+
+        <div
+            style="
+                position:absolute;
+                bottom:-65px;
+                width:100%;
+                text-align:center;
+                font-size:24px;
+                font-weight:bold;
+            "
+        >
+
+            ${Math.round(degrees)}
+            <span style="font-size:14px;">°</span>
+
+        </div>
+
+    `;
 
 }
 
 function changeSunTime(){
 
-    var slider = document.getElementById("sunTimeSlider");
+    var slider =
+        document.getElementById("sunTimeSlider");
 
-    var hour = parseInt(slider.value);
+    var hour =
+        parseInt(slider.value);
+
 
     document.getElementById("selectedTime").innerHTML =
-    hour + ":00";
+        hour + ":00";
+
 
     updateSunCompass();
 
-    updateSpotLighting();
 
-    renderSidebar();
+    if(currentAirshow){
+
+        displayAirshowSpots(
+            currentAirshow
+        );
+
+        showAirshow(
+            currentAirshow
+        );
+
+    }
+
+
+    else if(airport){
+
+        updateSpotLighting();
+
+        renderSidebar();
+
+    }
 
 }
 
@@ -2076,11 +2808,16 @@ function updateSpotMarker(spot){
 
     }
 
-    else if(spot.lighting.text === "Side lighting"){
+    else if(
+        spot.lighting.text === "Side lighting" ||
+        spot.lighting.text === "Diffused light" ||
+        spot.lighting.text === "Favourable light"
+    ){
 
         spot.marker.setIcon(yellowIcon);
 
     }
+
 
     else{
 
@@ -2092,13 +2829,16 @@ function updateSpotMarker(spot){
 
 function updateSpotLighting(){
 
-    if(!airport){
+    if(!airport && !currentAirshow){
         return;
     }
 
+    var location = airport || currentAirshow;
+
     var date = new Date();
 
-    var slider = document.getElementById("sunTimeSlider");
+    var slider =
+        document.getElementById("sunTimeSlider");
 
     if(slider){
 
@@ -2109,37 +2849,56 @@ function updateSpotLighting(){
     }
 
 
-    var sunBearing = getSunBearing(
-        date,
-        airport.lat,
-        airport.lng
-    );
+    if(airport){
 
-    var sun = SunCalc.getPosition(
-    date,
-    airport.lat,
-    airport.lng
-);
+        var sunBearing =
+            getSunBearing(
+                date,
+                airport.lat,
+                airport.lng
+            );
 
 
-var sunAltitude =
-sun.altitude * 180 / Math.PI;
+        var sun =
+            SunCalc.getPosition(
+                date,
+                airport.lat,
+                airport.lng
+            );
 
-    spots.forEach(function(spot){
 
-    spot.lighting = getLightingRating(
-        sunBearing,
-        spot.direction,
-        sunAltitude,
-        weather.cloudCover,
-        weather.lowCloud,
-        weather.midCloud,
-        weather.highCloud
-    );
+        var sunAltitude =
+            sun.altitude * 180 / Math.PI;
 
-    updateSpotMarker(spot);
 
-});
+        spots.forEach(function(spot){
+
+            spot.lighting =
+                getLightingRating(
+                    sunBearing,
+                    spot.direction,
+                    sunAltitude,
+                    weather.cloudCover,
+                    weather.lowCloud,
+                    weather.midCloud,
+                    weather.highCloud
+                );
+
+            updateSpotMarker(spot);
+
+        });
+
+    }
+
+
+
+    if(currentAirshow){
+
+        displayAirshowSpots(
+            currentAirshow
+        );
+
+    }
 
 }
 
@@ -3488,6 +4247,78 @@ function showAccountWelcome() {
     loginScreen.classList.remove("active");
     registerScreen.classList.remove("active");
     loggedInScreen.classList.remove("active");
+
+}
+
+
+function formatAirshowDate(dateString){
+
+    if(!dateString){
+        return "Date TBC";
+    }
+
+    var date = new Date(
+        dateString + "T00:00:00"
+    );
+
+    var day = date.getDate();
+
+    var suffix = "th";
+
+    if(
+        day % 10 === 1 &&
+        day !== 11
+    ){
+
+        suffix = "st";
+
+    }
+
+    else if(
+        day % 10 === 2 &&
+        day !== 12
+    ){
+
+        suffix = "nd";
+
+    }
+
+    else if(
+        day % 10 === 3 &&
+        day !== 13
+    ){
+
+        suffix = "rd";
+
+    }
+
+
+    var months = [
+
+        "January",
+        "February",
+        "March",
+        "April",
+        "May",
+        "June",
+        "July",
+        "August",
+        "September",
+        "October",
+        "November",
+        "December"
+
+    ];
+
+
+    return (
+        day +
+        suffix +
+        " " +
+        months[date.getMonth()] +
+        " " +
+        date.getFullYear()
+    );
 
 }
 

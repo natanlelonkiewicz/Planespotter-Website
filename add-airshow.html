@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Add an Airshow | Avspot</title>
+
+    <link rel="stylesheet" href="css/style.css">
+
+</head>
+
+<body>
+
+<div class="add-airport-page">
+
+    <h1 class="add-airshow-title">Add an Airshow</h1>
+
+    <p class="add-airport-intro">
+
+        Help grow Avspot by submitting an airshow and its
+        spotting locations.
+
+        Your submission will be reviewed before being added.
+
+    </p>
+
+
+    <form id="airshowSubmissionForm">
+
+
+        <!-- AIRSHOW INFORMATION -->
+
+        <section class="submission-section">
+
+            <h2>Airshow Information</h2>
+
+
+            <label for="airshowName">
+                Airshow Name
+            </label>
+
+            <input
+                type="text"
+                id="airshowName"
+                placeholder="e.g. Royal International Air Tattoo 2026"
+                required
+            >
+
+
+            <label for="airshowLocation">
+                Location
+            </label>
+
+            <input
+                type="text"
+                id="airshowLocation"
+                placeholder="e.g. RAF Fairford, England"
+                required
+            >
+
+
+            <div class="coordinate-row">
+
+                <div>
+
+                    <label for="airshowLat">
+                        Latitude
+                    </label>
+
+                    <input
+                        type="number"
+                        id="airshowLat"
+                        step="any"
+                        placeholder="51.682"
+                        required
+                    >
+
+                </div>
+
+
+                <div>
+
+                    <label for="airshowLng">
+                        Longitude
+                    </label>
+
+                    <input
+                        type="number"
+                        id="airshowLng"
+                        step="any"
+                        placeholder="-1.790"
+                        required
+                    >
+
+                </div>
+
+            </div>
+
+
+            <label for="airshowStartDate">
+                Start Date
+            </label>
+
+            <input
+                type="date"
+                id="airshowStartDate"
+                required
+            >
+
+
+            <label for="airshowEndDate">
+                End Date
+            </label>
+
+            <input
+                type="date"
+                id="airshowEndDate"
+            >
+
+
+            <label for="airshowDescription">
+                Description
+            </label>
+
+            <textarea
+                id="airshowDescription"
+                rows="5"
+                placeholder="Tell people about this airshow..."
+            ></textarea>
+
+        </section>
+
+
+
+        <!-- AIRSHOW PHOTO -->
+
+        <section class="submission-section">
+
+            <h2>Airshow Photo</h2>
+
+
+            <label for="airshowImage">
+
+                Upload Airshow Photo
+
+            </label>
+
+            <input
+                type="file"
+                id="airshowImage"
+                accept="image/*"
+            >
+
+
+            <p class="upload-help">
+
+                Images larger than 1400px will automatically
+                be resized.
+
+            </p>
+
+
+            <label for="airshowPhotoCredit">
+
+                Photo Credit
+
+            </label>
+
+            <input
+                type="text"
+                id="airshowPhotoCredit"
+                placeholder="Photographer name"
+            >
+
+        </section>
+
+
+
+        <!-- CONFIRMED AIRCRAFT -->
+
+        <section class="submission-section">
+
+            <h2>Confirmed Aircraft</h2>
+
+            <div id="aircraftContainer"></div>
+
+
+            <button
+                type="button"
+                class="add-item-button"
+                id="addAircraftButton"
+            >
+
+                + Add Aircraft
+
+            </button>
+
+        </section>
+
+
+
+        <!-- SPOTTING LOCATIONS -->
+
+        <section class="submission-section">
+
+            <h2>Spotting Locations</h2>
+
+            <div id="spotsContainer"></div>
+
+
+            <button
+                type="button"
+                class="add-item-button"
+                id="addSpotButton"
+            >
+
+                + Add Spotting Location
+
+            </button>
+
+        </section>
+
+
+
+        <button
+            type="submit"
+            class="submit-airport-button"
+        >
+
+            Submit Airshow
+
+        </button>
+
+
+    </form>
+
+</div>
+
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<script src="js/supabase.js"></script>
+
+<script src="js/add-airshow.js"></script>
+
+</body>
+</html>

@@ -1891,3 +1891,37 @@ body {
     box-sizing: border-box !important;
     max-width: 100% !important;
 }
+
+.airshow-marker-icon {
+    filter: brightness(1.15) saturate(1.4);
+}
+
+.spot-card.excellent{
+    border-left: 5px solid #22c55e;
+    background: rgba(34, 197, 94, 0.12);
+}
+
+.spot-card.side{
+    border-left: 5px solid #f5c542;
+    background: rgba(245, 197, 66, 0.12);
+}
+
+.spot-card.backlit{
+    border-left: 5px solid #ef4444;
+    background: rgba(239, 68, 68, 0.12);
+}
+
+.add-airport-page .add-airshow-title {
+    color: #ff8c00 !important;
+}
+
+.add-airshow-button {
+    background: #2b2b2b;
+    border: 2px solid #f5c542;
+    color: #ff8c00;
+    cursor: pointer;
+}
+
+.add-airshow-button:hover {
+    background: #383838;
+}

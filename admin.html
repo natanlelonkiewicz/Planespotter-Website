@@ -156,6 +156,15 @@
             Loading submissions...
         </div>
 
+        <h2 class="admin-section-title">
+
+            Airshow Submissions
+        </h2>
+
+        <div id="airshowSubmissionList">
+            Loading airshow submissions...
+        </div>
+
     </div>
 
 </div>
@@ -221,6 +230,7 @@ async function checkAdmin(){
 
 
     loadSubmissions();
+    loadAirshowSubmissions();
 
 }
 
@@ -352,7 +362,616 @@ async function loadSubmissions(){
 }
 
 
+async function loadAirshowSubmissions(){
 
+    const submissionList =
+        document.getElementById(
+            "airshowSubmissionList"
+        );
+
+
+    const {
+        data,
+        error
+    } = await supabaseClient
+
+        .from("airshow_submissions")
+
+        .select("*")
+
+        .eq(
+            "status",
+            "pending"
+        )
+
+        .order(
+            "created_at",
+            {
+                ascending:false
+            }
+        );
+
+
+    if(error){
+
+        console.error(
+            "Airshow submission loading error:",
+            error
+        );
+
+        submissionList.innerHTML =
+            "<p>Unable to load airshow submissions.</p>";
+
+        return;
+
+    }
+
+
+    if(!data || data.length === 0){
+
+        submissionList.innerHTML =
+            "<p>No pending airshow submissions.</p>";
+
+        return;
+
+    }
+
+
+    submissionList.innerHTML =
+        data.map(function(submission){
+
+            return `
+
+            <div class="admin-submission">
+
+                <h3>
+                    ${escapeHtml(
+                        submission.name
+                    )}
+                </h3>
+
+
+                <p>
+                    <b>Location:</b>
+                    ${escapeHtml(
+                        submission.location || ""
+                    )}
+                </p>
+
+
+                <p>
+                    <b>Dates:</b>
+                    ${escapeHtml(
+                        submission.start_date || ""
+                    )}
+                    →
+                    ${escapeHtml(
+                        submission.end_date || ""
+                    )}
+                </p>
+
+
+                <p>
+                    <b>Submitted:</b>
+                    ${new Date(
+                        submission.created_at
+                    ).toLocaleString()}
+                </p>
+
+
+                <div class="admin-submission-buttons">
+
+                    <button
+                        class="review-button"
+                        onclick="toggleAirshowPreview('${submission.id}')"
+                    >
+                        👁 Review submission
+                    </button>
+
+
+                    <button
+                        class="approve-button"
+                        onclick="approveAirshowSubmission('${submission.id}')"
+                    >
+                        ✅ Approve
+                    </button>
+
+
+                    <button
+                        class="reject-button"
+                        onclick="rejectAirshowSubmission('${submission.id}')"
+                    >
+                        ❌ Reject
+                    </button>
+
+                </div>
+
+
+                <div
+                    id="airshow-preview-${submission.id}"
+                    class="submission-preview"
+                >
+
+                    ${buildAirshowPreview(submission)}
+
+                </div>
+
+            </div>
+
+            `;
+
+        }).join("");
+
+}
+
+function toggleAirshowPreview(id){
+
+    const preview =
+        document.getElementById(
+            "airshow-preview-" + id
+        );
+
+
+    if(!preview){
+        return;
+    }
+
+
+    preview.classList.toggle("open");
+
+
+    const button =
+        preview.parentElement.querySelector(
+            ".review-button"
+        );
+
+
+    if(preview.classList.contains("open")){
+
+        button.textContent =
+            "✖ Close review";
+
+    }
+    else{
+
+        button.textContent =
+            "👁 Review submission";
+
+    }
+
+}
+
+function buildAirshowPreview(submission){
+
+    let aircraft =
+        submission.confirmed_aircraft || [];
+
+    let spots =
+        submission.spots || [];
+
+
+    if(typeof aircraft === "string"){
+
+        try{
+            aircraft = JSON.parse(aircraft);
+        }
+        catch(error){
+            aircraft = [aircraft];
+        }
+
+    }
+
+
+    if(typeof spots === "string"){
+
+        try{
+            spots = JSON.parse(spots);
+        }
+        catch(error){
+            spots = [];
+        }
+
+    }
+
+
+    let aircraftHtml = "";
+
+
+    if(Array.isArray(aircraft) && aircraft.length){
+
+        aircraftHtml = `
+
+            <ul class="preview-list">
+
+                ${aircraft.map(function(item){
+
+                    const name =
+                        typeof item === "string"
+                        ? item
+                        : item.name || "";
+
+                    return `
+                        <li>
+                            ${escapeHtml(name)}
+                        </li>
+                    `;
+
+                }).join("")}
+
+            </ul>
+
+        `;
+
+    }
+    else{
+
+        aircraftHtml =
+            "<p>No aircraft submitted.</p>";
+
+    }
+
+
+    let spotsHtml = "";
+
+
+    if(Array.isArray(spots) && spots.length){
+
+        spotsHtml = spots.map(function(spot,index){
+
+            let photos =
+                spot.photos || [];
+
+            if(!Array.isArray(photos)){
+                photos = [photos];
+            }
+
+
+            return `
+
+            <div class="preview-card">
+
+                <h4>
+                    📍
+                    ${escapeHtml(
+                        spot.name ||
+                        "Spot " + (index + 1)
+                    )}
+                </h4>
+
+
+                <p>
+                    <b>Latitude:</b>
+                    ${escapeHtml(
+                        String(
+                            spot.lat ?? "—"
+                        )
+                    )}
+                </p>
+
+
+                <p>
+                    <b>Longitude:</b>
+                    ${escapeHtml(
+                        String(
+                            spot.lng ?? "—"
+                        )
+                    )}
+                </p>
+
+
+                <p>
+                    <b>Camera direction:</b>
+                    ${escapeHtml(
+                        String(
+                            spot.direction ?? "—"
+                        )
+                    )}°
+                </p>
+
+
+                <p>
+                    <b>Focal length:</b>
+                    ${escapeHtml(
+                        spot.recommendedFocalLength ||
+                        "—"
+                    )}
+                </p>
+
+
+                <p>
+                    <b>Parking:</b>
+                    ${escapeHtml(
+                        spot.parking ||
+                        "—"
+                    )}
+                </p>
+
+
+                <p>
+                    <b>Best time:</b>
+                    ${escapeHtml(
+                        spot.bestTimeToVisit ||
+                        "—"
+                    )}
+                </p>
+
+
+                <p>
+                    <b>Notes:</b>
+                    ${escapeHtml(
+                        spot.notes ||
+                        "—"
+                    )}
+                </p>
+
+
+                <h4>
+                    📸 Spot Photos
+                </h4>
+
+
+                ${
+                    photos.length
+
+                    ?
+
+                    photos.map(function(photo){
+
+                        return `
+
+                        <img
+                            class="preview-spot-image"
+                            src="${escapeAttribute(photo)}"
+                            alt="Spot photo"
+                        >
+
+                        `;
+
+                    }).join("")
+
+                    :
+
+                    `<div class="no-image">
+                        No photos submitted.
+                    </div>`
+
+                }
+
+            </div>
+
+            `;
+
+        }).join("");
+
+    }
+    else{
+
+        spotsHtml =
+            "<p>No spotting locations submitted.</p>";
+
+    }
+
+
+    return `
+
+    <div class="preview-section">
+
+        <h4>
+            🎪 Airshow Information
+        </h4>
+
+        <p>
+            <b>Name:</b>
+            ${escapeHtml(
+                submission.name || "—"
+            )}
+        </p>
+
+        <p>
+            <b>Location:</b>
+            ${escapeHtml(
+                submission.location || "—"
+            )}
+        </p>
+
+        <p>
+            <b>Latitude:</b>
+            ${escapeHtml(
+                String(
+                    submission.lat ?? "—"
+                )
+            )}
+        </p>
+
+        <p>
+            <b>Longitude:</b>
+            ${escapeHtml(
+                String(
+                    submission.lng ?? "—"
+                )
+            )}
+        </p>
+
+        <p>
+            <b>Start date:</b>
+            ${escapeHtml(
+                submission.start_date || "—"
+            )}
+        </p>
+
+        <p>
+            <b>End date:</b>
+            ${escapeHtml(
+                submission.end_date || "—"
+            )}
+        </p>
+
+        <p>
+            <b>Description:</b><br>
+            ${escapeHtml(
+                submission.description || "—"
+            )}
+        </p>
+
+    </div>
+
+
+    <div class="preview-section">
+
+        <h4>
+            🖼 Airshow Photo
+        </h4>
+
+        ${
+            submission.image
+
+            ?
+
+            `
+            <img
+                class="preview-airport-image"
+                src="${escapeAttribute(
+                    submission.image
+                )}"
+                alt="Airshow photo"
+            >
+
+            <div class="preview-credit">
+                ${escapeHtml(
+                    submission.photo_credit || ""
+                )}
+            </div>
+            `
+
+            :
+
+            `
+            <div class="no-image">
+                No airshow image submitted.
+            </div>
+            `
+        }
+
+    </div>
+
+
+    <div class="preview-section">
+
+        <h4>
+            ✈ Confirmed Aircraft
+        </h4>
+
+        ${aircraftHtml}
+
+    </div>
+
+
+    <div class="preview-section">
+
+        <h4>
+            📍 Spotting Locations
+        </h4>
+
+        ${spotsHtml}
+
+    </div>
+
+
+    <div class="admin-submission-buttons">
+
+        <button
+            class="approve-button"
+            onclick="approveAirshowSubmission('${submission.id}')"
+        >
+            ✅ Approve Airshow
+        </button>
+
+        <button
+            class="reject-button"
+            onclick="rejectAirshowSubmission('${submission.id}')"
+        >
+            ❌ Reject Airshow
+        </button>
+
+    </div>
+
+    `;
+
+}
+
+async function approveAirshowSubmission(id){
+
+    if(!confirm(
+        "Approve this airshow submission?"
+    )){
+        return;
+    }
+
+    const { error } =
+        await supabaseClient
+            .from("airshow_submissions")
+            .update({
+                status: "approved"
+            })
+            .eq("id", id);
+
+    if(error){
+
+        console.error(
+            "Airshow approval error:",
+            error
+        );
+
+        alert(
+            "Could not approve airshow submission."
+        );
+
+        return;
+    }
+
+    alert(
+        "Airshow approved."
+    );
+
+    loadAirshowSubmissions();
+}
+
+async function rejectAirshowSubmission(id){
+
+    if(!confirm(
+        "Reject this airshow submission?"
+    )){
+        return;
+    }
+
+    const { error } =
+        await supabaseClient
+            .from("airshow_submissions")
+            .update({
+                status: "rejected"
+            })
+            .eq("id", id);
+
+    if(error){
+
+        console.error(
+            "Airshow rejection error:",
+            error
+        );
+
+        alert(
+            "Could not reject airshow submission."
+        );
+
+        return;
+    }
+
+    alert(
+        "Airshow rejected."
+    );
+
+    loadAirshowSubmissions();
+}
 
 function togglePreview(id){
 
@@ -1043,6 +1662,8 @@ async function rejectSubmission(id){
 
 
     loadSubmissions();
+
+    loadAirshowSubmissions();
 
 }
 
