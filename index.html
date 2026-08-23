@@ -3178,16 +3178,29 @@ function refreshWeather(){
 
 }
 
+
 function liveSunTime(){
 
-    if(!airport) return;
+    if(!airport && !currentAirshow){
+        return;
+    }
+
 
     var now = new Date();
 
     var hour = now.getHours();
     var minute = now.getMinutes();
 
-    document.getElementById("sunTimeSlider").value = hour;
+
+    var slider =
+        document.getElementById("sunTimeSlider");
+
+    if(slider){
+
+        slider.value = hour;
+
+    }
+
 
     document.getElementById("selectedTime").innerHTML =
         hour.toString().padStart(2,"0")
@@ -3195,9 +3208,106 @@ function liveSunTime(){
         + minute.toString().padStart(2,"0")
         + " 🔴 LIVE";
 
+
     updateSunCompass();
-    updateSpotLighting();
-    renderSidebar();
+
+
+    if(currentAirshow){
+
+        displayAirshowSpots(
+            currentAirshow
+        );
+
+        currentAirshow.spots.forEach(function(spot, index){
+
+            var card =
+                document.getElementById(
+                    "airshowSpot" + index
+                );
+
+            if(!card){
+                return;
+            }
+
+
+            var lightingElement =
+                card.querySelector(
+                    ".airshow-spot-lighting"
+                );
+
+            if(lightingElement){
+
+                lightingElement.innerHTML =
+                    spot.lighting
+                    ?
+                    spot.lighting.stars
+                    + " "
+                    + spot.lighting.text
+                    :
+                    "Lighting direction not set";
+
+            }
+
+            card.classList.remove(
+                "excellent",
+                "side",
+                "backlit"
+            );
+
+
+            if(spot.lighting){
+
+                if(
+                    spot.lighting.text === "Excellent"
+                ){
+
+                    card.classList.add(
+                        "excellent"
+                    );
+
+                }
+
+                else if(
+                    spot.lighting.text === "Side lighting" ||
+                    spot.lighting.text === "Diffused light" ||
+                    spot.lighting.text === "Favourable light"
+                ){
+
+                    card.classList.add(
+                        "side"
+                    );
+
+                }
+
+                else{
+
+                    card.classList.add(
+                        "backlit"
+                    );
+
+                }
+
+            }
+
+            else{
+
+                card.classList.add(
+                    "backlit"
+                );
+
+            }
+
+        });
+
+    }
+
+    else if(airport){
+
+        updateSpotLighting();
+
+        renderSidebar();
+
+    }
 
 }
 
