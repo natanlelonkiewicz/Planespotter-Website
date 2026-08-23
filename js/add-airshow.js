@@ -1002,11 +1002,6 @@ airshowForm.addEventListener("submit", async function(event){
 
             };
 
-
-            // ---------------------------------
-            // UPLOAD SPOT PHOTOS
-            // ---------------------------------
-
             if(
                 card.processedImages &&
                 card.processedImages.length > 0
@@ -1123,10 +1118,6 @@ airshowForm.addEventListener("submit", async function(event){
 
         }
 
-
-        // ---------------------------------
-        // INSERT AIRSHOW
-        // ---------------------------------
 
         const {
             error: insertError

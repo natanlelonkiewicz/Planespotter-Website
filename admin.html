@@ -543,11 +543,16 @@ function toggleAirshowPreview(id){
 
 function buildAirshowPreview(submission){
 
+    console.log("AIRSHOW SUBMISSION DATA:", submission);
+console.log("AIRSHOW SPOTS DATA:", submission.spots);
+
     let aircraft =
         submission.confirmed_aircraft || [];
 
     let spots =
         submission.spots || [];
+
+        console.log("ADMIN AIRSHOW SPOTS DATA:", spots);
 
 
     if(typeof aircraft === "string"){
@@ -619,11 +624,13 @@ function buildAirshowPreview(submission){
         spotsHtml = spots.map(function(spot,index){
 
             let photos =
-                spot.photos || [];
+    spot.images || spot.photos || [];
 
-            if(!Array.isArray(photos)){
-                photos = [photos];
-            }
+if(!Array.isArray(photos)){
+
+    photos = [photos];
+
+}
 
 
             return `
@@ -672,7 +679,7 @@ function buildAirshowPreview(submission){
                 <p>
                     <b>Focal length:</b>
                     ${escapeHtml(
-                        spot.recommendedFocalLength ||
+                        spot.focalLength ||
                         "—"
                     )}
                 </p>
@@ -690,7 +697,7 @@ function buildAirshowPreview(submission){
                 <p>
                     <b>Best time:</b>
                     ${escapeHtml(
-                        spot.bestTimeToVisit ||
+                        spot.bestTime ||
                         "—"
                     )}
                 </p>
@@ -706,36 +713,71 @@ function buildAirshowPreview(submission){
 
 
                 <h4>
-                    📸 Spot Photos
-                </h4>
+    📸 Spot Photos
+</h4>
 
+${
+    photos.length > 0
 
-                ${
-                    photos.length
+    ?
 
-                    ?
+    `
+    ${photos.map(function(photo){
 
-                    photos.map(function(photo){
+        return `
 
-                        return `
+        <img
+            class="preview-spot-image"
+            src="${escapeAttribute(photo)}"
+            alt="Spot photo"
+        >
+        
 
-                        <img
-                            class="preview-spot-image"
-                            src="${escapeAttribute(photo)}"
-                            alt="Spot photo"
-                        >
+        `;
 
-                        `;
+    }).join("")}
 
-                    }).join("")
+    ${
+        spot.photoCredit
+        ?
 
-                    :
+        `
+        <div class="preview-credit">
+            Credit:
+            ${escapeHtml(spot.photoCredit)}
+        </div>
+        `
 
-                    `<div class="no-image">
-                        No photos submitted.
-                    </div>`
+        :
 
-                }
+        ""
+    }
+    `
+
+    :
+
+    `
+    <div class="no-image">
+        No photos submitted.
+    </div>
+    `
+}
+
+${
+    spot.photoCredit
+    ?
+
+    `
+    <p class="preview-credit">
+        <b>Photo Credit:</b>
+        ${escapeHtml(spot.photoCredit)}
+    </p>
+    `
+
+    :
+
+    ""
+}
 
             </div>
 
@@ -837,9 +879,11 @@ function buildAirshowPreview(submission){
             >
 
             <div class="preview-credit">
+
                 ${escapeHtml(
                     submission.photo_credit || ""
                 )}
+
             </div>
             `
 
@@ -1281,7 +1325,7 @@ function buildSpotsPreview(spots){
     }
 
 
-    let data = spots;
+    let data = spots
 
 
     if(typeof data === "string"){
@@ -1327,14 +1371,11 @@ function buildSpotsPreview(spots){
 
     return data.map(function(spot,index){
 
-        let photos = spot.photos || [];
+    let photos = spot.images || spot.photos || [];
 
-
-        if(!Array.isArray(photos)){
-
-            photos = [photos];
-
-        }
+if(!Array.isArray(photos)){
+    photos = [photos];
+}
 
 
         return `
@@ -1451,62 +1492,55 @@ function buildSpotsPreview(spots){
             }
 
 
-            <h4>📸 Spot Photos</h4>
+                <h4>📸 Spot Photos</h4>
 
+${
+    photos.length > 0
+
+    ?
+
+    photos.map(function(photo){
+
+        return `
+
+        <div style="margin-bottom:15px;">
+
+            <img
+                class="preview-spot-image"
+                src="${escapeAttribute(photo)}"
+                alt="Spot photo"
+            >
 
             ${
-                photos.length > 0
+                spot.photoCredit
 
                 ?
 
-                photos.map(function(photo,photoIndex){
-
-                    return `
-
-                    <div style="margin-bottom:15px;">
-
-                        <img
-                            class="preview-spot-image"
-                            src="${escapeAttribute(photo)}"
-                            alt="Spot photo"
-                        >
-
-                        ${
-                            spot.photoCredits &&
-                            spot.photoCredits[photoIndex]
-
-                            ?
-
-                            `
-                            <div class="preview-credit">
-
-                                Credit:
-                                ${escapeHtml(
-                                    spot.photoCredits[photoIndex]
-                                )}
-
-                            </div>
-                            `
-
-                            :
-
-                            ""
-                        }
-
-                    </div>
-
-                    `;
-
-                }).join("")
+                `
+                <div class="preview-credit">
+                    Credit: ${escapeHtml(spot.photoCredit)}
+                </div>
+                `
 
                 :
 
-                `
-                <div class="no-image">
-                    No photos submitted.
-                </div>
-                `
+                ""
             }
+
+        </div>
+
+        `;
+
+    }).join("")
+
+    :
+
+    `
+    <div class="no-image">
+        No photos submitted.
+    </div>
+    `
+}
 
         </div>
 
@@ -1515,9 +1549,6 @@ function buildSpotsPreview(spots){
     }).join("");
 
 }
-
-
-
 
 function escapeHtml(value){
 

@@ -1878,6 +1878,7 @@ function showAirshow(airshow){
 
 }
 
+
 function showAirshowSpot(spot, airshow){
 
     var lightingClass = "backlit";
@@ -1890,7 +1891,11 @@ function showAirshowSpot(spot, airshow){
 
         }
 
-        else if(spot.lighting.text === "Side lighting"){
+        else if(
+            spot.lighting.text === "Side lighting" ||
+            spot.lighting.text === "Diffused light" ||
+            spot.lighting.text === "Favourable light"
+        ){
 
             lightingClass = "side";
 
@@ -1908,7 +1913,7 @@ function showAirshowSpot(spot, airshow){
 
     currentSpot = spot;
 
-    currentPhotos = spot.photos || [];
+    currentPhotos = spot.images || [];
 
     currentPhotoIndex = 0;
 
@@ -1926,6 +1931,55 @@ function showAirshowSpot(spot, airshow){
         <p class="airport-details">
             📍 ${airshow.name}
         </p>
+
+
+        ${
+            currentPhotos.length
+            ?
+            `
+            <div class="photoContainer">
+
+                <img
+                    id="spotPhoto"
+                    src="${currentPhotos[0]}"
+                    alt="${spot.name}"
+                >
+
+                ${
+                    spot.photoCredit || spot.photo_credit
+                    ?
+                    `
+                    <div id="photoCredit">
+                        ${spot.photoCredit || spot.photo_credit}
+                    </div>
+                    `
+                    :
+                    ""
+                }
+
+            </div>
+
+            ${
+                currentPhotos.length > 1
+                ?
+                `
+                <div class="photoButtons">
+
+                    <button onclick="previousPhoto()">‹</button>
+
+                    <button onclick="nextPhoto()">›</button>
+
+                </div>
+                `
+                :
+                ""
+            }
+
+            `
+            :
+            ""
+        }
+
 
         <hr>
 
@@ -1984,6 +2038,7 @@ function showAirshowSpot(spot, airshow){
     `;
 
 }
+
 
 async function loadAirport(icao){
 
