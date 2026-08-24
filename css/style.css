@@ -2100,3 +2100,285 @@ body {
     font-weight: 700 !important;
     font-size: 15px !important;
 }
+
+#sidebar .plus-locked-airshow {
+    display: block !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
+    margin: 20px 0 !important;
+    padding: 24px 18px !important;
+
+    background: linear-gradient(
+        145deg,
+        #242424,
+        #171717
+    ) !important;
+
+    border: 2px solid #3a3a3a !important;
+    border-radius: 14px !important;
+
+    text-align: center !important;
+
+    box-shadow:
+        0 8px 25px rgba(0, 0, 0, 0.35) !important;
+
+    color: #f5f5f5 !important;
+}
+
+
+/* STAR ICON */
+
+#sidebar .plus-locked-airshow .plus-lock-icon {
+    width: 54px !important;
+    height: 54px !important;
+
+    margin: 0 auto 14px auto !important;
+
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+
+    background: #292929 !important;
+
+    border: 2px solid #f5c542 !important;
+    border-radius: 50% !important;
+
+    color: #f5c542 !important;
+    font-size: 25px !important;
+    line-height: 1 !important;
+}
+
+
+/* TITLE */
+
+#sidebar .plus-locked-airshow h3 {
+    margin: 0 0 8px 0 !important;
+
+    padding: 0 !important;
+
+    border: none !important;
+
+    color: #f5c542 !important;
+
+    font-size: 22px !important;
+    font-weight: 700 !important;
+}
+
+
+/* DESCRIPTION */
+
+#sidebar .plus-lock-description {
+    display: block !important;
+
+    max-width: 300px !important;
+
+    margin: 0 auto 20px auto !important;
+    padding: 0 !important;
+
+    color: #cfcfcf !important;
+
+    font-size: 14px !important;
+    line-height: 1.5 !important;
+
+    text-align: center !important;
+}
+
+#sidebar .plus-lock-description strong {
+    color: #f5c542 !important;
+}
+
+
+/* FEATURE LIST */
+
+#sidebar .plus-feature-list {
+    display: flex !important;
+
+    flex-direction: column !important;
+
+    gap: 8px !important;
+
+    width: 100% !important;
+
+    margin: 20px 0 22px 0 !important;
+    padding: 0 !important;
+
+    text-align: left !important;
+}
+
+
+/* INDIVIDUAL FEATURES */
+
+#sidebar .plus-feature-list .plus-feature {
+    display: flex !important;
+
+    align-items: center !important;
+
+    width: 100% !important;
+
+    box-sizing: border-box !important;
+
+    gap: 11px !important;
+
+    margin: 0 !important;
+    padding: 10px 11px !important;
+
+    background: #252525 !important;
+
+    border: 1px solid #333 !important;
+    border-radius: 8px !important;
+
+    color: #e5e5e5 !important;
+
+    font-size: 13px !important;
+    line-height: 1.3 !important;
+}
+
+
+/* FEATURE ICON */
+
+#sidebar .plus-feature-list .plus-feature span:first-child {
+    flex: 0 0 22px !important;
+
+    width: 22px !important;
+
+    margin: 0 !important;
+    padding: 0 !important;
+
+    color: #f5c542 !important;
+
+    font-size: 16px !important;
+
+    text-align: center !important;
+}
+
+
+/* FEATURE TEXT */
+
+#sidebar .plus-feature-list .plus-feature span:last-child {
+    flex: 1 !important;
+
+    margin: 0 !important;
+    padding: 0 !important;
+
+    color: #e5e5e5 !important;
+
+    font-size: 13px !important;
+
+    text-align: left !important;
+}
+
+
+/* UPGRADE BUTTON */
+
+#sidebar .airshow-plus-upgrade-button {
+    display: block !important;
+
+    width: 100% !important;
+
+    box-sizing: border-box !important;
+
+    margin: 0 !important;
+    padding: 13px 15px !important;
+
+    background: #2b2b2b !important;
+
+    border: 2px solid #f5c542 !important;
+    border-radius: 9px !important;
+
+    color: #f5c542 !important;
+
+    font-size: 15px !important;
+    font-weight: 700 !important;
+
+    text-align: center !important;
+
+    cursor: pointer !important;
+
+    box-shadow: none !important;
+
+    transition:
+        background 0.2s ease,
+        transform 0.2s ease,
+        box-shadow 0.2s ease !important;
+}
+
+
+#sidebar .airshow-plus-upgrade-button:hover {
+    background: #383838 !important;
+
+    color: #ffd966 !important;
+
+    border-color: #f5c542 !important;
+
+    transform: translateY(-2px) !important;
+
+    box-shadow:
+        0 5px 18px rgba(245, 197, 66, 0.25) !important;
+}
+
+
+#sidebar .airshow-plus-upgrade-button:active {
+    transform: translateY(0) !important;
+}
+
+
+/* BUTTON TITLE */
+
+#sidebar .airshow-plus-button-title {
+    display: block !important;
+
+    margin: 0 !important;
+    padding: 0 !important;
+
+    color: #f5c542 !important;
+
+    font-size: 15px !important;
+    font-weight: 700 !important;
+}
+
+
+/* BUTTON SUBTITLE */
+
+#sidebar .airshow-plus-button-subtitle {
+    display: block !important;
+
+    margin: 4px 0 0 0 !important;
+    padding: 0 !important;
+
+    color: #bdbdbd !important;
+
+    font-size: 11px !important;
+    font-weight: 400 !important;
+}
+
+
+/* PRICE / FOOTER */
+
+#sidebar .plus-lock-footer {
+    display: block !important;
+
+    margin: 13px 0 0 0 !important;
+    padding: 0 !important;
+
+    color: #888 !important;
+
+    font-size: 11px !important;
+    line-height: 1.4 !important;
+
+    text-align: center !important;
+}
+
+
+/* MOBILE */
+
+@media (max-width: 768px) {
+
+    #sidebar .plus-locked-airshow {
+        padding: 22px 15px !important;
+    }
+
+    #sidebar .plus-feature-list .plus-feature {
+        padding: 10px !important;
+    }
+
+}
