@@ -5145,19 +5145,35 @@ async function showLoggedInAccount(user) {
 
     if(profile && profile.role === "plus"){
 
-        // PLUS USER
+        // =========================
+        // AVSPOT PLUS USER
+        // =========================
 
         if(upgradeButton){
 
-            upgradeButton.style.display = "none";
+            upgradeButton.style.display = "block";
+
+            upgradeButton.disabled = true;
+
+            upgradeButton.innerHTML = `
+                <span class="plusButtonTitle">
+                    ⭐ Avspot Plus
+                </span>
+
+                <span class="plusButtonSubtitle">
+                    Premium membership active
+                </span>
+            `;
 
         }
+
 
         if(cancelButton){
 
             cancelButton.style.display = "block";
 
         }
+
 
         if(cancelStatus){
 
@@ -5169,19 +5185,35 @@ async function showLoggedInAccount(user) {
 
     else{
 
+        // =========================
         // NORMAL USER
+        // =========================
 
         if(upgradeButton){
 
             upgradeButton.style.display = "block";
 
+            upgradeButton.disabled = false;
+
+            upgradeButton.innerHTML = `
+                <span class="plusButtonTitle">
+                    ⭐ Upgrade to Avspot Plus
+                </span>
+
+                <span class="plusButtonSubtitle">
+                    £3.99/month · Unlock premium features
+                </span>
+            `;
+
         }
+
 
         if(cancelButton){
 
             cancelButton.style.display = "none";
 
         }
+
 
         if(cancelStatus){
 
