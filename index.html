@@ -2229,6 +2229,8 @@ async function upgradeToAvspotPlus(){
 
 async function cancelAvspotPlus() {
 
+    console.log("Cancellation response:", data);
+
     const confirmed = confirm(
         "Are you sure you want to cancel Avspot Plus?\n\n" +
         "You will keep your Plus benefits until the end of your current billing period."
