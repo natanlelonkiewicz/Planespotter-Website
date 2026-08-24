@@ -2560,3 +2560,54 @@ body {
     opacity: 0.65 !important;
     cursor: default !important;
 }
+
+/* FINAL AVSPOT PLUS CANCEL BUTTON STYLE */
+
+#cancelPlusButton {
+    all: unset !important;
+
+    display: block !important;
+    width: fit-content !important;
+    box-sizing: border-box !important;
+
+    margin: 12px auto 0 auto !important;
+    padding: 8px 15px !important;
+
+    background: #202020 !important;
+    color: #888 !important;
+
+    border: 1px solid #555 !important;
+    border-radius: 7px !important;
+
+    font-family: Arial, Helvetica, sans-serif !important;
+    font-size: 12px !important;
+    font-weight: 600 !important;
+    line-height: 1.2 !important;
+
+    text-align: center !important;
+
+    cursor: pointer !important;
+
+    box-shadow: none !important;
+    transform: none !important;
+}
+
+#cancelPlusButton:hover {
+    background: #292929 !important;
+    color: #ccc !important;
+    border-color: #777 !important;
+}
+
+#cancelPlusButton:active {
+    background: #181818 !important;
+    color: #aaa !important;
+    transform: none !important;
+}
+
+#cancelPlusButton:disabled {
+    background: #202020 !important;
+    color: #666 !important;
+    border-color: #444 !important;
+    opacity: 0.6 !important;
+    cursor: default !important;
+}
