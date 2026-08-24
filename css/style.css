@@ -1991,3 +1991,112 @@ body {
     transform: none !important;
 
 }
+
+
+.plus-locked-airshow {
+    margin: 20px 0 !important;
+    padding: 26px 20px !important;
+    background: linear-gradient(145deg, #202020, #171717) !important;
+    border: 1px solid #3a3a3a !important;
+    border-radius: 14px !important;
+    text-align: center !important;
+    box-shadow: 0 8px 25px rgba(0,0,0,0.25) !important;
+}
+
+.plus-lock-icon {
+    width: 52px !important;
+    height: 52px !important;
+    margin: 0 auto 14px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    background: #292929 !important;
+    border: 2px solid #f5c542 !important;
+    border-radius: 50% !important;
+    font-size: 24px !important;
+}
+
+.plus-locked-airshow h3 {
+    margin: 0 0 8px !important;
+    color: #f5c542 !important;
+    font-size: 21px !important;
+}
+
+.plus-lock-description {
+    margin: 0 auto 20px !important;
+    max-width: 300px !important;
+    color: #cfcfcf !important;
+    line-height: 1.5 !important;
+    font-size: 14px !important;
+}
+
+.plus-lock-description strong {
+    color: #f5c542 !important;
+}
+
+.plus-feature-list {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 9px !important;
+    margin: 20px 0 22px !important;
+    text-align: left !important;
+}
+
+.plus-feature {
+    display: flex !important;
+    align-items: center !important;
+    gap: 11px !important;
+    padding: 9px 11px !important;
+    background: #252525 !important;
+    border-radius: 8px !important;
+    color: #e5e5e5 !important;
+    font-size: 13px !important;
+}
+
+.plus-feature span:first-child {
+    width: 22px !important;
+    text-align: center !important;
+    font-size: 16px !important;
+}
+
+.airshow-plus-upgrade-button {
+    width: 100% !important;
+    padding: 12px 15px !important;
+    border-radius: 9px !important;
+    border: 2px solid #f5c542 !important;
+    background: #2b2b2b !important;
+    color: #f5c542 !important;
+    cursor: pointer !important;
+    transition: background 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease !important;
+}
+
+.airshow-plus-upgrade-button:hover {
+    background: #383838 !important;
+    color: #f5c542 !important;
+    box-shadow: 0 4px 15px rgba(245,197,66,0.15) !important;
+    transform: translateY(-1px) !important;
+}
+
+.airshow-plus-button-title {
+    display: block !important;
+    font-size: 15px !important;
+    font-weight: 700 !important;
+}
+
+.airshow-plus-button-subtitle {
+    display: block !important;
+    margin-top: 3px !important;
+    font-size: 11px !important;
+    color: #bdbdbd !important;
+}
+
+.plus-lock-footer {
+    margin: 14px 0 0 !important;
+    font-size: 11px !important;
+    color: #777 !important;
+}
+
+.airshow-plus-upgrade-button {
+    font-weight: 700 !important;
+    font-size: 15px !important;
+}

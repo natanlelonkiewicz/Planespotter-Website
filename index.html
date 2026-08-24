@@ -942,14 +942,14 @@ async function loadAirshows() {
             data,
             error
         } = await supabaseClient
-            .from("airshow_submissions")
-            .select("*")
-            .eq("status", "approved");
+            .from("public_airshows")
+            .select("*");
+
 
         if (error) {
 
             console.error(
-                "Approved airshow loading error:",
+                "Public airshow loading error:",
                 error
             );
 
@@ -957,18 +957,21 @@ async function loadAirshows() {
 
         }
 
+
         airshows = data || [];
 
+
         console.log(
-            "Loaded approved airshows:",
+            "Loaded public airshows:",
             airshows
         );
+
 
         displayAirshows();
 
     }
 
-    catch (error) {
+    catch(error) {
 
         console.error(
             "Airshow loading error:",
@@ -1176,6 +1179,42 @@ function getDirections(lat, lng){
         }
 
     );
+
+}
+
+function showAirshowsLocked() {
+
+    openSidebar();
+
+    document.getElementById("sidebar").innerHTML = `
+
+        <div class="plusLocked">
+
+            <div class="plusLockedIcon">
+                🔒
+            </div>
+
+            <h2>Avspot Plus</h2>
+
+            <p>
+                Detailed airshows and spotting locations
+                are available with Avspot Plus.
+            </p>
+
+            <p class="plusLockedPrice">
+                £3.99/month
+            </p>
+
+            <button
+                id="lockedUpgradeButton"
+                onclick="upgradeToAvspotPlus()"
+            >
+                ⭐ Upgrade to Avspot Plus
+            </button>
+
+        </div>
+
+    `;
 
 }
 
@@ -1650,7 +1689,10 @@ function displayAirshowSpots(airshow){
 
 }
 
-function showAirshow(airshow){
+async function showAirshow(airshow){
+
+    const plusUser = await isAvspotPlus();
+
 
     airport = null;
 
@@ -1668,14 +1710,170 @@ function showAirshow(airshow){
 
     currentAirshow = airshow;
 
-    map.flyTo(
-    [
-        airshow.lat,
-        airshow.lng
-    ],
-    13
-);
 
+    map.flyTo(
+        [
+            airshow.lat,
+            airshow.lng
+        ],
+        13
+    );
+
+
+    // Remove existing airshow spot markers
+
+    airshowSpotMarkers.forEach(function(marker){
+
+        map.removeLayer(marker);
+
+    });
+
+    airshowSpotMarkers = [];
+
+
+    // FREE / LOGGED-OUT USER
+
+if(!plusUser){
+
+    document.getElementById("sidebar").innerHTML = `
+
+        <h2>${airshow.name}</h2>
+
+        <p class="airport-details">
+            📍 ${airshow.location}
+        </p>
+
+        <hr>
+
+        <div class="plus-locked-airshow">
+
+            <div class="plus-lock-icon">
+                ⭐
+            </div>
+
+            <h3>
+                Avspot Plus
+            </h3>
+
+            <p class="plus-lock-description">
+                Unlock the full airshow experience with
+                <strong>Avspot Plus</strong>.
+            </p>
+
+            <div class="plus-feature-list">
+
+                <div class="plus-feature">
+                    <span>📅</span>
+                    <span>Full airshow information</span>
+                </div>
+
+                <div class="plus-feature">
+                    <span>✈️</span>
+                    <span>Confirmed aircraft</span>
+                </div>
+
+                <div class="plus-feature">
+                    <span>📸</span>
+                    <span>All spotting locations</span>
+                </div>
+
+                <div class="plus-feature">
+                    <span>☀️</span>
+                    <span>Lighting information</span>
+                </div>
+
+                <div class="plus-feature">
+                    <span>🔭</span>
+                    <span>Recommended focal lengths</span>
+                </div>
+
+                <div class="plus-feature">
+                    <span>📝</span>
+                    <span>Photography advice</span>
+                </div>
+
+                <div class="plus-feature">
+                    <span>🖼️</span>
+                    <span>Spotting location photos</span>
+                </div>
+
+            </div>
+
+            <button
+                id="upgradePlusButton"
+                class="airshow-plus-upgrade-button"
+                onclick="upgradeToAvspotPlus()"
+            >
+
+                <span class="airshow-plus-button-title">
+                    ⭐ Upgrade to Avspot Plus
+                </span>
+
+                <span class="airshow-plus-button-subtitle">
+                    Unlock all premium airshow features
+                </span>
+
+            </button>
+
+            <p class="plus-lock-footer">
+                £3.99/month · Cancel anytime
+            </p>
+
+        </div>
+
+    `;
+
+    return;
+
+}
+
+
+    // PLUS USER
+
+    const {
+        data: fullAirshow,
+        error
+    } = await supabaseClient
+        .from("airshow_submissions")
+        .select("*")
+        .eq("id", airshow.id)
+        .eq("status", "approved")
+        .single();
+
+
+    if(error){
+
+        console.error(
+            "Full airshow loading error:",
+            error
+        );
+
+        alert(
+            "Unable to load the full airshow information."
+        );
+
+        return;
+
+    }
+
+
+    airshow = fullAirshow;
+
+    currentAirshow = airshow;
+
+    displayAirshowSpots(airshow);
+
+    // Hide airshow spotting pins for non-Plus users
+    airshowSpotMarkers.forEach(function(marker){
+
+        map.removeLayer(marker);
+
+    });
+
+    airshowSpotMarkers = [];
+
+
+    // Avspot Plus users
     displayAirshowSpots(airshow);
 
 
@@ -2500,6 +2698,57 @@ async function startSubscription(){
         alert(
             "Something went wrong starting the subscription."
         );
+
+    }
+
+}
+
+async function isAvspotPlus() {
+
+    try {
+
+        const {
+            data: {
+                user
+            }
+        } = await supabaseClient.auth.getUser();
+
+        if (!user) {
+            return false;
+        }
+
+        const {
+            data: profile,
+            error
+        } = await supabaseClient
+            .from("profiles")
+            .select("role")
+            .eq("id", user.id)
+            .single();
+
+        if (error) {
+
+            console.error(
+                "Failed to check Avspot Plus status:",
+                error
+            );
+
+            return false;
+
+        }
+
+        return profile?.role === "plus";
+
+    }
+
+    catch(error) {
+
+        console.error(
+            "Avspot Plus check failed:",
+            error
+        );
+
+        return false;
 
     }
 
@@ -4713,7 +4962,7 @@ function showRegister() {
 
 }
 
-function showLoggedInAccount(user) {
+async function showLoggedInAccount(user) {
 
     accountWelcome.style.display = "none";
     loginScreen.classList.remove("active");
@@ -4726,6 +4975,81 @@ function showLoggedInAccount(user) {
 
     document.getElementById("loggedInUsername").textContent =
         "Your Account";
+
+
+    // Check whether the user is an Avspot Plus member
+
+    const {
+        data: profile,
+        error
+    } = await supabaseClient
+        .from("profiles")
+        .select("role")
+        .eq("id", user.id)
+        .single();
+
+
+    const upgradeButton =
+        document.getElementById("upgradePlusButton");
+
+
+    if(!upgradeButton){
+        return;
+    }
+
+
+    if(
+        !error &&
+        profile &&
+        profile.role === "plus"
+    ){
+
+        // Plus member
+
+        upgradeButton.innerHTML = `
+
+            <span class="plusButtonTitle">
+                ⭐ Avspot Plus
+            </span>
+
+            <span class="plusButtonSubtitle">
+                Premium membership active
+            </span>
+
+        `;
+
+        upgradeButton.disabled = true;
+
+        upgradeButton.onclick = null;
+
+        upgradeButton.style.cursor = "default";
+
+    }
+
+    else{
+
+        // Normal account
+
+        upgradeButton.innerHTML = `
+
+            <span class="plusButtonTitle">
+                ⭐ Upgrade to Avspot Plus
+            </span>
+
+            <span class="plusButtonSubtitle">
+                £3.99/month · Unlock premium features
+            </span>
+
+        `;
+
+        upgradeButton.disabled = false;
+
+        upgradeButton.onclick =
+            upgradeToAvspotPlus;
+
+        upgradeButton.style.cursor = "pointer";
+
+    }
 
 }
 
