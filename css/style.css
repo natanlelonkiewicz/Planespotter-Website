@@ -2383,231 +2383,57 @@ body {
 
 }
 
-#accountPopup #cancelPlusButton {
-
-    width: 100% !important;
-
-    padding: 9px 14px !important;
-
-    margin: 8px 0 0 0 !important;
-
-    background: transparent !important;
-
-    border: 1px solid #7a3a3a !important;
-
-    border-radius: 8px !important;
-
-    color: #c98b8b !important;
-
-    font-size: 13px !important;
-
-    font-weight: 600 !important;
-
-    cursor: pointer !important;
-
-    box-shadow: none !important;
-
-    transition:
-        background 0.2s ease,
-        border-color 0.2s ease,
-        color 0.2s ease !important;
-}
-
-
-#accountPopup #cancelPlusButton:hover {
-
-    background: rgba(180, 60, 60, 0.10) !important;
-
-    border-color: #a95555 !important;
-
-    color: #e09a9a !important;
-
-}
-
-
-#accountPopup #cancelPlusButton:active {
-
-    transform: none !important;
-
-}
-
-
-#accountPopup #cancelPlusButton:disabled {
-
-    opacity: 0.65 !important;
-
-    cursor: wait !important;
-
-}
-
-
-/* Cancellation confirmation/status message */
-
-#accountPopup #cancelPlusStatus {
-
-    margin: 10px 0 0 0 !important;
-
-    color: #999 !important;
-
-    font-size: 11px !important;
-
-    line-height: 1.45 !important;
-
-    text-align: center !important;
-
-}
+/* AVSPOT PLUS MANAGEMENT */
 
 .plus-management-section {
-    margin-top: 12px;
+    margin-top: 10px;
     text-align: center;
 }
 
 .account-cancel-plus-btn {
-    width: auto !important;
-    min-width: 150px !important;
-    padding: 8px 14px !important;
-
-    background: transparent !important;
-    color: #999 !important;
-
-    border: 1px solid #555 !important;
-    border-radius: 7px !important;
-
-    font-size: 12px !important;
-    font-weight: 600 !important;
-
-    cursor: pointer !important;
-
+    display: inline-block;
+    width: auto;
+    min-width: 145px;
+    padding: 7px 13px;
+    margin: 0;
+    background: transparent;
+    color: #888;
+    border: 1px solid #555;
+    border-radius: 7px;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 12px;
+    font-weight: 600;
+    line-height: 1.2;
+    cursor: pointer;
+    box-shadow: none;
     transition:
         background 0.2s ease,
         color 0.2s ease,
-        border-color 0.2s ease !important;
+        border-color 0.2s ease;
 }
 
 .account-cancel-plus-btn:hover {
-    background: #2b2b2b !important;
-    color: #ddd !important;
-    border-color: #777 !important;
+    background: #292929;
+    color: #ccc;
+    border-color: #777;
+}
+
+.account-cancel-plus-btn:active {
+    background: #181818;
 }
 
 .account-cancel-plus-btn:disabled {
-    opacity: 0.65 !important;
-    cursor: default !important;
+    opacity: 0.6;
+    cursor: default;
 }
 
 .cancel-plus-status {
-    margin: 10px 0 0 !important;
-
-    color: #aaa !important;
-    font-size: 12px !important;
-    line-height: 1.5 !important;
+    margin: 9px 0 0;
+    color: #aaa;
+    font-size: 12px;
+    line-height: 1.5;
 }
 
 .cancel-plus-status strong {
-    color: #f5c542 !important;
-}
-
-/* AVSPOT PLUS CANCEL BUTTON - FINAL OVERRIDE */
-
-#cancelPlusButton {
-    display: inline-block !important;
-    width: auto !important;
-    min-width: 145px !important;
-    max-width: 180px !important;
-
-    padding: 8px 14px !important;
-    margin: 10px auto 0 auto !important;
-
-    background: #202020 !important;
-    color: #888 !important;
-
-    border: 1px solid #555 !important;
-    border-radius: 7px !important;
-
-    font-family: Arial, Helvetica, sans-serif !important;
-    font-size: 12px !important;
-    font-weight: 600 !important;
-
-    line-height: 1.2 !important;
-
-    cursor: pointer !important;
-
-    box-shadow: none !important;
-
-    transition:
-        background 0.2s ease,
-        color 0.2s ease,
-        border-color 0.2s ease !important;
-}
-
-#cancelPlusButton:hover {
-    background: #292929 !important;
-    color: #ccc !important;
-    border-color: #777 !important;
-
-    transform: none !important;
-    box-shadow: none !important;
-}
-
-#cancelPlusButton:active {
-    transform: none !important;
-}
-
-#cancelPlusButton:disabled {
-    background: #202020 !important;
-    color: #666 !important;
-    border-color: #444 !important;
-    opacity: 0.65 !important;
-    cursor: default !important;
-}
-
-/* FINAL AVSPOT PLUS CANCEL BUTTON STYLE */
-
-#cancelPlusButton {
-    all: unset !important;
-
-    display: block !important;
-    width: fit-content !important;
-    box-sizing: border-box !important;
-
-    margin: 12px auto 0 auto !important;
-    padding: 8px 15px !important;
-
-    background: #202020 !important;
-    color: #888 !important;
-
-    border: 1px solid #555 !important;
-    border-radius: 7px !important;
-
-    font-family: Arial, Helvetica, sans-serif !important;
-    font-size: 12px !important;
-    font-weight: 600 !important;
-    line-height: 1.2 !important;
-
-    text-align: center !important;
-
-    cursor: pointer !important;
-
-    box-shadow: none !important;
-    transform: none !important;
-}
-
-#cancelPlusButton:hover {
-    background: #292929 !important;
-    color: #ccc !important;
-    border-color: #777 !important;
-}
-
-#cancelPlusButton:active {
-    background: #181818 !important;
-    color: #aaa !important;
-    transform: none !important;
-}
-
-#cancelPlusButton:disabled {
-    background: #202020 !important;
-    color: #666 !important;
-    border-color: #444 !important;
-    opacity: 0.6 !important;
-    cursor: default !important;
+    color: #f5c542;
 }
