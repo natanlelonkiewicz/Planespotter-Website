@@ -282,11 +282,23 @@ oninput="changeSunTime()"
     Cancel Avspot Plus
 </button>
 
-<p
-    id="cancelPlusStatus"
-    class="cancel-plus-status"
-    style="display:none;"
-></p>
+<div id="plusManagementSection" class="plus-management-section">
+
+    <button
+        id="cancelPlusButton"
+        class="account-cancel-plus-btn"
+        onclick="cancelAvspotPlus()"
+    >
+        Cancel Avspot Plus
+    </button>
+
+    <p
+        id="cancelPlusStatus"
+        class="cancel-plus-status"
+        style="display:none;"
+    ></p>
+
+</div>
 
 <button
     type="button"
@@ -2224,32 +2236,29 @@ async function upgradeToAvspotPlus(){
 
 }
 
-async function cancelAvspotPlus(){
+async function cancelAvspotPlus() {
 
     const confirmed = confirm(
         "Are you sure you want to cancel Avspot Plus?\n\n" +
-        "You will keep access to all Avspot Plus features " +
-        "until the end of your current billing period."
+        "You will keep your Plus benefits until the end of your current billing period."
     );
 
-    if(!confirmed){
+    if (!confirmed) {
         return;
     }
-
 
     const button =
         document.getElementById("cancelPlusButton");
 
+    const status =
+        document.getElementById("cancelPlusStatus");
 
-    if(button){
-
+    if (button) {
         button.disabled = true;
         button.innerText = "Cancelling...";
-
     }
 
-
-    try{
+    try {
 
         const {
             data,
@@ -2261,8 +2270,7 @@ async function cancelAvspotPlus(){
             }
         );
 
-
-        if(error){
+        if (error) {
 
             console.error(
                 "Cancellation error:",
@@ -2270,63 +2278,71 @@ async function cancelAvspotPlus(){
             );
 
             throw error;
-
         }
 
-
-        if(!data || !data.success){
+        if (!data || !data.success) {
 
             throw new Error(
                 data?.error ||
-                "Unable to cancel subscription."
+                "Unable to cancel your subscription."
             );
 
         }
 
+        const endDate =
+            new Date(
+                data.current_period_end * 1000
+            );
 
-        const status =
-            document.getElementById(
-                "cancelPlusStatus"
+        const formattedDate =
+            endDate.toLocaleDateString(
+                "en-GB",
+                {
+                    day: "numeric",
+                    month: "long",
+                    year: "numeric"
+                }
             );
 
 
-        if(status){
+        if (status) {
 
             status.style.display = "block";
 
-            status.textContent =
-                "Your Avspot Plus subscription has been cancelled and will remain active until the end of your current billing period.";
+            status.innerHTML =
+                `Avspot Plus will remain active until <strong>${formattedDate}</strong>.`;
 
         }
 
 
-        if(button){
-
-            button.innerText =
-                "Avspot Plus cancellation scheduled";
+        if (button) {
 
             button.disabled = true;
 
+            button.innerText =
+                "Plus active until " + formattedDate;
+
         }
 
+        console.log(
+            "Avspot Plus cancellation scheduled:",
+            formattedDate
+        );
 
     }
 
-    catch(error){
+    catch (error) {
 
         console.error(
-            "Avspot Plus cancellation error:",
+            "Avspot Plus cancellation failed:",
             error
         );
 
-
         alert(
-            error.message ||
-            "Something went wrong while cancelling Avspot Plus."
+            "Something went wrong while cancelling Avspot Plus. Please try again."
         );
 
-
-        if(button){
+        if (button) {
 
             button.disabled = false;
 
@@ -2338,7 +2354,6 @@ async function cancelAvspotPlus(){
     }
 
 }
-
 
 
 function showAirshowSpot(spot, airshow){

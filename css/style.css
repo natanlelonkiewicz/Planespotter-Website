@@ -2456,3 +2456,53 @@ body {
     text-align: center !important;
 
 }
+
+.plus-management-section {
+    margin-top: 12px;
+    text-align: center;
+}
+
+.account-cancel-plus-btn {
+    width: auto !important;
+    min-width: 150px !important;
+    padding: 8px 14px !important;
+
+    background: transparent !important;
+    color: #999 !important;
+
+    border: 1px solid #555 !important;
+    border-radius: 7px !important;
+
+    font-size: 12px !important;
+    font-weight: 600 !important;
+
+    cursor: pointer !important;
+
+    transition:
+        background 0.2s ease,
+        color 0.2s ease,
+        border-color 0.2s ease !important;
+}
+
+.account-cancel-plus-btn:hover {
+    background: #2b2b2b !important;
+    color: #ddd !important;
+    border-color: #777 !important;
+}
+
+.account-cancel-plus-btn:disabled {
+    opacity: 0.65 !important;
+    cursor: default !important;
+}
+
+.cancel-plus-status {
+    margin: 10px 0 0 !important;
+
+    color: #aaa !important;
+    font-size: 12px !important;
+    line-height: 1.5 !important;
+}
+
+.cancel-plus-status strong {
+    color: #f5c542 !important;
+}
