@@ -274,6 +274,21 @@ oninput="changeSunTime()"
 </button>
 
 <button
+    id="cancelPlusButton"
+    class="account-cancel-plus-btn"
+    onclick="cancelAvspotPlus()"
+    style="display:none;"
+>
+    Cancel Avspot Plus
+</button>
+
+<p
+    id="cancelPlusStatus"
+    class="cancel-plus-status"
+    style="display:none;"
+></p>
+
+<button
     type="button"
     class="account-add-airport-btn add-airshow-button"
     onclick="window.location.href='add-airshow.html'"
@@ -2208,6 +2223,123 @@ async function upgradeToAvspotPlus(){
     }
 
 }
+
+async function cancelAvspotPlus(){
+
+    const confirmed = confirm(
+        "Are you sure you want to cancel Avspot Plus?\n\n" +
+        "You will keep access to all Avspot Plus features " +
+        "until the end of your current billing period."
+    );
+
+    if(!confirmed){
+        return;
+    }
+
+
+    const button =
+        document.getElementById("cancelPlusButton");
+
+
+    if(button){
+
+        button.disabled = true;
+        button.innerText = "Cancelling...";
+
+    }
+
+
+    try{
+
+        const {
+            data,
+            error
+        } = await supabaseClient.functions.invoke(
+            "cancel-avspot-plus",
+            {
+                body: {}
+            }
+        );
+
+
+        if(error){
+
+            console.error(
+                "Cancellation error:",
+                error
+            );
+
+            throw error;
+
+        }
+
+
+        if(!data || !data.success){
+
+            throw new Error(
+                data?.error ||
+                "Unable to cancel subscription."
+            );
+
+        }
+
+
+        const status =
+            document.getElementById(
+                "cancelPlusStatus"
+            );
+
+
+        if(status){
+
+            status.style.display = "block";
+
+            status.textContent =
+                "Your Avspot Plus subscription has been cancelled and will remain active until the end of your current billing period.";
+
+        }
+
+
+        if(button){
+
+            button.innerText =
+                "Avspot Plus cancellation scheduled";
+
+            button.disabled = true;
+
+        }
+
+
+    }
+
+    catch(error){
+
+        console.error(
+            "Avspot Plus cancellation error:",
+            error
+        );
+
+
+        alert(
+            error.message ||
+            "Something went wrong while cancelling Avspot Plus."
+        );
+
+
+        if(button){
+
+            button.disabled = false;
+
+            button.innerText =
+                "Cancel Avspot Plus";
+
+        }
+
+    }
+
+}
+
+
 
 function showAirshowSpot(spot, airshow){
 
@@ -4970,6 +5102,7 @@ async function showLoggedInAccount(user) {
 
     loggedInScreen.classList.add("active");
 
+
     document.getElementById("loggedInEmail").textContent =
         user.email || "";
 
@@ -4977,8 +5110,7 @@ async function showLoggedInAccount(user) {
         "Your Account";
 
 
-    // Check whether the user is an Avspot Plus member
-
+    // Get the user's profile and check their role
     const {
         data: profile,
         error
@@ -4989,65 +5121,73 @@ async function showLoggedInAccount(user) {
         .single();
 
 
-    const upgradeButton =
-        document.getElementById("upgradePlusButton");
+    if(error){
 
+        console.error(
+            "Unable to load user profile:",
+            error
+        );
 
-    if(!upgradeButton){
         return;
+
     }
 
 
-    if(
-        !error &&
-        profile &&
-        profile.role === "plus"
-    ){
+    const upgradeButton =
+        document.getElementById("upgradePlusButton");
 
-        // Plus member
+    const cancelButton =
+        document.getElementById("cancelPlusButton");
 
-        upgradeButton.innerHTML = `
+    const cancelStatus =
+        document.getElementById("cancelPlusStatus");
 
-            <span class="plusButtonTitle">
-                ⭐ Avspot Plus
-            </span>
 
-            <span class="plusButtonSubtitle">
-                Premium membership active
-            </span>
+    if(profile && profile.role === "plus"){
 
-        `;
+        // PLUS USER
 
-        upgradeButton.disabled = true;
+        if(upgradeButton){
 
-        upgradeButton.onclick = null;
+            upgradeButton.style.display = "none";
 
-        upgradeButton.style.cursor = "default";
+        }
+
+        if(cancelButton){
+
+            cancelButton.style.display = "block";
+
+        }
+
+        if(cancelStatus){
+
+            cancelStatus.style.display = "none";
+
+        }
 
     }
 
     else{
 
-        // Normal account
+        // NORMAL USER
 
-        upgradeButton.innerHTML = `
+        if(upgradeButton){
 
-            <span class="plusButtonTitle">
-                ⭐ Upgrade to Avspot Plus
-            </span>
+            upgradeButton.style.display = "block";
 
-            <span class="plusButtonSubtitle">
-                £3.99/month · Unlock premium features
-            </span>
+        }
 
-        `;
+        if(cancelButton){
 
-        upgradeButton.disabled = false;
+            cancelButton.style.display = "none";
 
-        upgradeButton.onclick =
-            upgradeToAvspotPlus;
+        }
 
-        upgradeButton.style.cursor = "pointer";
+        if(cancelStatus){
+
+            cancelStatus.style.display = "none";
+
+        }
 
     }
 
