@@ -132,11 +132,10 @@ function addSpot() {
                 <label>Latitude</label>
 
                 <input
-                    type="number"
-                    class="spot-lat"
-                    step="any"
-                    placeholder="53.338772"
-                    required
+                type="text"
+                class="spot-lat"
+                placeholder="e.g. 51°28'17.2&quot;N"
+                required
                 >
 
             </div>
@@ -147,11 +146,10 @@ function addSpot() {
                 <label>Longitude</label>
 
                 <input
-                    type="number"
-                    class="spot-lng"
-                    step="any"
-                    placeholder="-2.301383"
-                    required
+                type="text"
+                class="spot-lng"
+                placeholder="e.g. 0°27'21.7&quot;W"
+                required
                 >
 
             </div>
@@ -864,19 +862,14 @@ for (const card of spotCards) {
 
 
         lat:
-            parseFloat(
-                card.querySelector(
-                    ".spot-lat"
-                ).value
-            ),
+    card.querySelector(
+        ".spot-lat"
+    ).value.trim(),
 
-
-        lng:
-            parseFloat(
-                card.querySelector(
-                    ".spot-lng"
-                ).value
-            ),
+lng:
+    card.querySelector(
+        ".spot-lng"
+    ).value.trim(),
 
 
         direction: null,
