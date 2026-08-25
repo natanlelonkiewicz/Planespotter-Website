@@ -1004,6 +1004,8 @@ loadAirportList();
 
 loadAirshows();
 
+loadAirportFromURL();
+
 function showSpot(spot){
 
     openSidebar();
@@ -2508,7 +2510,7 @@ function showAirshowSpot(spot, airshow){
 }
 
 
-async function loadAirport(icao){
+async function loadAirport(icao, spotId = null){
 
     currentAirshow = null;
 
@@ -2675,6 +2677,37 @@ airshowSpotMarkers = [];
 
 
         loadFlights();
+
+        // Open a specific spotting location if requested
+if (spotId) {
+
+    const requestedSpot = spots.find(function(spot){
+
+        return (
+            spot.name
+                .toLowerCase()
+                .replace(/\s+/g, "-")
+            === spotId.toLowerCase()
+        );
+
+    });
+
+    if (requestedSpot) {
+
+        showSpot(requestedSpot);
+
+    }
+
+    else {
+
+        console.warn(
+            "Requested spot not found:",
+            spotId
+        );
+
+    }
+
+}
 
     }
 
@@ -4517,6 +4550,45 @@ function closeWelcomePopup(){
 
 }
 
+function loadAirportFromURL(){
+
+    const params =
+        new URLSearchParams(
+            window.location.search
+        );
+
+    const airportCode =
+        params.get("airport");
+
+    const spotId =
+        params.get("spot");
+
+
+    if (!airportCode) {
+
+        return;
+
+    }
+
+
+    console.log(
+        "Loading airport from URL:",
+        airportCode
+    );
+
+    console.log(
+        "Loading spot from URL:",
+        spotId
+    );
+
+
+    loadAirport(
+        airportCode.toUpperCase(),
+        spotId
+    );
+
+}
+
 
 window.addEventListener("load", function(){
 
@@ -5302,6 +5374,22 @@ addAirportButton.addEventListener(
 
     }
 );
+
+function loadFromURL() {
+
+    const params = new URLSearchParams(window.location.search);
+
+    const airportCode = params.get("airport");
+    const spotName = params.get("spot");
+
+    if (!airportCode) {
+        return;
+    }
+
+    console.log("Requested airport:", airportCode);
+    console.log("Requested spot:", spotName);
+
+}
 
 </script>
 
