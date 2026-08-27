@@ -177,6 +177,26 @@
         "photoCredits": [
             "Matt Low"
         ]
-    }
+    },
+
+    {
+    "lat": "55.939028",
+    "lng": "-3.391444",
+    "name": "Bridge",
+    "notes": [
+      "None"
+    ],
+    "photos": [
+      "https://tfshpcjfcibynsbdxztn.supabase.co/storage/v1/object/public/airport-images/b7621e5a-9678-4b7b-9ad9-d15833879752/spots/47eddfe9-9f5f-4aa2-8d7e-5de73ccb1cc8.jpg"
+    ],
+    "parking": "You can park near the bus stop.",
+    "direction": 149,
+    "photoCredits": [
+      "Connor Frazer"
+    ],
+    "bestForRunway": "06 arrivals, 24 departures",
+    "bestTimeToVisit": "sunrise till 5-6pm",
+    "recommendedFocalLength": "100-400mm"
+  }
 ]
 }
