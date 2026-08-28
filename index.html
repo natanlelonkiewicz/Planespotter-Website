@@ -353,6 +353,8 @@ oninput="changeSunTime()"
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
+<script src="https://cdn.jsdelivr.net/npm/tz-lookup@6.1.25/tz.js"></script>
+
 <script>
 
 const SUPABASE_URL = "https://tfshpcjfcibynsbdxztn.supabase.co";
@@ -2793,6 +2795,17 @@ function showSunCompass(){
 
 }
 
+function getLocationTime(lat, lng){
+
+    var timeZone =
+        tzlookup(lat, lng);
+
+    return {
+        timeZone: timeZone
+    };
+
+}
+
 async function startSubscription(){
 
     try{
@@ -2966,15 +2979,9 @@ function toggleSunCompass(){
 
 function updateSunCompass(){
 
-    // Allow the sun tool to work for either
-    // an airport OR an airshow
-
     if(!airport && !currentAirshow){
         return;
     }
-
-
-    // Use the selected airport or airshow
 
     var location =
         airport || currentAirshow;
@@ -2987,8 +2994,15 @@ function updateSunCompass(){
         location.lng;
 
 
-    var now =
-        new Date();
+    var locationTime =
+        getLocationTime(
+            lat,
+            lng
+        );
+
+
+    var timeZone =
+        locationTime.timeZone;
 
 
     var slider =
@@ -2997,20 +3011,79 @@ function updateSunCompass(){
         );
 
 
-    if(slider){
-
-        now.setHours(
-            parseInt(slider.value)
+    var selectedHour =
+        slider
+        ?
+        parseInt(slider.value)
+        :
+        parseInt(
+            new Intl.DateTimeFormat(
+                "en-GB",
+                {
+                    timeZone: timeZone,
+                    hour: "2-digit",
+                    hourCycle: "h23"
+                }
+            ).format(new Date())
         );
 
-        now.setMinutes(0);
 
-    }
+    var now =
+        new Date();
+
+
+    var localParts =
+        new Intl.DateTimeFormat(
+            "en-GB",
+            {
+                timeZone: timeZone,
+
+                year: "numeric",
+                month: "2-digit",
+                day: "2-digit"
+            }
+        )
+        .formatToParts(now);
+
+
+    var year =
+        parseInt(
+            localParts.find(function(part){
+                return part.type === "year";
+            }).value
+        );
+
+
+    var month =
+        parseInt(
+            localParts.find(function(part){
+                return part.type === "month";
+            }).value
+        );
+
+
+    var day =
+        parseInt(
+            localParts.find(function(part){
+                return part.type === "day";
+            }).value
+        );
+
+
+    var sunDate =
+        getDateForLocationTime(
+            timeZone,
+            year,
+            month,
+            day,
+            selectedHour,
+            0
+        );
 
 
     var sun =
         SunCalc.getPosition(
-            now,
+            sunDate,
             lat,
             lng
         );
@@ -3131,6 +3204,8 @@ function changeSunTime(){
     }
 
 }
+
+
 
 function getSunBearing(date, lat, lng){
 
@@ -3516,20 +3591,84 @@ function updateSpotLighting(){
         return;
     }
 
-    var location = airport || currentAirshow;
+    var location =
+    airport || currentAirshow;
 
-    var date = new Date();
+var slider =
+    document.getElementById(
+        "sunTimeSlider"
+    );
 
-    var slider =
-        document.getElementById("sunTimeSlider");
+var selectedHour;
 
-    if(slider){
+if(slider){
 
-        date.setHours(
-            parseInt(slider.value)
-        );
+    selectedHour =
+        parseInt(slider.value);
 
-    }
+}
+else{
+
+    selectedHour =
+        new Date().getHours();
+
+}
+
+
+var locationTime =
+    getLocationTime(
+        location.lat,
+        location.lng
+    );
+
+
+var now = new Date();
+
+
+var localParts =
+    new Intl.DateTimeFormat(
+        "en-CA",
+        {
+            timeZone:
+                locationTime.timeZone,
+
+            year: "numeric",
+
+            month: "2-digit",
+
+            day: "2-digit"
+        }
+    )
+    .formatToParts(now);
+
+
+var year =
+    localParts.find(function(part){
+        return part.type === "year";
+    }).value;
+
+
+var month =
+    localParts.find(function(part){
+        return part.type === "month";
+    }).value;
+
+
+var day =
+    localParts.find(function(part){
+        return part.type === "day";
+    }).value;
+
+
+var date =
+    getDateForLocationTime(
+        locationTime.timeZone,
+        parseInt(year),
+        parseInt(month),
+        parseInt(day),
+        selectedHour,
+        0
+    );
 
 
     if(airport){
@@ -3554,22 +3693,22 @@ function updateSpotLighting(){
             sun.altitude * 180 / Math.PI;
 
 
-        spots.forEach(function(spot){
+            spots.forEach(function(spot){
 
-            spot.lighting =
-                getLightingRating(
-                    sunBearing,
-                    spot.direction,
-                    sunAltitude,
-                    weather.cloudCover,
-                    weather.lowCloud,
-                    weather.midCloud,
-                    weather.highCloud
-                );
+    spot.lighting =
+        getLightingRating(
+            sunBearing,
+            spot.direction,
+            sunAltitude,
+            weather.cloudCover,
+            weather.lowCloud,
+            weather.midCloud,
+            weather.highCloud
+        );
 
-            updateSpotMarker(spot);
+    updateSpotMarker(spot);
 
-        });
+});
 
     }
 
@@ -3595,6 +3734,83 @@ function getBestSpots(){
 
 }
 
+function getDateForLocationTime(
+    timeZone,
+    year,
+    month,
+    day,
+    hour,
+    minute
+){
+
+    var utcGuess =
+        new Date(
+            Date.UTC(
+                year,
+                month - 1,
+                day,
+                hour,
+                minute
+            )
+        );
+
+    var parts =
+        new Intl.DateTimeFormat(
+            "en-US",
+            {
+                timeZone: timeZone,
+
+                year: "numeric",
+                month: "2-digit",
+                day: "2-digit",
+
+                hour: "2-digit",
+                minute: "2-digit",
+
+                hourCycle: "h23"
+            }
+        )
+        .formatToParts(utcGuess);
+
+    var values = {};
+
+    parts.forEach(function(part){
+
+        if(part.type !== "literal"){
+
+            values[part.type] =
+                part.value;
+
+        }
+
+    });
+
+    var displayedTime =
+        Date.UTC(
+            parseInt(values.year),
+            parseInt(values.month) - 1,
+            parseInt(values.day),
+            parseInt(values.hour),
+            parseInt(values.minute)
+        );
+
+    var wantedTime =
+        Date.UTC(
+            year,
+            month - 1,
+            day,
+            hour,
+            minute
+        );
+
+    var difference =
+        wantedTime - displayedTime;
+
+    return new Date(
+        utcGuess.getTime() + difference
+    );
+
+}
 
 async function updateWeather(){
 
@@ -3783,20 +3999,62 @@ function getPhotographyScore(){
 
 function updateCurrentTime(){
 
-    var now = new Date();
+    if(!airport && !currentAirshow){
+        return;
+    }
 
-    var time = now.toLocaleTimeString([], {
-        hour: "2-digit",
-        minute: "2-digit"
-    });
+    var location =
+        airport || currentAirshow;
 
-    var element = document.getElementById("currentTime");
+    try{
 
-    if(element){
-        element.innerHTML = time;
+        var locationTime =
+            getLocationTime(
+                location.lat,
+                location.lng
+            );
+
+        var now = new Date();
+
+        var time =
+            now.toLocaleTimeString(
+                "en-GB",
+                {
+                    timeZone:
+                        locationTime.timeZone,
+
+                    hour: "2-digit",
+
+                    minute: "2-digit",
+
+                    hour12: false
+                }
+            );
+
+        var element =
+            document.getElementById(
+                "currentTime"
+            );
+
+        if(element){
+
+            element.innerHTML = time;
+
+        }
+
+    }
+    catch(error){
+
+        console.error(
+            "Location time error:",
+            error
+        );
+
     }
 
 }
+
+setInterval(updateCurrentTime, 1000);
 
 function refreshWeather(){
 
@@ -3821,15 +4079,49 @@ function liveSunTime(){
         return;
     }
 
+    var location =
+        airport || currentAirshow;
+
+    var locationTime =
+        getLocationTime(
+            location.lat,
+            location.lng
+        );
 
     var now = new Date();
 
-    var hour = now.getHours();
-    var minute = now.getMinutes();
+    var localTime =
+        new Intl.DateTimeFormat(
+            "en-GB",
+            {
+                timeZone:
+                    locationTime.timeZone,
 
+                hour: "2-digit",
+
+                minute: "2-digit",
+
+                hourCycle: "h23"
+            }
+        )
+        .formatToParts(now);
+
+    var hour = parseInt(
+        localTime.find(function(part){
+            return part.type === "hour";
+        }).value
+    );
+
+    var minute = parseInt(
+        localTime.find(function(part){
+            return part.type === "minute";
+        }).value
+    );
 
     var slider =
-        document.getElementById("sunTimeSlider");
+        document.getElementById(
+            "sunTimeSlider"
+        );
 
     if(slider){
 
@@ -3837,12 +4129,16 @@ function liveSunTime(){
 
     }
 
-
-    document.getElementById("selectedTime").innerHTML =
-        hour.toString().padStart(2,"0")
-        + ":"
-        + minute.toString().padStart(2,"0")
-        + " 🔴 LIVE";
+    document.getElementById(
+        "selectedTime"
+    ).innerHTML =
+        hour.toString().padStart(2, "0")
+        +
+        ":"
+        +
+        minute.toString().padStart(2, "0")
+        +
+        " 🔴 LIVE";
 
 
     updateSunCompass();
@@ -3864,7 +4160,6 @@ function liveSunTime(){
             if(!card){
                 return;
             }
-
 
             var lightingElement =
                 card.querySelector(
@@ -3890,7 +4185,6 @@ function liveSunTime(){
                 "backlit"
             );
 
-
             if(spot.lighting){
 
                 if(
@@ -3902,7 +4196,6 @@ function liveSunTime(){
                     );
 
                 }
-
                 else if(
                     spot.lighting.text === "Side lighting" ||
                     spot.lighting.text === "Diffused light" ||
@@ -3914,7 +4207,6 @@ function liveSunTime(){
                     );
 
                 }
-
                 else{
 
                     card.classList.add(
@@ -3924,7 +4216,6 @@ function liveSunTime(){
                 }
 
             }
-
             else{
 
                 card.classList.add(
@@ -3936,7 +4227,6 @@ function liveSunTime(){
         });
 
     }
-
     else if(airport){
 
         updateSpotLighting();
@@ -4249,8 +4539,6 @@ function getWeatherAdvice(){
     return advice.join("<br>");
 
 }
-
-setInterval(updateCurrentTime,1000);
 
 
 var now = new Date();
