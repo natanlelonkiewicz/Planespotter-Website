@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Plane Log | Avspot</title>
+
+    <style>
+
+        *{
+            box-sizing:border-box;
+        }
+
+        body{
+            margin:0;
+            background:#111;
+            color:#fff;
+            font-family:Arial, sans-serif;
+        }
+
+        .plane-log-page{
+            max-width:1100px;
+            margin:0 auto;
+            padding:40px 20px;
+        }
+
+        .plane-log-header{
+            display:flex;
+            justify-content:space-between;
+            align-items:center;
+            margin-bottom:10px;
+        }
+
+        .plane-log-header h1{
+            margin:0;
+            color:#f5c542;
+            font-size:32px;
+        }
+
+        .back-button{
+            background:#252525;
+            color:#fff;
+            border:1px solid #444;
+            padding:10px 16px;
+            border-radius:8px;
+            cursor:pointer;
+            font-size:14px;
+        }
+
+        .back-button:hover{
+            border-color:#f5c542;
+        }
+
+        .plane-log-subtitle{
+            color:#aaa;
+            margin-top:5px;
+            margin-bottom:30px;
+        }
+
+        .plane-log-card{
+            background:#1b1b1b;
+            border:1px solid #333;
+            border-radius:12px;
+            padding:25px;
+            margin-bottom:25px;
+        }
+
+        .plane-log-card h2{
+            margin-top:0;
+        }
+
+        .log-aircraft-button{
+            background:#f5c542;
+            color:#111;
+            border:none;
+            padding:12px 20px;
+            border-radius:8px;
+            font-weight:bold;
+            cursor:pointer;
+        }
+
+        .log-aircraft-button:hover{
+            opacity:0.9;
+        }
+
+        #planeLogEntries{
+            margin-top:20px;
+        }
+
+        .empty-log{
+            color:#888;
+            text-align:center;
+            padding:40px 10px;
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<div class="plane-log-page">
+
+
+    <div class="plane-log-header">
+
+        <h1>📋 Plane Log</h1>
+
+        <button
+            class="back-button"
+            onclick="window.location.href='/'"
+        >
+            ← Back to Avspot
+        </button>
+
+    </div>
+
+
+    <p class="plane-log-subtitle">
+        Keep track of every aircraft you spot.
+    </p>
+
+
+    <div class="plane-log-card">
+
+        <h2>Your Aircraft</h2>
+
+        <p>
+            Start building your personal aircraft spotting log.
+        </p>
+
+        <button
+            class="log-aircraft-button"
+            onclick="showPlaneLogForm()"
+        >
+            ➕ Log Aircraft
+        </button>
+
+    </div>
+
+
+    <div
+        id="planeLogForm"
+        class="plane-log-card"
+        style="display:none;"
+    >
+
+        <h2>Log Aircraft</h2>
+
+        <!-- We'll build the form here next -->
+
+    </div>
+
+
+    <div class="plane-log-card">
+
+        <h2>Your Log</h2>
+
+        <div id="planeLogEntries">
+
+            <div class="empty-log">
+                No aircraft logged yet.
+            </div>
+
+        </div>
+
+    </div>
+
+
+</div>
+
+
+<script>
+
+function showPlaneLogForm(){
+
+    document.getElementById(
+        "planeLogForm"
+    ).style.display = "block";
+
+}
+
+</script>
+
+
+</body>
+
+</html>
