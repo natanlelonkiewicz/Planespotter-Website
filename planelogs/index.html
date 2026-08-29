@@ -176,6 +176,31 @@
     opacity:0.85;
 }
 
+.plane-log-photo-wrapper{
+    position:relative;
+}
+
+.plane-log-photo-remove{
+    position:absolute;
+    top:8px;
+    right:8px;
+    width:30px;
+    height:30px;
+    border:none;
+    border-radius:50%;
+    background:#4a1f1f;
+    color:#fff;
+    font-size:16px;
+    cursor:pointer;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+}
+
+.plane-log-photo-remove:hover{
+    background:#6b2929;
+}
+
 @media(max-width:700px){
 
     .plane-log-photos{
@@ -492,6 +517,12 @@ async function editPlaneLog(logId){
 
 
         document.getElementById(
+            "planeLogFormTitle"
+        ).textContent =
+            "Edit Aircraft";
+
+
+        document.getElementById(
             "planeRegistration"
         ).value =
             log.registration || "";
@@ -548,27 +579,29 @@ async function editPlaneLog(logId){
         window.editingPlaneLogId =
             logId;
 
-            const saveButton =
-    document.querySelector(
-        '#planeLogForm .log-aircraft-button'
-    );
-
-if(saveButton){
-
-    saveButton.textContent =
-        "Save Changes";
-
-}
-
 
         window.editingPlaneLogPhotos =
             log.photo_urls || [];
 
 
+        const saveButton =
+            document.querySelector(
+                '#planeLogForm .log-aircraft-button'
+            );
+
+
+        if(saveButton){
+
+            saveButton.textContent =
+                "Save Changes";
+
+        }
+
+
         document.getElementById(
             "planeLogForm"
         ).scrollIntoView({
-            behavior: "smooth"
+            behavior:"smooth"
         });
 
     }
@@ -672,14 +705,30 @@ async function savePlaneLog(){
     }
 
 
-    const photoUrls = [];
+    let photoUrls = [];
+
+if(editingId){
+
+    photoUrls =
+        [...(window.editingPlaneLogPhotos || [])];
+
+}
 
 
     try{
 
-        /*
-            UPLOAD PHOTOS
-        */
+        if(
+    editingId &&
+    photoUrls.length + photos.length > 3
+){
+
+    alert(
+        "You can have a maximum of 3 photos per sighting."
+    );
+
+    return;
+
+}
 
         for(let i = 0; i < photos.length; i++){
 
@@ -772,7 +821,10 @@ async function savePlaneLog(){
                         sightingTime || null,
 
                     notes:
-                        notes
+                        notes,
+
+                    photo_urls:
+                    photoUrls
 
                 })
                 .eq("id", editingId)
