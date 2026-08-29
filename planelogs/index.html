@@ -149,16 +149,83 @@
 
 
     <div
-        id="planeLogForm"
-        class="plane-log-card"
-        style="display:none;"
+    id="planeLogForm"
+    class="plane-log-card"
+    style="display:none;"
+>
+
+    <h2>Log Aircraft</h2>
+
+    <input
+        id="planeRegistration"
+        type="text"
+        placeholder="Registration (e.g. G-ABCD)"
     >
 
-        <h2>Log Aircraft</h2>
+    <input
+        id="planeAircraftType"
+        type="text"
+        placeholder="Aircraft type (e.g. A320-214)"
+    >
 
-        <!-- We'll build the form here next -->
+    <input
+        id="planeAirline"
+        type="text"
+        placeholder="Airline / Operator"
+    >
 
-    </div>
+    <input
+        id="planeFlightNumber"
+        type="text"
+        placeholder="Flight number (optional)"
+    >
+
+    <input
+        id="planeAirport"
+        type="text"
+        placeholder="Airport"
+    >
+
+    <input
+        id="planeLocation"
+        type="text"
+        placeholder="Spotting location (optional)"
+    >
+
+    <input
+        id="planeDate"
+        type="date"
+    >
+
+    <input
+        id="planeTime"
+        type="time"
+    >
+
+    <textarea
+        id="planeNotes"
+        placeholder="Notes (optional)"
+    ></textarea>
+
+    <br><br>
+
+    <button
+        type="button"
+        class="log-aircraft-button"
+        onclick="savePlaneLog()"
+    >
+        Save Aircraft
+    </button>
+
+    <button
+        type="button"
+        class="back-button"
+        onclick="hidePlaneLogForm()"
+    >
+        Cancel
+    </button>
+
+</div>
 
 
     <div class="plane-log-card">
