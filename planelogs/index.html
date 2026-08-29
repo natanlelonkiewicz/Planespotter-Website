@@ -605,6 +605,149 @@ async function savePlaneLog(){
 
 }
 
+async function loadPlaneLogs(){
+
+    const {
+        data: { user },
+        error: userError
+    } = await supabaseClient.auth.getUser();
+
+
+    if(userError || !user){
+
+        document.getElementById(
+            "planeLogEntries"
+        ).innerHTML = `
+            <div class="empty-log">
+                Please log in to view your aircraft log.
+            </div>
+        `;
+
+        return;
+
+    }
+
+
+    const {
+        data: logs,
+        error
+    } = await supabaseClient
+        .from("plane_logs")
+        .select("*")
+        .eq("user_id", user.id)
+        .order("sighting_date", {
+            ascending: false
+        });
+
+
+    if(error){
+
+        console.error(
+            "Plane log loading error:",
+            error
+        );
+
+        return;
+
+    }
+
+
+    const container =
+        document.getElementById(
+            "planeLogEntries"
+        );
+
+
+    if(!logs || logs.length === 0){
+
+        container.innerHTML = `
+            <div class="empty-log">
+                No aircraft logged yet.
+            </div>
+        `;
+
+        return;
+
+    }
+
+
+    container.innerHTML = "";
+
+
+    logs.forEach(function(log){
+
+        const card =
+            document.createElement("div");
+
+        card.className =
+            "plane-log-entry";
+
+
+        card.innerHTML = `
+
+            <h3>
+                ${log.registration || "Unknown registration"}
+            </h3>
+
+            <p>
+                <strong>Aircraft:</strong>
+                ${log.aircraft_type || "Unknown"}
+            </p>
+
+            <p>
+                <strong>Airline:</strong>
+                ${log.airline || "Unknown"}
+            </p>
+
+            <p>
+                <strong>Flight:</strong>
+                ${log.flight_number || "—"}
+            </p>
+
+            <p>
+                <strong>Airport:</strong>
+                ${log.airport || "—"}
+            </p>
+
+            <p>
+                <strong>Location:</strong>
+                ${log.location || "—"}
+            </p>
+
+            <p>
+                <strong>Date:</strong>
+                ${log.sighting_date || "—"}
+            </p>
+
+            <p>
+                <strong>Time:</strong>
+                ${log.sighting_time || "—"}
+            </p>
+
+            ${
+                log.notes
+                ?
+                `
+                <p>
+                    <strong>Notes:</strong>
+                    ${log.notes}
+                </p>
+                `
+                :
+                ""
+            }
+
+        `;
+
+
+        container.appendChild(card);
+
+    });
+
+}
+
+loadPlaneLogs();
+
 </script>
 
 
