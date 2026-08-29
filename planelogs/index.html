@@ -996,6 +996,165 @@ async function isAvspotPlus(){
 
 }
 
+async function upgradeToAvspotPlus(){
+
+    if(!supabaseClient){
+
+        alert("Supabase is not available.");
+        return;
+
+    }
+
+
+    try{
+
+        // Make sure the user is logged in
+
+        const {
+            data: {
+                user
+            },
+            error: userError
+        } = await supabaseClient.auth.getUser();
+
+
+        if(userError || !user){
+
+            alert(
+                "Please log in or create an account before upgrading to Avspot Plus."
+            );
+
+            return;
+
+        }
+
+
+        const button =
+            document.querySelector(
+                ".plus-locked-plane-log .airshow-plus-upgrade-button"
+            );
+
+
+        if(button){
+
+            button.disabled = true;
+
+            button.innerHTML = `
+                <span class="airshow-plus-button-title">
+                    Loading...
+                </span>
+            `;
+
+        }
+
+
+        const {
+            data,
+            error
+        } = await supabaseClient.functions.invoke(
+            "create-checkout-session",
+            {
+                body: {}
+            }
+        );
+
+
+        if(error){
+
+            console.error(
+                "Checkout error:",
+                error
+            );
+
+            if(error.context){
+
+                try{
+
+                    console.error(
+                        "Checkout error details:",
+                        await error.context.json()
+                    );
+
+                }
+                catch(e){
+
+                    console.error(
+                        "Unable to read checkout error details:",
+                        e
+                    );
+
+                }
+
+            }
+
+            throw error;
+
+        }
+
+
+        if(!data || !data.url){
+
+            console.error(
+                "Invalid checkout response:",
+                data
+            );
+
+            throw new Error(
+                "Stripe checkout URL was not returned."
+            );
+
+        }
+
+
+        // Send user to Stripe
+
+        window.location.href =
+            data.url;
+
+    }
+
+
+    catch(error){
+
+        console.error(
+            "Avspot Plus checkout error:",
+            error
+        );
+
+
+        alert(
+            "Something went wrong while starting your Avspot Plus subscription."
+        );
+
+
+        const button =
+            document.querySelector(
+                ".plus-locked-plane-log .airshow-plus-upgrade-button"
+            );
+
+
+        if(button){
+
+            button.disabled = false;
+
+            button.innerHTML = `
+
+                <span class="airshow-plus-button-title">
+                    ⭐ Upgrade to Avspot Plus
+                </span>
+
+                <span class="airshow-plus-button-subtitle">
+                    Unlock Plane Log and other premium features
+                </span>
+
+            `;
+
+        }
+
+    }
+
+}
+
 function showPlaneLogForm(){
 
     document.getElementById(
