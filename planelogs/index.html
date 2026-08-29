@@ -321,6 +321,43 @@
 
 }
 
+.plane-log-stats{
+    display:grid;
+    grid-template-columns:repeat(3, 1fr);
+    gap:15px;
+    margin-bottom:25px;
+}
+
+.plane-log-stat{
+    background:#1b1b1b;
+    border:1px solid #333;
+    border-radius:12px;
+    padding:20px;
+    text-align:center;
+}
+
+.plane-log-stat-number{
+    display:block;
+    color:#f5c542;
+    font-size:30px;
+    font-weight:bold;
+}
+
+.plane-log-stat-label{
+    display:block;
+    color:#aaa;
+    font-size:14px;
+    margin-top:5px;
+}
+
+@media(max-width:600px){
+
+    .plane-log-stats{
+        grid-template-columns:1fr;
+    }
+
+}
+
     </style>
 
 </head>
@@ -352,6 +389,36 @@
         Keep track of every aircraft you spot.
     </p>
 
+    <div class="plane-log-stats">
+
+    <div class="plane-log-stat">
+        <span class="plane-log-stat-number" id="totalSightings">
+            0
+        </span>
+        <span class="plane-log-stat-label">
+            Total Sightings
+        </span>
+    </div>
+
+    <div class="plane-log-stat">
+        <span class="plane-log-stat-number" id="uniqueAircraft">
+            0
+        </span>
+        <span class="plane-log-stat-label">
+            Unique Aircraft
+        </span>
+    </div>
+
+    <div class="plane-log-stat">
+        <span class="plane-log-stat-number" id="totalPhotos">
+            0
+        </span>
+        <span class="plane-log-stat-label">
+            Photos
+        </span>
+    </div>
+
+</div>
 
     <div class="plane-log-card">
 
@@ -1468,19 +1535,65 @@ async function loadPlaneLogs(){
             "planeLogEntries"
         );
 
+        const totalSightings =
+    document.getElementById(
+        "totalSightings"
+    );
+
+const uniqueAircraft =
+    document.getElementById(
+        "uniqueAircraft"
+    );
+
+const totalPhotos =
+    document.getElementById(
+        "totalPhotos"
+    );
+
 
     if(!logs || logs.length === 0){
 
-        container.innerHTML = `
-            <div class="empty-log">
-                No aircraft logged yet.
-            </div>
-        `;
+    totalSightings.textContent = "0";
+    uniqueAircraft.textContent = "0";
+    totalPhotos.textContent = "0";
 
-        return;
+    container.innerHTML = `
+        <div class="empty-log">
+            No aircraft logged yet.
+        </div>
+    `;
 
-    }
+    return;
 
+}
+
+    const uniqueRegistrations =
+    new Set(
+        logs
+            .map(log => log.registration)
+            .filter(Boolean)
+            .map(reg => reg.trim().toUpperCase())
+    );
+
+const photoCount =
+    logs.reduce(
+        (total, log) =>
+            total +
+            (Array.isArray(log.photo_urls)
+                ? log.photo_urls.length
+                : 0),
+        0
+    );
+
+
+totalSightings.textContent =
+    logs.length;
+
+uniqueAircraft.textContent =
+    uniqueRegistrations.size;
+
+totalPhotos.textContent =
+    photoCount;
 
     container.innerHTML = "";
 
