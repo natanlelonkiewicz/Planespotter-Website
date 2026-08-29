@@ -388,6 +388,12 @@
     multiple
 >
 
+<div
+    id="existingPlanePhotos"
+    class="plane-log-photos"
+    style="display:none;"
+></div>
+
 <p
     style="
         color:#888;
@@ -583,6 +589,8 @@ async function editPlaneLog(logId){
         window.editingPlaneLogPhotos =
             log.photo_urls || [];
 
+        renderExistingPlanePhotos();
+
 
         const saveButton =
             document.querySelector(
@@ -618,6 +626,101 @@ async function editPlaneLog(logId){
         );
 
     }
+
+}
+
+function renderExistingPlanePhotos(){
+
+    const container =
+        document.getElementById(
+            "existingPlanePhotos"
+        );
+
+    container.innerHTML = "";
+
+    const photos =
+        window.editingPlaneLogPhotos || [];
+
+    if(photos.length === 0){
+
+        container.style.display = "none";
+
+        return;
+
+    }
+
+    container.style.display = "grid";
+
+    photos.forEach(function(photoPath, index){
+
+        const wrapper =
+            document.createElement("div");
+
+        wrapper.className =
+            "plane-log-photo-wrapper";
+
+
+        const img =
+            document.createElement("img");
+
+        img.className =
+            "plane-log-photo";
+
+
+        supabaseClient.storage
+            .from("plane-log-photos")
+            .createSignedUrl(
+                photoPath,
+                3600
+            )
+            .then(function(result){
+
+                if(
+                    result.data &&
+                    result.data.signedUrl
+                ){
+
+                    img.src =
+                        result.data.signedUrl;
+
+                }
+
+            });
+
+
+        const removeButton =
+            document.createElement("button");
+
+        removeButton.type =
+            "button";
+
+        removeButton.className =
+            "plane-log-photo-remove";
+
+        removeButton.textContent =
+            "×";
+
+
+        removeButton.onclick =
+            function(){
+
+                window.editingPlaneLogPhotos.splice(
+                    index,
+                    1
+                );
+
+                renderExistingPlanePhotos();
+
+            };
+
+
+        wrapper.appendChild(img);
+
+        wrapper.appendChild(removeButton);
+
+        container.appendChild(wrapper);
+
+    });
 
 }
 
@@ -707,10 +810,15 @@ async function savePlaneLog(){
 
     let photoUrls = [];
 
+let originalPhotoUrls = [];
+
 if(editingId){
 
-    photoUrls =
+    originalPhotoUrls =
         [...(window.editingPlaneLogPhotos || [])];
+
+    photoUrls =
+        [...originalPhotoUrls];
 
 }
 
@@ -897,6 +1005,42 @@ if(editingId){
 
         }
 
+        if(editingId){
+
+    const removedPhotos =
+        originalPhotoUrls.filter(
+            function(photo){
+
+                return !photoUrls.includes(photo);
+
+            }
+        );
+
+
+    if(removedPhotos.length > 0){
+
+        const {
+            error: removeError
+        } = await supabaseClient.storage
+            .from("plane-log-photos")
+            .remove(
+                removedPhotos
+            );
+
+
+        if(removeError){
+
+            console.error(
+                "Removed photo cleanup error:",
+                removeError
+            );
+
+        }
+
+    }
+
+}
+
 
         alert(
     editingId
@@ -952,6 +1096,14 @@ if(editingId){
 
         window.editingPlaneLogId = null;
 window.editingPlaneLogPhotos = [];
+
+document.getElementById(
+    "existingPlanePhotos"
+).innerHTML = "";
+
+document.getElementById(
+    "existingPlanePhotos"
+).style.display = "none";
 
 
     }
