@@ -287,7 +287,9 @@
     style="display:none;"
 >
 
-    <h2>Log Aircraft</h2>
+    <h2 id="planeLogFormTitle">
+    Log Aircraft
+</h2>
 
     <input
         id="planeRegistration"
@@ -436,7 +438,160 @@ function hidePlaneLogForm(){
 
 }
 
+async function editPlaneLog(logId){
+
+    try{
+
+        const {
+            data: { user },
+            error: userError
+        } = await supabaseClient.auth.getUser();
+
+
+        if(userError || !user){
+
+            alert(
+                "Please log in before editing a sighting."
+            );
+
+            return;
+
+        }
+
+
+        const {
+            data: log,
+            error
+        } = await supabaseClient
+            .from("plane_logs")
+            .select("*")
+            .eq("id", logId)
+            .eq("user_id", user.id)
+            .single();
+
+
+        if(error){
+
+            console.error(
+                "Plane log fetch error:",
+                error
+            );
+
+            alert(
+                "Unable to load this aircraft log."
+            );
+
+            return;
+
+        }
+
+
+        document.getElementById(
+            "planeLogForm"
+        ).style.display = "block";
+
+
+        document.getElementById(
+            "planeRegistration"
+        ).value =
+            log.registration || "";
+
+
+        document.getElementById(
+            "planeAircraftType"
+        ).value =
+            log.aircraft_type || "";
+
+
+        document.getElementById(
+            "planeAirline"
+        ).value =
+            log.airline || "";
+
+
+        document.getElementById(
+            "planeFlightNumber"
+        ).value =
+            log.flight_number || "";
+
+
+        document.getElementById(
+            "planeAirport"
+        ).value =
+            log.airport || "";
+
+
+        document.getElementById(
+            "planeLocation"
+        ).value =
+            log.location || "";
+
+
+        document.getElementById(
+            "planeDate"
+        ).value =
+            log.sighting_date || "";
+
+
+        document.getElementById(
+            "planeTime"
+        ).value =
+            log.sighting_time || "";
+
+
+        document.getElementById(
+            "planeNotes"
+        ).value =
+            log.notes || "";
+
+
+        window.editingPlaneLogId =
+            logId;
+
+            const saveButton =
+    document.querySelector(
+        '#planeLogForm .log-aircraft-button'
+    );
+
+if(saveButton){
+
+    saveButton.textContent =
+        "Save Changes";
+
+}
+
+
+        window.editingPlaneLogPhotos =
+            log.photo_urls || [];
+
+
+        document.getElementById(
+            "planeLogForm"
+        ).scrollIntoView({
+            behavior: "smooth"
+        });
+
+    }
+
+    catch(error){
+
+        console.error(
+            "Edit plane log error:",
+            error
+        );
+
+        alert(
+            "Something went wrong loading this aircraft."
+        );
+
+    }
+
+}
+
 async function savePlaneLog(){
+
+    const editingId =
+    window.editingPlaneLogId || null;
 
     const registration =
         document.getElementById("planeRegistration").value.trim();
@@ -577,67 +732,125 @@ async function savePlaneLog(){
         }
 
 
-        /*
-            SAVE PLANE LOG
+                /*
+            SAVE OR UPDATE PLANE LOG
         */
 
-        const {
-            error: insertError
-        } = await supabaseClient
-            .from("plane_logs")
-            .insert({
-
-                user_id:
-                    user.id,
-
-                registration:
-                    registration,
-
-                aircraft_type:
-                    aircraftType,
-
-                airline:
-                    airline,
-
-                flight_number:
-                    flightNumber,
-
-                airport:
-                    airportName,
-
-                location:
-                    location,
-
-                sighting_date:
-                    sightingDate || null,
-
-                sighting_time:
-                    sightingTime || null,
-
-                notes:
-                    notes,
-
-                photo_urls:
-                    photoUrls
-
-            });
+        let saveError;
 
 
-        if(insertError){
+        if(editingId){
+
+            const {
+                error
+            } = await supabaseClient
+                .from("plane_logs")
+                .update({
+
+                    registration:
+                        registration,
+
+                    aircraft_type:
+                        aircraftType,
+
+                    airline:
+                        airline,
+
+                    flight_number:
+                        flightNumber,
+
+                    airport:
+                        airportName,
+
+                    location:
+                        location,
+
+                    sighting_date:
+                        sightingDate || null,
+
+                    sighting_time:
+                        sightingTime || null,
+
+                    notes:
+                        notes
+
+                })
+                .eq("id", editingId)
+                .eq("user_id", user.id);
+
+
+            saveError =
+                error;
+
+        }
+
+        else{
+
+            const {
+                error
+            } = await supabaseClient
+                .from("plane_logs")
+                .insert({
+
+                    user_id:
+                        user.id,
+
+                    registration:
+                        registration,
+
+                    aircraft_type:
+                        aircraftType,
+
+                    airline:
+                        airline,
+
+                    flight_number:
+                        flightNumber,
+
+                    airport:
+                        airportName,
+
+                    location:
+                        location,
+
+                    sighting_date:
+                        sightingDate || null,
+
+                    sighting_time:
+                        sightingTime || null,
+
+                    notes:
+                        notes,
+
+                    photo_urls:
+                        photoUrls
+
+                });
+
+
+            saveError =
+                error;
+
+        }
+
+
+        if(saveError){
 
             console.error(
                 "Plane log save error:",
-                insertError
+                saveError
             );
 
-            throw insertError;
+            throw saveError;
 
         }
 
 
         alert(
-            "Aircraft logged successfully!"
-        );
+    editingId
+    ? "Aircraft updated successfully!"
+    : "Aircraft logged successfully!"
+);
 
 
         /*
@@ -684,6 +897,9 @@ async function savePlaneLog(){
 
 
         hidePlaneLogForm();
+
+        window.editingPlaneLogId = null;
+window.editingPlaneLogPhotos = [];
 
 
     }
@@ -998,21 +1214,21 @@ async function loadPlaneLogs(){
                         
             <div class="plane-log-controls">
 
-                <button
-                    class="plane-log-edit"
-                    onclick="editPlaneLog('${log.id}')"
-                >
-                    ✏️ Edit
-                </button>
+    <button
+        class="plane-log-edit"
+        onclick="editPlaneLog('${log.id}')"
+    >
+        ✏️ Edit
+    </button>
 
-                <button
-                    class="plane-log-delete"
-                    onclick="deletePlaneLog('${log.id}')"
-                >
-                    🗑 Delete
-                </button>
+    <button
+        class="plane-log-delete"
+        onclick="deletePlaneLog('${log.id}')"
+    >
+        🗑 Delete
+    </button>
 
-            </div>
+</div>
 
                 `;
 
