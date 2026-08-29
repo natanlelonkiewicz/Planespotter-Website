@@ -358,6 +358,53 @@
 
 }
 
+.plus-locked-plane-log{
+    text-align:center;
+    padding:35px 20px;
+}
+
+.plus-locked-plane-log .plus-lock-icon{
+    font-size:45px;
+    margin-bottom:10px;
+}
+
+.plus-locked-plane-log h2{
+    color:#f5c542;
+    margin-bottom:10px;
+}
+
+.plus-locked-plane-log > p{
+    color:#aaa;
+    max-width:550px;
+    margin:0 auto 25px auto;
+    line-height:1.6;
+}
+
+.plus-locked-plane-log .plus-feature-list{
+    max-width:500px;
+    margin:0 auto 25px auto;
+    text-align:left;
+}
+
+.plus-locked-plane-log .plus-feature{
+    display:flex;
+    align-items:center;
+    gap:12px;
+    padding:10px 0;
+    color:#ddd;
+}
+
+.plus-locked-plane-log .plus-feature span:first-child{
+    width:25px;
+    text-align:center;
+}
+
+.plus-locked-plane-log .plus-lock-footer{
+    color:#777;
+    font-size:13px;
+    margin-top:15px;
+}
+
     </style>
 
 </head>
@@ -420,7 +467,10 @@
 
 </div>
 
-    <div class="plane-log-card">
+    <div
+    id="planeLogIntroCard"
+    class="plane-log-card"
+>
 
         <h2>Your Aircraft</h2>
 
@@ -429,11 +479,12 @@
         </p>
 
         <button
-            class="log-aircraft-button"
-            onclick="showPlaneLogForm()"
-        >
-            ➕ Log Aircraft
-        </button>
+    id="logAircraftButton"
+    class="log-aircraft-button"
+    onclick="showPlaneLogForm()"
+>
+    ➕ Log Aircraft
+</button>
 
     </div>
 
@@ -1485,6 +1536,135 @@ document.addEventListener(
 
 async function loadPlaneLogs(){
 
+    const plusUser =
+        await isAvspotPlus();
+
+
+    const introCard =
+        document.getElementById(
+            "planeLogIntroCard"
+        );
+
+
+    const container =
+        document.getElementById(
+            "planeLogEntries"
+        );
+
+
+    /*
+        FREE / LOGGED-OUT USER
+    */
+
+    if(!plusUser){
+
+        if(introCard){
+
+            introCard.style.display =
+                "none";
+
+        }
+
+
+        container.innerHTML = `
+
+            <div class="plus-locked-plane-log">
+
+                <div class="plus-lock-icon">
+                    ⭐
+                </div>
+
+                <h2>
+                    Avspot Plus
+                </h2>
+
+                <p>
+                    Your personal aircraft spotting log
+                    is an Avspot Plus feature.
+                </p>
+
+
+                <div class="plus-feature-list">
+
+                    <div class="plus-feature">
+                        <span>✈️</span>
+                        <span>
+                            Track every aircraft you spot
+                        </span>
+                    </div>
+
+                    <div class="plus-feature">
+                        <span>📷</span>
+                        <span>
+                            Upload aircraft photos
+                        </span>
+                    </div>
+
+                    <div class="plus-feature">
+                        <span>📍</span>
+                        <span>
+                            Record airports and spotting locations
+                        </span>
+                    </div>
+
+                    <div class="plus-feature">
+                        <span>📝</span>
+                        <span>
+                            Add notes to your sightings
+                        </span>
+                    </div>
+
+                    <div class="plus-feature">
+                        <span>☁️</span>
+                        <span>
+                            Keep your spotting log stored online
+                        </span>
+                    </div>
+
+                </div>
+
+
+                <button
+                    class="airshow-plus-upgrade-button"
+                    onclick="upgradeToAvspotPlus()"
+                >
+
+                    <span class="airshow-plus-button-title">
+                        ⭐ Upgrade to Avspot Plus
+                    </span>
+
+                    <span class="airshow-plus-button-subtitle">
+                        Unlock Plane Log and other premium features
+                    </span>
+
+                </button>
+
+
+                <p class="plus-lock-footer">
+                    £3.99/month · Cancel anytime
+                </p>
+
+            </div>
+
+        `;
+
+        return;
+
+    }
+
+
+    /*
+        PLUS USER
+    */
+
+    if(introCard){
+
+        introCard.style.display =
+            "block";
+
+    }
+
+
     const {
         data: { user },
         error: userError
@@ -1528,12 +1708,6 @@ async function loadPlaneLogs(){
         return;
 
     }
-
-
-    const container =
-        document.getElementById(
-            "planeLogEntries"
-        );
 
         const totalSightings =
     document.getElementById(
