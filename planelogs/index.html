@@ -100,6 +100,41 @@
             padding:40px 10px;
         }
 
+        #planeLogForm input,
+#planeLogForm textarea{
+    width:100%;
+    max-width:600px;
+    padding:12px;
+    margin-top:10px;
+    background:#111;
+    color:#fff;
+    border:1px solid #444;
+    border-radius:8px;
+    font-size:15px;
+    font-family:Arial, sans-serif;
+}
+
+#planeLogForm textarea{
+    min-height:100px;
+    resize:vertical;
+}
+
+#planeLogForm input:focus,
+#planeLogForm textarea:focus{
+    outline:none;
+    border-color:#f5c542;
+}
+
+#planePhotos{
+    padding:10px;
+    cursor:pointer;
+}
+
+#planeLogForm button{
+    margin-top:10px;
+    margin-right:8px;
+}
+
     </style>
 
 </head>
@@ -209,6 +244,35 @@
 
     <br><br>
 
+    <label
+    for="planePhotos"
+    style="
+        display:block;
+        margin-top:15px;
+        margin-bottom:8px;
+        font-weight:bold;
+    "
+>
+    📷 Photos
+</label>
+
+<input
+    id="planePhotos"
+    type="file"
+    accept="image/*"
+    multiple
+>
+
+<p
+    style="
+        color:#888;
+        font-size:13px;
+        margin-top:6px;
+    "
+>
+    Upload up to 3 photos per sighting.
+</p>
+
     <button
         type="button"
         class="log-aircraft-button"
@@ -253,6 +317,273 @@ function showPlaneLogForm(){
     document.getElementById(
         "planeLogForm"
     ).style.display = "block";
+
+}
+
+async function savePlaneLog(){
+
+    const registration =
+        document.getElementById("planeRegistration").value.trim();
+
+    const aircraftType =
+        document.getElementById("planeAircraftType").value.trim();
+
+    const airline =
+        document.getElementById("planeAirline").value.trim();
+
+    const flightNumber =
+        document.getElementById("planeFlightNumber").value.trim();
+
+    const airportName =
+        document.getElementById("planeAirport").value.trim();
+
+    const location =
+        document.getElementById("planeLocation").value.trim();
+
+    const sightingDate =
+        document.getElementById("planeDate").value;
+
+    const sightingTime =
+        document.getElementById("planeTime").value;
+
+    const notes =
+        document.getElementById("planeNotes").value.trim();
+
+    const photoInput =
+        document.getElementById("planePhotos");
+
+    const photos =
+        photoInput.files;
+
+
+    // Make sure the user is logged in
+
+    const {
+        data: { user },
+        error: userError
+    } = await supabaseClient.auth.getUser();
+
+
+    if(userError || !user){
+
+        alert(
+            "Please log in before logging an aircraft."
+        );
+
+        return;
+
+    }
+
+
+    // Require registration
+
+    if(!registration){
+
+        alert(
+            "Please enter the aircraft registration."
+        );
+
+        return;
+
+    }
+
+
+    // Maximum 3 photos
+
+    if(photos.length > 3){
+
+        alert(
+            "You can upload a maximum of 3 photos."
+        );
+
+        return;
+
+    }
+
+
+    const photoUrls = [];
+
+
+    try{
+
+        /*
+            UPLOAD PHOTOS
+        */
+
+        for(let i = 0; i < photos.length; i++){
+
+            const file = photos[i];
+
+
+            const fileExtension =
+                file.name
+                .split(".")
+                .pop()
+                .toLowerCase();
+
+
+            const fileName =
+                crypto.randomUUID()
+                + "."
+                + fileExtension;
+
+
+            const filePath =
+                user.id
+                + "/"
+                + fileName;
+
+
+            const {
+                error: uploadError
+            } = await supabaseClient.storage
+                .from("plane-log-photos")
+                .upload(
+                    filePath,
+                    file
+                );
+
+
+            if(uploadError){
+
+                console.error(
+                    "Photo upload error:",
+                    uploadError
+                );
+
+                throw uploadError;
+
+            }
+
+
+            photoUrls.push(filePath);
+
+        }
+
+
+        /*
+            SAVE PLANE LOG
+        */
+
+        const {
+            error: insertError
+        } = await supabaseClient
+            .from("plane_logs")
+            .insert({
+
+                user_id:
+                    user.id,
+
+                registration:
+                    registration,
+
+                aircraft_type:
+                    aircraftType,
+
+                airline:
+                    airline,
+
+                flight_number:
+                    flightNumber,
+
+                airport:
+                    airportName,
+
+                location:
+                    location,
+
+                sighting_date:
+                    sightingDate || null,
+
+                sighting_time:
+                    sightingTime || null,
+
+                notes:
+                    notes,
+
+                photo_urls:
+                    photoUrls
+
+            });
+
+
+        if(insertError){
+
+            console.error(
+                "Plane log save error:",
+                insertError
+            );
+
+            throw insertError;
+
+        }
+
+
+        alert(
+            "Aircraft logged successfully!"
+        );
+
+
+        /*
+            CLEAR FORM
+        */
+
+        document.getElementById(
+            "planeRegistration"
+        ).value = "";
+
+        document.getElementById(
+            "planeAircraftType"
+        ).value = "";
+
+        document.getElementById(
+            "planeAirline"
+        ).value = "";
+
+        document.getElementById(
+            "planeFlightNumber"
+        ).value = "";
+
+        document.getElementById(
+            "planeAirport"
+        ).value = "";
+
+        document.getElementById(
+            "planeLocation"
+        ).value = "";
+
+        document.getElementById(
+            "planeDate"
+        ).value = "";
+
+        document.getElementById(
+            "planeTime"
+        ).value = "";
+
+        document.getElementById(
+            "planeNotes"
+        ).value = "";
+
+        photoInput.value = "";
+
+
+        hidePlaneLogForm();
+
+
+    }
+
+    catch(error){
+
+        console.error(
+            "Plane log error:",
+            error
+        );
+
+        alert(
+            "Unable to save aircraft. Please try again."
+        );
+
+    }
 
 }
 
