@@ -359,50 +359,333 @@
 }
 
 .plus-locked-plane-log{
+    max-width:700px;
+    margin:10px auto 20px auto;
+    padding:45px 35px;
     text-align:center;
-    padding:35px 20px;
+
+    background:
+        linear-gradient(
+            145deg,
+            #202020 0%,
+            #181818 55%,
+            #151515 100%
+        );
+
+    border:1px solid #3a3a3a;
+    border-radius:16px;
+
+    box-shadow:
+        0 15px 45px rgba(0,0,0,0.35),
+        inset 0 1px 0 rgba(255,255,255,0.03);
+
+    position:relative;
+    overflow:hidden;
 }
+
+
+/* subtle gold glow */
+
+.plus-locked-plane-log::before{
+    content:"";
+    position:absolute;
+
+    top:-100px;
+    left:50%;
+
+    width:300px;
+    height:200px;
+
+    transform:translateX(-50%);
+
+    background:rgba(245,197,66,0.08);
+
+    filter:blur(60px);
+
+    pointer-events:none;
+}
+
+
+/* lock / star */
 
 .plus-locked-plane-log .plus-lock-icon{
-    font-size:45px;
-    margin-bottom:10px;
+    position:relative;
+
+    width:70px;
+    height:70px;
+
+    margin:0 auto 20px auto;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    background:#252525;
+
+    border:1px solid rgba(245,197,66,0.35);
+
+    border-radius:50%;
+
+    font-size:34px;
+
+    box-shadow:
+        0 0 25px rgba(245,197,66,0.12);
 }
+
+
+/* title */
 
 .plus-locked-plane-log h2{
+    position:relative;
+
+    margin:0 0 12px 0;
+
     color:#f5c542;
-    margin-bottom:10px;
+
+    font-size:28px;
+    font-weight:700;
 }
+
+
+/* description */
 
 .plus-locked-plane-log > p{
+    position:relative;
+
     color:#aaa;
-    max-width:550px;
-    margin:0 auto 25px auto;
+
+    max-width:520px;
+
+    margin:0 auto 30px auto;
+
     line-height:1.6;
+
+    font-size:15px;
 }
 
+
+/* feature list */
+
 .plus-locked-plane-log .plus-feature-list{
-    max-width:500px;
-    margin:0 auto 25px auto;
+    position:relative;
+
+    max-width:520px;
+
+    margin:0 auto 30px auto;
+
+    display:grid;
+
+    grid-template-columns:1fr 1fr;
+
+    gap:10px;
+
     text-align:left;
 }
 
+
+/* individual feature */
+
 .plus-locked-plane-log .plus-feature{
     display:flex;
+
     align-items:center;
+
     gap:12px;
-    padding:10px 0;
+
+    min-height:58px;
+
+    padding:12px 14px;
+
+    background:#191919;
+
+    border:1px solid #303030;
+
+    border-radius:10px;
+
     color:#ddd;
+
+    font-size:14px;
+
+    transition:
+        border-color 0.2s ease,
+        background 0.2s ease,
+        transform 0.2s ease;
 }
+
+
+.plus-locked-plane-log .plus-feature:hover{
+    background:#202020;
+
+    border-color:#4a4a4a;
+
+    transform:translateY(-2px);
+}
+
+
+/* feature icon */
 
 .plus-locked-plane-log .plus-feature span:first-child{
-    width:25px;
-    text-align:center;
+    flex-shrink:0;
+
+    width:32px;
+    height:32px;
+
+    display:flex;
+
+    align-items:center;
+    justify-content:center;
+
+    background:#252525;
+
+    border-radius:8px;
+
+    font-size:17px;
 }
 
+
+/* upgrade button */
+
+.plus-locked-plane-log .airshow-plus-upgrade-button{
+    position:relative;
+
+    width:100%;
+    max-width:520px;
+
+    min-height:68px;
+
+    padding:13px 20px;
+
+    border:none;
+
+    border-radius:10px;
+
+    background:#f5c542;
+
+    color:#111;
+
+    cursor:pointer;
+
+    font-weight:bold;
+
+    box-shadow:
+        0 8px 25px rgba(245,197,66,0.16);
+
+    transition:
+        transform 0.2s ease,
+        box-shadow 0.2s ease,
+        background 0.2s ease;
+}
+
+
+.plus-locked-plane-log
+.airshow-plus-upgrade-button:hover{
+
+    background:#ffd75c;
+
+    transform:translateY(-2px);
+
+    box-shadow:
+        0 12px 30px rgba(245,197,66,0.25);
+}
+
+
+.plus-locked-plane-log
+.airshow-plus-upgrade-button:active{
+
+    transform:translateY(0);
+
+}
+
+
+/* button title */
+
+.plus-locked-plane-log
+.airshow-plus-button-title{
+
+    display:block;
+
+    font-size:16px;
+
+    font-weight:700;
+
+    margin-bottom:4px;
+}
+
+
+/* button subtitle */
+
+.plus-locked-plane-log
+.airshow-plus-button-subtitle{
+
+    display:block;
+
+    font-size:12px;
+
+    font-weight:500;
+
+    opacity:0.65;
+}
+
+
+/* footer */
+
 .plus-locked-plane-log .plus-lock-footer{
-    color:#777;
+
+    position:relative;
+
+    color:#666;
+
     font-size:13px;
-    margin-top:15px;
+
+    margin:18px auto 0 auto;
+
+    line-height:1.4;
+}
+
+
+/* mobile */
+
+@media(max-width:600px){
+
+    .plus-locked-plane-log{
+
+        padding:35px 18px;
+
+        border-radius:12px;
+
+    }
+
+
+    .plus-locked-plane-log h2{
+
+        font-size:25px;
+
+    }
+
+
+    .plus-locked-plane-log .plus-feature-list{
+
+        grid-template-columns:1fr;
+
+        gap:8px;
+
+    }
+
+
+    .plus-locked-plane-log .plus-feature{
+
+        min-height:54px;
+
+    }
+
+
+    .plus-locked-plane-log
+    .airshow-plus-upgrade-button{
+
+        min-height:64px;
+
+    }
+
 }
 
     </style>
@@ -1622,105 +1905,95 @@ async function loadPlaneLogs(){
 
     if(!plusUser){
 
-        /*
-            Keep the main Plane Log page visible.
-            Only replace the log contents with the Plus lock.
-        */
+    if(introCard){
+        introCard.style.display = "none";
+    }
 
-        if(introCard){
-            introCard.style.display = "block";
-        }
+    if(statsCard){
+        statsCard.style.display = "none";
+    }
 
-        if(statsCard){
-            statsCard.style.display = "none";
-        }
+    container.innerHTML = `
 
+        <div class="plus-locked-plane-log">
 
-        container.innerHTML = `
+            <div class="plus-lock-icon">
+                ⭐
+            </div>
 
-            <div class="plus-locked-plane-log">
+            <h2>
+                Avspot Plus
+            </h2>
 
-                <div class="plus-lock-icon">
-                    ⭐
+            <p>
+                Your personal aircraft spotting log
+                is an Avspot Plus feature.
+            </p>
+
+            <div class="plus-feature-list">
+
+                <div class="plus-feature">
+                    <span>✈️</span>
+                    <span>
+                        Track every aircraft you spot
+                    </span>
                 </div>
 
-                <h2>
-                    Avspot Plus
-                </h2>
-
-                <p>
-                    Your personal aircraft spotting log
-                    is an Avspot Plus feature.
-                </p>
-
-
-                <div class="plus-feature-list">
-
-                    <div class="plus-feature">
-                        <span>✈️</span>
-                        <span>
-                            Track every aircraft you spot
-                        </span>
-                    </div>
-
-                    <div class="plus-feature">
-                        <span>📷</span>
-                        <span>
-                            Upload aircraft photos
-                        </span>
-                    </div>
-
-                    <div class="plus-feature">
-                        <span>📍</span>
-                        <span>
-                            Record airports and spotting locations
-                        </span>
-                    </div>
-
-                    <div class="plus-feature">
-                        <span>📝</span>
-                        <span>
-                            Add notes to your sightings
-                        </span>
-                    </div>
-
-                    <div class="plus-feature">
-                        <span>☁️</span>
-                        <span>
-                            Keep your spotting log stored online
-                        </span>
-                    </div>
-
+                <div class="plus-feature">
+                    <span>📷</span>
+                    <span>
+                        Upload aircraft photos
+                    </span>
                 </div>
 
-
-                <button
-                    class="airshow-plus-upgrade-button"
-                    onclick="upgradeToAvspotPlus()"
-                >
-
-                    <span class="airshow-plus-button-title">
-                        ⭐ Upgrade to Avspot Plus
+                <div class="plus-feature">
+                    <span>📍</span>
+                    <span>
+                        Record airports and spotting locations
                     </span>
+                </div>
 
-                    <span class="airshow-plus-button-subtitle">
-                        Unlock Plane Log and other premium features
+                <div class="plus-feature">
+                    <span>📝</span>
+                    <span>
+                        Add notes to your sightings
                     </span>
+                </div>
 
-                </button>
-
-
-                <p class="plus-lock-footer">
-                    £3.99/month · Cancel anytime
-                </p>
+                <div class="plus-feature">
+                    <span>☁️</span>
+                    <span>
+                        Keep your spotting log stored online
+                    </span>
+                </div>
 
             </div>
 
-        `;
+            <button
+                class="airshow-plus-upgrade-button"
+                onclick="upgradeToAvspotPlus()"
+            >
 
-        return;
+                <span class="airshow-plus-button-title">
+                    ⭐ Upgrade to Avspot Plus
+                </span>
 
-    }
+                <span class="airshow-plus-button-subtitle">
+                    Unlock Plane Log and other premium features
+                </span>
+
+            </button>
+
+            <p class="plus-lock-footer">
+                £3.99/month · Cancel anytime
+            </p>
+
+        </div>
+
+    `;
+
+    return;
+}
 
 
     /*
