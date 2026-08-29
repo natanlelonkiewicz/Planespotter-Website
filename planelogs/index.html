@@ -436,7 +436,7 @@
         Keep track of every aircraft you spot.
     </p>
 
-    <div class="plane-log-stats">
+    <div id="planeLogStats" class="plane-log-stats"></div>
 
     <div class="plane-log-stat">
         <span class="plane-log-stat-number" id="totalSightings">
@@ -656,6 +656,62 @@ window.supabaseClient = window.supabase.createClient(
     SUPABASE_URL,
     SUPABASE_KEY
 );
+
+async function isAvspotPlus(){
+
+    try{
+
+        const {
+            data: { user },
+            error: userError
+        } = await supabaseClient.auth.getUser();
+
+
+        if(userError || !user){
+
+            return false;
+
+        }
+
+
+        const {
+            data: profile,
+            error: profileError
+        } = await supabaseClient
+            .from("profiles")
+            .select("role")
+            .eq("id", user.id)
+            .single();
+
+
+        if(profileError){
+
+            console.error(
+                "Failed to check Avspot Plus status:",
+                profileError
+            );
+
+            return false;
+
+        }
+
+
+        return profile?.role === "plus";
+
+    }
+
+    catch(error){
+
+        console.error(
+            "Avspot Plus check failed:",
+            error
+        );
+
+        return false;
+
+    }
+
+}
 
 function showPlaneLogForm(){
 
@@ -1536,20 +1592,28 @@ document.addEventListener(
 
 async function loadPlaneLogs(){
 
-    const plusUser =
-        await isAvspotPlus();
-
+    const container =
+        document.getElementById("planeLogEntries");
 
     const introCard =
-        document.getElementById(
-            "planeLogIntroCard"
-        );
+        document.getElementById("planeLogIntroCard");
+
+    const statsCard =
+        document.getElementById("planeLogStats");
 
 
-    const container =
-        document.getElementById(
-            "planeLogEntries"
-        );
+    if(!container){
+        console.error("planeLogEntries element not found.");
+        return;
+    }
+
+
+    /*
+        Check Avspot Plus
+    */
+
+    const plusUser =
+        await isAvspotPlus();
 
 
     /*
@@ -1558,11 +1622,17 @@ async function loadPlaneLogs(){
 
     if(!plusUser){
 
+        /*
+            Keep the main Plane Log page visible.
+            Only replace the log contents with the Plus lock.
+        */
+
         if(introCard){
+            introCard.style.display = "block";
+        }
 
-            introCard.style.display =
-                "none";
-
+        if(statsCard){
+            statsCard.style.display = "none";
         }
 
 
@@ -1658,24 +1728,28 @@ async function loadPlaneLogs(){
     */
 
     if(introCard){
-
-        introCard.style.display =
-            "block";
-
+        introCard.style.display = "block";
     }
 
+    if(statsCard){
+        statsCard.style.display = "block";
+    }
+
+
+    /*
+        Get logged-in user
+    */
 
     const {
         data: { user },
         error: userError
-    } = await supabaseClient.auth.getUser();
+    } =
+        await supabaseClient.auth.getUser();
 
 
     if(userError || !user){
 
-        document.getElementById(
-            "planeLogEntries"
-        ).innerHTML = `
+        container.innerHTML = `
             <div class="empty-log">
                 Please log in to view your aircraft log.
             </div>
@@ -1686,16 +1760,21 @@ async function loadPlaneLogs(){
     }
 
 
+    /*
+        Load plane logs
+    */
+
     const {
         data: logs,
         error
-    } = await supabaseClient
-        .from("plane_logs")
-        .select("*")
-        .eq("user_id", user.id)
-        .order("sighting_date", {
-            ascending: false
-        });
+    } =
+        await supabaseClient
+            .from("plane_logs")
+            .select("*")
+            .eq("user_id", user.id)
+            .order("sighting_date", {
+                ascending:false
+            });
 
 
     if(error){
@@ -1705,74 +1784,118 @@ async function loadPlaneLogs(){
             error
         );
 
+        container.innerHTML = `
+            <div class="empty-log">
+                Unable to load your aircraft log.
+            </div>
+        `;
+
         return;
 
     }
 
-        const totalSightings =
-    document.getElementById(
-        "totalSightings"
-    );
 
-const uniqueAircraft =
-    document.getElementById(
-        "uniqueAircraft"
-    );
+    /*
+        Stats
+    */
 
-const totalPhotos =
-    document.getElementById(
-        "totalPhotos"
-    );
+    const totalSightings =
+        document.getElementById(
+            "totalSightings"
+        );
 
+    const uniqueAircraft =
+        document.getElementById(
+            "uniqueAircraft"
+        );
+
+    const totalPhotos =
+        document.getElementById(
+            "totalPhotos"
+        );
+
+
+    /*
+        No logs
+    */
 
     if(!logs || logs.length === 0){
 
-    totalSightings.textContent = "0";
-    uniqueAircraft.textContent = "0";
-    totalPhotos.textContent = "0";
+        if(totalSightings)
+            totalSightings.textContent = "0";
 
-    container.innerHTML = `
-        <div class="empty-log">
-            No aircraft logged yet.
-        </div>
-    `;
+        if(uniqueAircraft)
+            uniqueAircraft.textContent = "0";
 
-    return;
+        if(totalPhotos)
+            totalPhotos.textContent = "0";
 
-}
+
+        container.innerHTML = `
+            <div class="empty-log">
+                No aircraft logged yet.
+            </div>
+        `;
+
+        return;
+
+    }
+
+
+    /*
+        Calculate statistics
+    */
 
     const uniqueRegistrations =
-    new Set(
-        logs
-            .map(log => log.registration)
-            .filter(Boolean)
-            .map(reg => reg.trim().toUpperCase())
-    );
-
-const photoCount =
-    logs.reduce(
-        (total, log) =>
-            total +
-            (Array.isArray(log.photo_urls)
-                ? log.photo_urls.length
-                : 0),
-        0
-    );
+        new Set(
+            logs
+                .map(log => log.registration)
+                .filter(Boolean)
+                .map(
+                    reg =>
+                        reg
+                            .trim()
+                            .toUpperCase()
+                )
+        );
 
 
-totalSightings.textContent =
-    logs.length;
+    const photoCount =
+        logs.reduce(
+            (total, log) =>
+                total +
+                (
+                    Array.isArray(log.photo_urls)
+                    ?
+                    log.photo_urls.length
+                    :
+                    0
+                ),
+            0
+        );
 
-uniqueAircraft.textContent =
-    uniqueRegistrations.size;
 
-totalPhotos.textContent =
-    photoCount;
+    if(totalSightings)
+        totalSightings.textContent =
+            logs.length;
+
+    if(uniqueAircraft)
+        uniqueAircraft.textContent =
+            uniqueRegistrations.size;
+
+    if(totalPhotos)
+        totalPhotos.textContent =
+            photoCount;
+
+
+    /*
+        Display logs
+    */
 
     container.innerHTML = "";
 
 
-    logs.forEach(async function(log){
+    for(const log of logs){
 
         const card =
             document.createElement("div");
@@ -1780,8 +1903,8 @@ totalPhotos.textContent =
         card.className =
             "plane-log-entry";
 
-            card.dataset.logId =
-    log.id;
+        card.dataset.logId =
+            log.id;
 
 
         card.innerHTML = `
@@ -1838,29 +1961,35 @@ totalPhotos.textContent =
                 ""
             }
 
-                        
             <div class="plane-log-controls">
 
-    <button
-        class="plane-log-edit"
-        onclick="editPlaneLog('${log.id}')"
-    >
-        ✏️ Edit
-    </button>
+                <button
+                    class="plane-log-edit"
+                    onclick="editPlaneLog('${log.id}')"
+                >
+                    ✏️ Edit
+                </button>
 
-    <button
-        class="plane-log-delete"
-        onclick="deletePlaneLog('${log.id}')"
-    >
-        🗑 Delete
-    </button>
+                <button
+                    class="plane-log-delete"
+                    onclick="deletePlaneLog('${log.id}')"
+                >
+                    🗑 Delete
+                </button>
 
-</div>
+            </div>
 
-                `;
+        `;
 
 
-        if(log.photo_urls && log.photo_urls.length > 0){
+        /*
+            Photos
+        */
+
+        if(
+            Array.isArray(log.photo_urls) &&
+            log.photo_urls.length > 0
+        ){
 
             const photoContainer =
                 document.createElement("div");
@@ -1869,66 +1998,75 @@ totalPhotos.textContent =
                 "plane-log-photos";
 
 
-            for(const photoPath of log.photo_urls){
+            for(
+                const photoPath
+                of log.photo_urls
+            ){
 
-    const {
-        data: photoData,
-        error: photoError
-    } = await supabaseClient.storage
-        .from("plane-log-photos")
-        .createSignedUrl(
-            photoPath,
-            3600
-        );
-
-
-    if(photoError){
-
-        console.error(
-            "Photo URL error:",
-            photoError
-        );
-
-        continue;
-
-    }
+                const {
+                    data: photoData,
+                    error: photoError
+                } =
+                    await supabaseClient.storage
+                        .from("plane-log-photos")
+                        .createSignedUrl(
+                            photoPath,
+                            3600
+                        );
 
 
-    const img =
-        document.createElement("img");
+                if(photoError){
+
+                    console.error(
+                        "Photo URL error:",
+                        photoError
+                    );
+
+                    continue;
+
+                }
 
 
-    img.src =
-        photoData.signedUrl;
+                const img =
+                    document.createElement("img");
 
 
-    img.alt =
-        log.registration || "Aircraft photo";
+                img.src =
+                    photoData.signedUrl;
+
+                img.alt =
+                    log.registration ||
+                    "Aircraft photo";
+
+                img.className =
+                    "plane-log-photo";
 
 
-    img.className =
-        "plane-log-photo";
+                img.onclick =
+                    function(){
 
-        img.onclick = function(){
+                        openPlanePhoto(
+                            photoData.signedUrl
+                        );
 
-    openPlanePhoto(
-        photoData.signedUrl
-    );
-
-};
+                    };
 
 
-        photoContainer.appendChild(img);
+                photoContainer.appendChild(img);
+
+            }
+
+
+            card.appendChild(
+                photoContainer
+            );
 
         }
 
-        card.appendChild(photoContainer);
+
+        container.appendChild(card);
 
     }
-
-    container.appendChild(card);
-
-    });
 
 }
 
