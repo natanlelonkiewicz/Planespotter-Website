@@ -1021,7 +1021,7 @@ async function upgradeToAvspotPlus(){
         if(userError || !user){
 
             alert(
-                "Please log in or create an account before upgrading to Avspot Plus."
+                "Please log in or create an account before purchasing Avspot Plus."
             );
 
             return;
@@ -1066,6 +1066,7 @@ async function upgradeToAvspotPlus(){
                 error
             );
 
+
             if(error.context){
 
                 try{
@@ -1087,6 +1088,7 @@ async function upgradeToAvspotPlus(){
 
             }
 
+
             throw error;
 
         }
@@ -1106,7 +1108,7 @@ async function upgradeToAvspotPlus(){
         }
 
 
-        // Send user to Stripe
+        // Send user to Stripe Checkout
 
         window.location.href =
             data.url;
@@ -1123,7 +1125,7 @@ async function upgradeToAvspotPlus(){
 
 
         alert(
-            "Something went wrong while starting your Avspot Plus subscription."
+            "Something went wrong while starting your Avspot Plus purchase."
         );
 
 
@@ -1140,11 +1142,11 @@ async function upgradeToAvspotPlus(){
             button.innerHTML = `
 
                 <span class="airshow-plus-button-title">
-                    ⭐ Upgrade to Avspot Plus
+                    ⭐ Get Avspot Plus — £4.99
                 </span>
 
                 <span class="airshow-plus-button-subtitle">
-                    Unlock Plane Log and other premium features
+                    One-time payment • Lifetime access
                 </span>
 
             `;
@@ -2144,8 +2146,8 @@ async function loadPlaneLogs(){
             </button>
 
             <p class="plus-lock-footer">
-                £3.99/month · Cancel anytime
-            </p>
+    £4.99 one-time · Lifetime access
+</p>
 
         </div>
 
