@@ -533,9 +533,10 @@ h2{
 
 }
 
-#photoCredit{
+.photoContainer #photoCredit{
 
     position:absolute;
+
     bottom:20px;
     left:10px;
 
@@ -2911,7 +2912,332 @@ body {
 
 }
 
+/* =========================================================
+   LOW FLYING PREVIEW
+========================================================= */
+
+.low-flying-preview-map-info {
+    background: #151515;
+    border: 1px solid #333;
+    border-radius: 8px;
+    padding: 12px;
+    margin-top: 10px;
+}
+
+.low-flying-photo-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 12px;
+    margin-top: 10px;
+}
+
+.low-flying-photo-grid img {
+    width: 100%;
+    height: 180px;
+    object-fit: cover;
+    border-radius: 8px;
+    display: block;
+}
+
+
+.low-flying-spot {
+    position: relative;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+
+
+.low-flying-spot .spot-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+.low-flying-spot .spot-header h3 {
+    margin: 0;
+}
+
+
+
+.low-flying-spot .remove-spot-button {
+    width: auto !important;
+    max-width: none !important;
+    flex: 0 0 auto;
+
+    padding: 8px 14px;
+
+    background: #8b2e2e;
+    color: white;
+
+    border: 1px solid #a94444;
+    border-radius: 6px;
+
+    cursor: pointer;
+
+    font-size: 14px;
+}
+
+.low-flying-spot .remove-spot-button:hover {
+    background: #a83b3b;
+}
+
+
+
+.low-flying-spot label {
+    display: block;
+    box-sizing: border-box;
+    width: 100%;
+    margin-top: 12px;
+}
+
+
+.low-flying-spot input[type="text"],
+.low-flying-spot input[type="number"],
+.low-flying-spot textarea {
+    display: block;
+
+    width: 100%;
+    max-width: 100%;
+
+    box-sizing: border-box;
+
+    margin-bottom: 10px;
+}
+
+
+
+.low-flying-spot .spot-photo-credit {
+    display: block;
+
+    width: 100%;
+    max-width: 100%;
+
+    box-sizing: border-box;
+
+    margin-bottom: 10px;
+}
+
+
+
+.low-flying-spot input[type="file"] {
+    display: block;
+
+    width: 100%;
+    max-width: 100%;
+
+    box-sizing: border-box;
+}
+
+
+.low-flying-spot .coordinate-row {
+    display: flex;
+    gap: 15px;
+
+    width: 100%;
+
+    box-sizing: border-box;
+}
+
+.low-flying-spot .coordinate-row > div {
+    flex: 1;
+    min-width: 0;
+}
+
+.low-flying-spot .coordinate-row input {
+    width: 100%;
+    max-width: 100%;
+
+    box-sizing: border-box;
+}
+
+
+
+.low-flying-spot .spot-photo-preview {
+    display: flex;
+    flex-wrap: wrap;
+
+    gap: 10px;
+
+    width: 100%;
+
+    margin-top: 10px;
+}
+
+
+
+.low-flying-spot h4 {
+    margin-top: 10px;
+    margin-bottom: 15px;
+}
+
+
+
+.low-flying-spot hr {
+    margin: 25px 0;
+
+    border: none;
+    border-top: 1px solid #444;
+}
+
+@media (max-width: 600px) {
+
+    .low-flying-spot .coordinate-row {
+        flex-direction: column;
+        gap: 0;
+    }
+
+    .low-flying-spot .spot-header {
+        align-items: flex-start;
+    }
+
+}
+
+.low-flying-spot-card {
+    cursor: pointer;
+}
+
+.low-flying-spot-card:hover {
+    transform: translateY(-2px);
+}
+
 /* ========================================
-   PRESTWICK PAGE FINAL OVERRIDES
+   DYNAMIC LIGHTING SPOT CARDS
 ======================================== */
 
+.spot-card.excellent{
+
+    background:rgba(34,197,94,0.14) !important;
+
+    border:2px solid #22c55e !important;
+
+    border-left:5px solid #22c55e !important;
+
+}
+
+.spot-card.favourable,
+.spot-card.side,
+.spot-card.diffused{
+
+    background:rgba(245,197,66,0.14) !important;
+
+    border:2px solid #f5c542 !important;
+
+    border-left:5px solid #f5c542 !important;
+
+}
+
+.spot-card.poor,
+.spot-card.backlit{
+
+    background:rgba(239,68,68,0.14) !important;
+
+    border:2px solid #ef4444 !important;
+
+    border-left:5px solid #ef4444 !important;
+
+}
+
+.spot-card.overcast{
+
+    background:rgba(120,120,120,0.14) !important;
+
+    border:2px solid #888 !important;
+
+    border-left:5px solid #888 !important;
+
+}
+
+.spot-card.low-light{
+
+    background:rgba(59,130,246,0.14) !important;
+
+    border:2px solid #3b82f6 !important;
+
+    border-left:5px solid #3b82f6 !important;
+
+}
+
+.spot-card.night{
+
+    background:rgba(20,20,20,0.9) !important;
+
+    border:2px solid #444 !important;
+
+    border-left:5px solid #333 !important;
+
+    color:#888 !important;
+
+}
+
+
+/* Dynamic lighting information */
+
+.spot-lighting-card{
+
+    margin-top:12px;
+
+    padding:12px;
+
+    background:#181818;
+
+    border:1px solid #444;
+
+    border-radius:9px;
+
+}
+
+
+.spot-lighting-card strong{
+
+    display:block;
+
+    margin-bottom:6px;
+
+    color:#f5c542;
+
+}
+
+
+.spot-lighting-status{
+
+    font-size:16px;
+
+    font-weight:bold;
+
+    margin-bottom:4px;
+
+}
+
+
+.spot-lighting-stars{
+
+    color:#f5c542;
+
+    letter-spacing:2px;
+
+    font-size:15px;
+
+}
+
+
+.spot-lighting-description{
+
+    margin-top:5px;
+
+    color:#aaa;
+
+    font-size:12px;
+
+}
+
+.low-flying-title {
+    color: #4CAF50 !important;
+    text-align: center;
+}
+
+.add-airport-page h1.low-flying-title {
+    color: #4CAF50 !important;
+}

@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Add a Low Flying Area | Avspot</title>
+
+    <link
+        rel="stylesheet"
+        href="../css/style.css"
+    >
+
+</head>
+
+<body>
+
+<div class="add-airport-page">
+
+    <h1 class="low-flying-title">Add a Low Flying Area</h1>
+
+    <p class="add-airport-intro">
+        Help grow Avspot by submitting a low flying area and
+        its spotting locations. Your submission will be reviewed
+        before being added to Avspot.
+    </p>
+
+
+    <form id="lowFlyingSubmissionForm">
+
+
+        <!-- =====================================================
+             GENERAL AREA INFORMATION
+        ====================================================== -->
+
+        <section class="submission-section">
+
+            <h2>Low Flying Area Information</h2>
+
+            <label for="areaName">
+                Area Name
+            </label>
+
+            <input
+                type="text"
+                id="areaName"
+                placeholder="e.g. Lake District Low Flying Area"
+                required
+            >
+
+
+            <label for="areaLocation">
+                Location
+            </label>
+
+            <input
+                type="text"
+                id="areaLocation"
+                placeholder="e.g. Cumbria, England"
+                required
+            >
+
+
+            <div class="coordinate-row">
+
+                <div>
+
+                    <label for="areaLat">
+                        Area Latitude
+                    </label>
+
+                    <input
+                        type="text"
+                        id="areaLat"
+                        placeholder="Latitude"
+                        required
+                    >
+
+                </div>
+
+
+                <div>
+
+                    <label for="areaLng">
+                        Area Longitude
+                    </label>
+
+                    <input
+                        type="text"
+                        id="areaLng"
+                        placeholder="Longitude"
+                        required
+                    >
+
+                </div>
+
+            </div>
+
+
+            <label for="description">
+                Area Description
+            </label>
+
+            <textarea
+                id="description"
+                placeholder="Describe the general low flying area..."
+                rows="5"
+            ></textarea>
+
+        </section>
+
+
+
+        <!-- =====================================================
+             AREA PHOTOS
+        ====================================================== -->
+
+        <section class="submission-section">
+
+    <h2>Area Photos</h2>
+
+    <label for="areaPhotos">
+        Upload Area Photos
+    </label>
+
+    <input
+        type="file"
+        id="areaPhotos"
+        accept="image/*"
+        multiple
+    >
+
+    <p class="upload-help">
+        You can select multiple photos. Images larger than 1400px
+        will be resized before upload.
+    </p>
+
+    <div id="photoPreviewContainer"></div>
+
+
+    <label for="photoCredit">
+        Photo Credit
+    </label>
+
+    <input
+        type="text"
+        id="photoCredit"
+        placeholder="Photographer name"
+    >
+
+</section>
+
+<!-- =====================================================
+     GENERAL AIRCRAFT INFORMATION
+====================================================== -->
+
+<section class="submission-section">
+
+    <h2>Aircraft Information</h2>
+
+
+    <label for="commonAircraft">
+        Common Aircraft
+    </label>
+
+    <textarea
+        id="commonAircraft"
+        placeholder="e.g. F-35B, Typhoon, Chinook"
+        rows="3"
+    ></textarea>
+
+
+    <label for="aircraftTypes">
+        Aircraft Types
+    </label>
+
+    <textarea
+        id="aircraftTypes"
+        placeholder="e.g. Fast jets, helicopters, transport aircraft"
+        rows="3"
+    ></textarea>
+
+</section>
+
+
+
+        <!-- =====================================================
+             SPOTTING LOCATIONS
+        ====================================================== -->
+
+        <section class="submission-section">
+
+            <h2>Spotting Locations</h2>
+
+            <p class="upload-help">
+                Add the specific locations where photographers can
+                safely watch and photograph aircraft within this
+                low flying area.
+            </p>
+
+
+            <div id="spotsContainer"></div>
+
+
+            <button
+                type="button"
+                class="add-item-button"
+                id="addSpotButton"
+            >
+                + Add Spotting Location
+            </button>
+
+        </section>
+
+
+
+        <!-- =====================================================
+             SUBMIT
+        ====================================================== -->
+
+        <button
+            type="submit"
+            class="submit-airport-button"
+        >
+            Submit Low Flying Area
+        </button>
+
+
+    </form>
+
+</div>
+
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<script src="../js/supabase.js"></script>
+
+<script src="add-low-flying.js"></script>
+
+</body>
+
+</html>

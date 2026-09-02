@@ -165,6 +165,14 @@
             Loading airshow submissions...
         </div>
 
+        <h2 class="admin-section-title">
+    Low Flying Area Submissions
+</h2>
+
+<div id="lowFlyingSubmissionList">
+    Loading low flying area submissions...
+</div>
+
     </div>
 
 </div>
@@ -231,6 +239,7 @@ async function checkAdmin(){
 
     loadSubmissions();
     loadAirshowSubmissions();
+    loadLowFlyingSubmissions();
 
 }
 
@@ -1698,8 +1707,1086 @@ async function rejectSubmission(id){
 
 }
 
+function showLowFlyingSpot(spot, area){
+
+    openSidebar();
+
+    currentSpot = spot;
+
+    currentPhotos =
+        spot.images ||
+        spot.photos ||
+        [];
+
+    currentPhotoIndex = 0;
 
 
+    map.flyTo(
+        [spot.lat, spot.lng],
+        17
+    );
+
+
+    if(spot.marker){
+
+        spot.marker
+            .bindPopup(spot.name)
+            .openPopup();
+
+    }
+
+
+    var photosHtml = "";
+
+    if(currentPhotos.length){
+
+        photosHtml = `
+
+            <div class="carousel">
+
+                <div class="photoContainer">
+
+                    <img
+                        id="spotPhoto"
+                        src="${currentPhotos[0]}"
+                        alt="${spot.name}"
+                    >
+
+                    <div id="photoCredit">
+
+                        ${
+                            spot.photoCredits ||
+                            ""
+                        }
+
+                    </div>
+
+                </div>
+
+                ${
+                    currentPhotos.length > 1
+                    ?
+                    `
+                    <div class="photoButtons">
+
+                        <button onclick="previousPhoto()">
+                            ◀
+                        </button>
+
+                        <button onclick="nextPhoto()">
+                            ▶
+                        </button>
+
+                    </div>
+                    `
+                    :
+                    ""
+                }
+
+            </div>
+
+        `;
+
+    }
+    else{
+
+        photosHtml = `
+
+            <div class="no-image">
+                No photos available.
+            </div>
+
+        `;
+
+    }
+
+
+    var notesHtml = "None";
+
+    if(Array.isArray(spot.notes)){
+
+        notesHtml =
+            spot.notes
+                .map(function(note){
+
+                    return "• " + note + "<br>";
+
+                })
+                .join("");
+
+    }
+    else if(spot.notes){
+
+        notesHtml = spot.notes;
+
+    }
+
+
+    document.getElementById("sidebar").innerHTML = `
+
+        <h2>
+            ${spot.name}
+        </h2>
+
+        <p class="airport-details">
+            📍 ${area.name}
+        </p>
+
+
+        ${photosHtml}
+
+
+        <hr>
+
+
+        <div class="spot-info-card">
+
+            <h3>☀️ Lighting Conditions</h3>
+
+            <div id="spotLighting">
+
+                ${
+                    spot.lighting
+                    ?
+                    spot.lighting.stars +
+                    " " +
+                    spot.lighting.text
+                    :
+                    "Calculating..."
+                }
+
+            </div>
+
+        </div>
+
+
+        <hr>
+
+
+        <div class="spot-info-card">
+
+            <h3>🧗 Climbing Time</h3>
+
+            <p>
+                ${spot.climbingTime || "Not specified"}
+            </p>
+
+        </div>
+
+
+        <hr>
+
+
+        <div class="spot-info-card">
+
+            <h3>📷 Recommended Focal Length</h3>
+
+            <p>
+                ${spot.recommendedFocalLength || "Not specified"}
+            </p>
+
+        </div>
+
+
+        <hr>
+
+
+        <div class="spot-info-card">
+
+            <h3>☀️ Best Time To Visit</h3>
+
+            <p>
+                ${spot.bestTime || "Not specified"}
+            </p>
+
+        </div>
+
+
+        <hr>
+
+
+        <div class="spot-info-card">
+
+            <h3>📝 Notes</h3>
+
+            <p>
+                ${notesHtml}
+            </p>
+
+        </div>
+
+    `;
+
+}
+
+async function loadLowFlyingSubmissions(){
+
+    const submissionList =
+        document.getElementById(
+            "lowFlyingSubmissionList"
+        );
+
+
+    const {
+        data,
+        error
+    } = await supabaseClient
+
+        .from("low_flying_submissions")
+
+        .select("*")
+
+        .eq(
+            "status",
+            "pending"
+        )
+
+        .order(
+            "created_at",
+            {
+                ascending:false
+            }
+        );
+
+
+    if(error){
+
+        console.error(
+            "Low flying submission loading error:",
+            error
+        );
+
+
+        submissionList.innerHTML =
+            "<p>Unable to load low flying submissions.</p>";
+
+        return;
+
+    }
+
+
+    if(!data || data.length === 0){
+
+        submissionList.innerHTML =
+            "<p>No pending low flying area submissions.</p>";
+
+        return;
+
+    }
+
+
+    submissionList.innerHTML =
+        data.map(function(submission){
+
+            return `
+
+            <div class="admin-submission">
+
+                <h3>
+                    🟢
+                    ${escapeHtml(
+                        submission.name || "Unnamed area"
+                    )}
+                </h3>
+
+
+                <p>
+                    <b>Location:</b>
+                    ${escapeHtml(
+                        submission.location || "—"
+                    )}
+                </p>
+
+
+                <p>
+                    <b>Country:</b>
+                    ${escapeHtml(
+                        submission.country || "—"
+                    )}
+                </p>
+
+
+                <p>
+                    <b>Region:</b>
+                    ${escapeHtml(
+                        submission.region || "—"
+                    )}
+                </p>
+
+
+                <p>
+                    <b>Submitted:</b>
+                    ${new Date(
+                        submission.created_at
+                    ).toLocaleString()}
+                </p>
+
+
+                <div class="admin-submission-buttons">
+
+                    <button
+                        class="review-button"
+                        onclick="toggleLowFlyingPreview('${submission.id}')"
+                    >
+                        👁 Review submission
+                    </button>
+
+
+                    <button
+                        class="approve-button"
+                        onclick="approveLowFlyingSubmission('${submission.id}')"
+                    >
+                        ✅ Approve
+                    </button>
+
+
+                    <button
+                        class="reject-button"
+                        onclick="rejectLowFlyingSubmission('${submission.id}')"
+                    >
+                        ❌ Reject
+                    </button>
+
+                </div>
+
+
+                <div
+                    id="low-flying-preview-${submission.id}"
+                    class="submission-preview"
+                >
+
+                    ${buildLowFlyingPreview(submission)}
+
+                </div>
+
+            </div>
+
+            `;
+
+        }).join("");
+
+}
+
+function buildLowFlyingPreview(submission){
+
+    let photos =
+        submission.photos || [];
+
+
+    if(typeof photos === "string"){
+
+        try{
+
+            photos =
+                JSON.parse(photos);
+
+        }
+        catch(error){
+
+            photos = [];
+
+        }
+
+    }
+
+
+    if(!Array.isArray(photos)){
+
+        photos = photos
+            ? [photos]
+            : [];
+
+    }
+
+
+    let photosHtml;
+
+
+    if(photos.length){
+
+        photosHtml = `
+
+            <div class="low-flying-photo-grid">
+
+                ${photos.map(function(photo){
+
+                    return `
+
+                        <img
+                            src="${escapeAttribute(photo)}"
+                            alt="Low flying area photo"
+                        >
+
+                    `;
+
+                }).join("")}
+
+            </div>
+
+        `;
+
+    }
+    else{
+
+        photosHtml = `
+
+            <div class="no-image">
+                No photos submitted.
+            </div>
+
+        `;
+
+    }
+
+
+    /* =====================================================
+       SPOTS
+    ===================================================== */
+
+    let spots =
+        submission.spots || [];
+
+
+    if(typeof spots === "string"){
+
+        try{
+
+            spots =
+                JSON.parse(spots);
+
+        }
+        catch(error){
+
+            spots = [];
+
+        }
+
+    }
+
+
+    if(!Array.isArray(spots)){
+
+        spots = [];
+
+    }
+
+
+    let spotsHtml = "";
+
+
+    if(spots.length){
+
+        spotsHtml = `
+
+            <div class="preview-section">
+
+                <h4>📸 Spotting Locations</h4>
+
+                ${spots.map(function(spot, index){
+
+                    let spotPhotos =
+                        spot.photos || [];
+
+
+                    if(typeof spotPhotos === "string"){
+
+                        try{
+
+                            spotPhotos =
+                                JSON.parse(spotPhotos);
+
+                        }
+                        catch(error){
+
+                            spotPhotos = [];
+
+                        }
+
+                    }
+
+
+                    if(!Array.isArray(spotPhotos)){
+
+                        spotPhotos = [];
+
+                    }
+
+
+                    return `
+
+                        <div class="admin-low-flying-spot">
+
+                            <h4>
+                                📍 ${escapeHtml(
+                                    spot.name ||
+                                    "Spotting Location " + (index + 1)
+                                )}
+                            </h4>
+
+
+                            <p>
+                                <b>Latitude:</b>
+                                ${escapeHtml(
+                                    String(spot.lat ?? "—")
+                                )}
+                            </p>
+
+
+                            <p>
+                                <b>Longitude:</b>
+                                ${escapeHtml(
+                                    String(spot.lng ?? "—")
+                                )}
+                            </p>
+
+
+                            <p>
+                                <b>Photography Direction:</b>
+                                ${
+                                    spot.direction !== null &&
+                                    spot.direction !== undefined
+                                    ?
+                                    escapeHtml(
+                                        String(spot.direction)
+                                    ) + "°"
+                                    :
+                                    "—"
+                                }
+                            </p>
+
+
+                            <p>
+                                <b>Recommended Focal Length:</b>
+                                ${escapeHtml(
+                                    spot.recommendedFocalLength || "—"
+                                )}
+                            </p>
+
+
+                            <p>
+                                <b>Best Time to Visit:</b>
+                                ${escapeHtml(
+                                    spot.bestTime || "—"
+                                )}
+                            </p>
+
+
+                            <p>
+                                <b>Parking Information:</b><br>
+                                ${escapeHtml(
+                                    spot.parkingInformation || "—"
+                                )}
+                            </p>
+
+
+                            <p>
+                                <b>Notes:</b><br>
+                                ${escapeHtml(
+                                    spot.notes || "—"
+                                )}
+                            </p>
+
+
+                            ${
+                                spot.photoCredits
+                                ?
+                                `
+                                <p class="preview-credit">
+                                    📷 ${escapeHtml(
+                                        spot.photoCredits
+                                    )}
+                                </p>
+                                `
+                                :
+                                ""
+                            }
+
+
+                            ${
+                                spotPhotos.length
+                                ?
+                                `
+                                <div class="low-flying-photo-grid">
+
+                                    ${spotPhotos.map(function(photo){
+
+                                        return `
+
+                                            <img
+                                                src="${escapeAttribute(photo)}"
+                                                alt="${escapeHtml(
+                                                    spot.name ||
+                                                    "Spotting location photo"
+                                                )}"
+                                            >
+
+                                        `;
+
+                                    }).join("")}
+
+                                </div>
+                                `
+                                :
+                                `
+                                <div class="no-image">
+                                    No spot photos submitted.
+                                </div>
+                                `
+                            }
+
+                        </div>
+
+                    `;
+
+                }).join("")}
+
+            </div>
+
+        `;
+
+    }
+    else{
+
+        spotsHtml = `
+
+            <div class="preview-section">
+
+                <h4>📸 Spotting Locations</h4>
+
+                <p>
+                    No spotting locations submitted.
+                </p>
+
+            </div>
+
+        `;
+
+    }
+
+
+    /* =====================================================
+       COMPLETE PREVIEW
+    ===================================================== */
+
+    return `
+
+        <div class="preview-section">
+
+            <h4>🟢 Low Flying Area Information</h4>
+
+
+            <p>
+                <b>Name:</b>
+                ${escapeHtml(
+                    submission.name || "—"
+                )}
+            </p>
+
+
+            <p>
+                <b>Location:</b>
+                ${escapeHtml(
+                    submission.location || "—"
+                )}
+            </p>
+
+
+            <p>
+                <b>Country:</b>
+                ${escapeHtml(
+                    submission.country || "—"
+                )}
+            </p>
+
+
+            <p>
+                <b>Region:</b>
+                ${escapeHtml(
+                    submission.region || "—"
+                )}
+            </p>
+
+
+            <p>
+                <b>Latitude:</b>
+                ${escapeHtml(
+                    String(
+                        submission.lat ?? "—"
+                    )
+                )}
+            </p>
+
+
+            <p>
+                <b>Longitude:</b>
+                ${escapeHtml(
+                    String(
+                        submission.lng ?? "—"
+                    )
+                )}
+            </p>
+
+
+            <p>
+                <b>Description:</b><br>
+                ${escapeHtml(
+                    submission.description || "—"
+                )}
+            </p>
+
+        </div>
+
+
+        <div class="preview-section">
+
+            <h4>✈️ Aircraft & Activity</h4>
+
+
+            <p>
+                <b>Common Aircraft:</b>
+                ${escapeHtml(
+                    submission.common_aircraft || "—"
+                )}
+            </p>
+
+
+            <p>
+                <b>Aircraft Types:</b>
+                ${escapeHtml(
+                    submission.aircraft_types || "—"
+                )}
+            </p>
+
+        </div>
+
+
+        <div class="preview-section">
+
+            <h4>🕐 Visiting Information</h4>
+
+
+            <p>
+                <b>Best Time:</b>
+                ${escapeHtml(
+                    submission.best_time || "—"
+                )}
+            </p>
+
+        </div>
+
+
+        ${spotsHtml}
+
+
+        <div class="preview-section">
+
+            <h4>📷 Area Photos</h4>
+
+            ${photosHtml}
+
+
+            ${
+                submission.photo_credit
+                ?
+                `
+                <div class="preview-credit">
+                    Credit:
+                    ${escapeHtml(
+                        submission.photo_credit
+                    )}
+                </div>
+                `
+                :
+                ""
+            }
+
+        </div>
+
+
+        <div class="admin-submission-buttons">
+
+            <button
+                class="approve-button"
+                onclick="approveLowFlyingSubmission('${submission.id}')"
+            >
+                ✅ Approve Low Flying Area
+            </button>
+
+
+            <button
+                class="reject-button"
+                onclick="rejectLowFlyingSubmission('${submission.id}')"
+            >
+                ❌ Reject Low Flying Area
+            </button>
+
+        </div>
+
+    `;
+
+}
+
+function toggleLowFlyingPreview(id){
+
+    const preview =
+        document.getElementById(
+            "low-flying-preview-" + id
+        );
+
+
+    if(!preview){
+        return;
+    }
+
+
+    preview.classList.toggle("open");
+
+
+    const button =
+        preview.parentElement.querySelector(
+            ".review-button"
+        );
+
+
+    if(preview.classList.contains("open")){
+
+        button.textContent =
+            "✖ Close review";
+
+    }
+    else{
+
+        button.textContent =
+            "👁 Review submission";
+
+    }
+
+}
+
+async function approveLowFlyingSubmission(id){
+
+    if(!confirm(
+        "Approve this low flying area submission?"
+    )){
+
+        return;
+
+    }
+
+
+    /* -----------------------------------------
+       GET SUBMISSION
+    ----------------------------------------- */
+
+    const {
+        data: submission,
+        error: fetchError
+    } = await supabaseClient
+
+        .from("low_flying_submissions")
+
+        .select("*")
+
+        .eq("id", id)
+
+        .single();
+
+
+    if(fetchError || !submission){
+
+        console.error(
+            "Low flying submission fetch error:",
+            fetchError
+        );
+
+        alert(
+            "Could not find the low flying area submission."
+        );
+
+        return;
+
+    }
+
+
+
+    /* -----------------------------------------
+       CREATE PUBLISHED LOW FLYING AREA
+    ----------------------------------------- */
+
+    const {
+        error: insertError
+    } = await supabaseClient
+
+        .from("low_flying_areas")
+
+        .insert({
+
+    source_submission_id:
+        submission.id,
+
+    user_id:
+        submission.user_id,
+
+    name:
+        submission.name,
+
+    location:
+        submission.location,
+
+    country:
+        submission.country,
+
+    region:
+        submission.region,
+
+    lat:
+        submission.lat,
+
+    lng:
+        submission.lng,
+
+    description:
+        submission.description,
+
+    photos:
+        submission.photos || [],
+
+    photo_credit:
+        submission.photo_credit,
+
+    common_aircraft:
+        submission.common_aircraft,
+
+    aircraft_types:
+        submission.aircraft_types,
+
+    spots:
+        submission.spots || []
+
+});
+
+
+    if(insertError){
+
+        console.error(
+            "Low flying area publish error:",
+            insertError
+        );
+
+        alert(
+            "Could not publish the low flying area.\n\n" +
+            insertError.message
+        );
+
+        return;
+
+    }
+
+
+
+    /* -----------------------------------------
+       MARK SUBMISSION AS APPROVED
+    ----------------------------------------- */
+
+    const {
+        error: updateError
+    } = await supabaseClient
+
+        .from("low_flying_submissions")
+
+        .update({
+
+            status:
+                "approved"
+
+        })
+
+        .eq(
+            "id",
+            id
+        );
+
+
+    if(updateError){
+
+        console.error(
+            "Low flying submission approval error:",
+            updateError
+        );
+
+        alert(
+            "The area was published, but the submission could not be marked as approved.\n\n" +
+            updateError.message
+        );
+
+        return;
+
+    }
+
+    alert(
+        "Low flying area approved and published."
+    );
+
+
+    loadLowFlyingSubmissions();
+
+}
+
+async function rejectLowFlyingSubmission(id){
+
+    if(!confirm(
+        "Reject this low flying area submission?"
+    )){
+
+        return;
+
+    }
+
+
+    const {
+        error
+    } = await supabaseClient
+
+        .from("low_flying_submissions")
+
+        .update({
+
+            status:
+                "rejected"
+
+        })
+
+        .eq(
+            "id",
+            id
+        );
+
+
+    if(error){
+
+        console.error(
+            "Low flying rejection error:",
+            error
+        );
+
+
+        alert(
+            "Could not reject low flying area."
+        );
+
+        return;
+
+    }
+
+
+    alert(
+        "Low flying area rejected."
+    );
+
+
+    loadLowFlyingSubmissions();
+
+}
 
 checkAdmin();
 
