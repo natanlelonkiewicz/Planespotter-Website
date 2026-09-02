@@ -43,7 +43,7 @@ function resizeImage(file) {
                 let width = image.width;
                 let height = image.height;
 
-                const MAX_SIZE = 1400;
+                const MAX_SIZE = 1200;
 
                 if (
                     width > MAX_SIZE ||
