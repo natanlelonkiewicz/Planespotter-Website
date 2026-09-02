@@ -408,6 +408,8 @@ var activeRunway = "";
 
 var airport = null;
 
+var lowFlyingMarkers = [];
+
 let currentLowFlyingArea = null;
 
 var currentAirshow = null;
@@ -1168,11 +1170,6 @@ function displayLowFlyingAreas(){
             }
         );
 
-
-        lowFlyingMarkers.push(
-            lowFlyingMarker
-        );
-
     });
 
 }
@@ -1327,7 +1324,78 @@ spot.notes
 
 }
 
+function getLowFlyingPinClass(spot){
+
+    if(!spot.lighting){
+
+        return "red";
+
+    }
+
+    if(
+        spot.lighting.text ===
+        "Excellent"
+    ){
+
+        return "green";
+
+    }
+
+    if(
+        spot.lighting.text ===
+        "Side lighting" ||
+
+        spot.lighting.text ===
+        "Diffused light" ||
+
+        spot.lighting.text ===
+        "Favourable light"
+    ){
+
+        return "yellow";
+
+    }
+
+    if(
+        spot.lighting.text ===
+        "Backlit"
+    ){
+
+        return "red";
+
+    }
+
+    return "red";
+
+}
+
 async function showLowFlyingArea(area){
+
+    spotMarkers.forEach(function(marker){
+
+        map.removeLayer(marker);
+
+    });
+
+    spotMarkers = [];
+
+
+    airshowSpotMarkers.forEach(function(marker){
+
+        map.removeLayer(marker);
+
+    });
+
+    airshowSpotMarkers = [];
+
+
+    lowFlyingMarkers.forEach(function(marker){
+
+        map.removeLayer(marker);
+
+    });
+
+    lowFlyingMarkers = [];
 
     openSidebar();
 
@@ -1535,9 +1603,86 @@ async function showLowFlyingArea(area){
        CALCULATE LIGHTING FOR EVERY SPOT
     ===================================================== */
 
-    const now =
-        new Date();
+    const slider =
+    document.getElementById(
+        "sunTimeSlider"
+    );
 
+let selectedHour;
+
+if(slider){
+
+    selectedHour =
+        parseInt(
+            slider.value
+        );
+
+}
+else{
+
+    selectedHour =
+        new Date().getHours();
+
+}
+
+const locationTime =
+    getLocationTime(
+        areaLat,
+        areaLng
+    );
+
+const now =
+    new Date();
+
+const localParts =
+    new Intl.DateTimeFormat(
+        "en-CA",
+        {
+            timeZone:
+                locationTime.timeZone,
+
+            year:
+                "numeric",
+
+            month:
+                "2-digit",
+
+            day:
+                "2-digit"
+        }
+    )
+    .formatToParts(now);
+
+const year =
+    localParts.find(
+        function(part){
+            return part.type === "year";
+        }
+    ).value;
+
+const month =
+    localParts.find(
+        function(part){
+            return part.type === "month";
+        }
+    ).value;
+
+const day =
+    localParts.find(
+        function(part){
+            return part.type === "day";
+        }
+    ).value;
+
+const selectedDate =
+    getDateForLocationTime(
+        locationTime.timeZone,
+        parseInt(year),
+        parseInt(month),
+        parseInt(day),
+        selectedHour,
+        0
+    );
 
     spots.forEach(function(spot){
 
@@ -1571,11 +1716,11 @@ async function showLowFlyingArea(area){
 
 
         const sun =
-            SunCalc.getPosition(
-                now,
-                spotLat,
-                spotLng
-            );
+    SunCalc.getPosition(
+        selectedDate,
+        spotLat,
+        spotLng
+    );
 
 
         let sunBearing =
@@ -2125,9 +2270,9 @@ else{
                             className: "",
 
                             html:
-                                `<div class="pin green">
-                                    📸
-                                </div>`,
+    `<div class="pin ${getLowFlyingPinClass(spot)}">
+        📸
+    </div>`,
 
                             iconSize: [32,32],
 
@@ -2142,6 +2287,8 @@ else{
 
 
             spot.marker = marker;
+
+            lowFlyingMarkers.push(marker);
 
 
             marker.bindTooltip(
@@ -3154,6 +3301,18 @@ function displayAirshowSpots(airshow){
 
 async function showAirshow(airshow){
 
+    lowFlyingMarkers.forEach(
+        function(marker){
+
+            map.removeLayer(marker);
+
+        }
+    );
+
+    lowFlyingMarkers = [];
+
+    currentLowFlyingArea = null;
+
     const plusUser = await isAvspotPlus();
 
 
@@ -3858,6 +4017,18 @@ function showAirshowSpot(spot, airshow){
 
 
 async function loadAirport(icao, spotId = null){
+
+    lowFlyingMarkers.forEach(
+        function(marker){
+
+            map.removeLayer(marker);
+
+        }
+    );
+
+    lowFlyingMarkers = [];
+
+    currentLowFlyingArea = null;
 
     currentAirshow = null;
 
@@ -5156,23 +5327,25 @@ function updateSpotLighting(){
 
     if(currentLowFlyingArea){
 
-        var lowFlyingSpots =
-            Array.isArray(
-                currentLowFlyingArea.spots
-            )
-            ?
+    var lowFlyingSpots =
+        Array.isArray(
             currentLowFlyingArea.spots
-            :
-            [];
+        )
+        ?
+        currentLowFlyingArea.spots
+        :
+        [];
 
+    lowFlyingSpots.forEach(
+        function(spot){
 
-        lowFlyingSpots.forEach(
-            function(spot){
-
-                /*
-                    Calculate the exact same
-                    lighting rating as airport spots.
-                */
+            if(
+                spot.direction !== null &&
+                spot.direction !== undefined &&
+                !Number.isNaN(
+                    Number(spot.direction)
+                )
+            ){
 
                 spot.lighting =
                     getLightingRating(
@@ -5186,15 +5359,163 @@ function updateSpotLighting(){
                     );
 
             }
-        );
+            else{
+
+                spot.lighting = null;
+
+            }
+
+        }
+    );
 
 
+    /*
+     * UPDATE EXISTING LOW-FLYING SPOT CARDS
+     */
 
-        showLowFlyingArea(
-            currentLowFlyingArea
-        );
+    lowFlyingSpots.forEach(
+        function(spot, index){
 
-    }
+            var card =
+                document.querySelectorAll(
+                    ".spot-card"
+                )[index];
+
+            if(!card){
+
+                return;
+
+            }
+
+            var lightingClass = "";
+
+            if(spot.lighting){
+
+                if(
+                    spot.lighting.text ===
+                    "Excellent"
+                ){
+
+                    lightingClass =
+                        "excellent";
+
+                }
+                else if(
+                    spot.lighting.text ===
+                    "Side lighting" ||
+
+                    spot.lighting.text ===
+                    "Diffused light" ||
+
+                    spot.lighting.text ===
+                    "Favourable light"
+                ){
+
+                    lightingClass =
+                        "side";
+
+                }
+                else{
+
+                    lightingClass =
+                        "backlit";
+
+                }
+
+            }
+            else{
+
+                lightingClass =
+                    "backlit";
+
+            }
+
+
+            card.classList.remove(
+                "excellent",
+                "side",
+                "backlit"
+            );
+
+            card.classList.add(
+                lightingClass
+            );
+
+
+            var lightingText =
+                card.querySelector(
+                    "p"
+                );
+
+            if(lightingText){
+
+                lightingText.innerHTML =
+                    spot.lighting
+                    ?
+                    spot.lighting.stars +
+                    " " +
+                    escapeHtml(
+                        spot.lighting.text
+                    )
+                    :
+                    "Night";
+
+            }
+
+        }
+    );
+
+
+    /*
+     * UPDATE EXISTING LOW-FLYING PINS
+     */
+
+    lowFlyingSpots.forEach(
+        function(spot){
+
+            if(!spot.marker){
+
+                return;
+
+            }
+
+            var pin =
+                spot.marker
+                    .getElement();
+
+            if(!pin){
+
+                return;
+
+            }
+
+            var pinElement =
+                pin.querySelector(
+                    ".pin"
+                );
+
+            if(!pinElement){
+
+                return;
+
+            }
+
+            pinElement.classList.remove(
+                "green",
+                "yellow",
+                "red"
+            );
+
+            pinElement.classList.add(
+                getLowFlyingPinClass(
+                    spot
+                )
+            );
+
+        }
+    );
+
+}
 
 }
 
@@ -5748,6 +6069,25 @@ function showSpotMarkers(spots){
 
     });
 
+
+}
+
+function showLowFlyingSpotMarkers(spots){
+
+    lowFlyingMarkers.forEach(function(marker){
+
+        map.removeLayer(marker);
+
+    });
+
+    lowFlyingMarkers = [];
+
+
+    spots.forEach(function(spot){
+
+        // your existing LFA marker creation code goes here
+
+    });
 
 }
 
@@ -6421,6 +6761,18 @@ results.style.display = matches.length ? "block" : "none";
 }
 
 function selectAirport(icao){
+
+    currentLowFlyingArea = null;
+
+    lowFlyingMarkers.forEach(
+        function(marker){
+
+            map.removeLayer(marker);
+
+        }
+    );
+
+    lowFlyingMarkers = [];
 
     var results = document.getElementById("searchResults");
 
