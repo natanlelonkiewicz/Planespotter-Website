@@ -874,18 +874,18 @@ airshowForm.addEventListener("submit", async function(event){
             ).value.trim();
 
         const lat =
-            parseFloat(
-                document.getElementById(
-                    "airshowLat"
-                ).value
-            );
+    parseFloat(
+        document.querySelector(
+            ".spot-lat"
+        ).value
+    );
 
-        const lng =
-            parseFloat(
-                document.getElementById(
-                    "airshowLng"
-                ).value
-            );
+const lng =
+    parseFloat(
+        document.querySelector(
+            ".spot-lng"
+        ).value
+    );
 
         const startDate =
             document.getElementById(
