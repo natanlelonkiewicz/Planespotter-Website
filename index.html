@@ -4439,7 +4439,7 @@ async function isAvspotPlus() {
 
 function toggleSunCompass(){
 
-    if(!airport && !currentAirshow){
+    if(!airport && !currentAirshow && !currentLowFlyingArea){
         alert("Please select an airport or airshow first.");
         return;
     }
@@ -4476,12 +4476,18 @@ function toggleSunCompass(){
 
 function updateSunCompass(){
 
-    if(!airport && !currentAirshow){
-        return;
-    }
+    if(
+    !airport &&
+    !currentAirshow &&
+    !currentLowFlyingArea
+){
+    return;
+}
 
     var location =
-        airport || currentAirshow;
+    currentLowFlyingArea ||
+    currentAirshow ||
+    airport;
 
 
     var lat =
@@ -4678,6 +4684,9 @@ function changeSunTime(){
 
 
     updateSunCompass();
+
+    updateSpotLighting();
+
 
 
     if(currentAirshow){
@@ -5085,14 +5094,12 @@ function updateSpotMarker(spot){
 function updateSpotLighting(){
 
     if(
-        !airport &&
-        !currentAirshow &&
-        !currentLowFlyingArea
-    ){
-
-        return;
-
-    }
+    !currentLowFlyingArea &&
+    !currentAirshow &&
+    !airport
+){
+    return;
+}
 
 
     /*
@@ -5102,9 +5109,9 @@ function updateSpotLighting(){
     */
 
     var location =
-        airport ||
-        currentAirshow ||
-        currentLowFlyingArea;
+    currentLowFlyingArea ||
+    currentAirshow ||
+    airport;
 
 
     var slider =
@@ -5767,12 +5774,18 @@ function getPhotographyScore(){
 
 function updateCurrentTime(){
 
-    if(!airport && !currentAirshow){
-        return;
-    }
+    if(
+    !airport &&
+    !currentAirshow &&
+    !currentLowFlyingArea
+){
+    return;
+}
 
-    var location =
-        airport || currentAirshow;
+var location =
+    currentLowFlyingArea ||
+    currentAirshow ||
+    airport;
 
     try{
 
