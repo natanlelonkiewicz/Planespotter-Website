@@ -133,7 +133,7 @@ function addSpot() {
 
                 <input
                 type="text"
-                class="spot-lat"
+                id="airshowLat"
                 placeholder="e.g. 51°28'17.2&quot;N"
                 required
                 >
@@ -147,7 +147,7 @@ function addSpot() {
 
                 <input
                 type="text"
-                class="spot-lng"
+                id="airshowLng"
                 placeholder="e.g. 0°27'21.7&quot;W"
                 required
                 >
