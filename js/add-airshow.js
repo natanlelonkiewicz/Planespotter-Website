@@ -135,11 +135,11 @@ function addSpot(){
                 </label>
 
                 <input
-                type="text"
-                id="airshowLat"
-                placeholder="e.g. 51°28'17.2&quot;N"
-                required
-                >
+    type="text"
+    class="spot-lat"
+    placeholder="e.g. 51°28'17.2&quot;N"
+    required
+>
 
             </div>
 
@@ -151,11 +151,11 @@ function addSpot(){
                 </label>
 
                 <input
-                type="text"
-                id="airshowLng"
-                placeholder="e.g. 0°27'21.7&quot;W"
-                required
-                >
+    type="text"
+    class="spot-lng"
+    placeholder="e.g. 0°27'21.7&quot;W"
+    required
+>
 
             </div>
 
@@ -943,6 +943,13 @@ airshowForm.addEventListener("submit", async function(event){
             const card of spotCards
         ){
 
+            console.log(
+    "Airshow spot card:",
+    card,
+    "direction field:",
+    card.querySelector(".spot-direction")
+);
+
             const spot = {
 
                 name:
@@ -965,11 +972,11 @@ airshowForm.addEventListener("submit", async function(event){
                     ),
 
                 direction:
-                    parseFloat(
-                        card.querySelector(
-                            ".spot-direction"
-                        ).value
-                    ),
+    parseFloat(
+        card.querySelector(
+            ".spot-direction"
+        )?.value
+    ),
 
                 focalLength:
                     card.querySelector(
