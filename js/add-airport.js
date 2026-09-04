@@ -131,12 +131,7 @@ function addSpot() {
 
                 <label>Latitude</label>
 
-                <input
-                type="text"
-                id="airshowLat"
-                placeholder="e.g. 51°28'17.2&quot;N"
-                required
-                >
+                <input type="text" class="spot-lat" placeholder="e.g. 51°28'17.2&quot;N" required>
 
             </div>
 
@@ -144,12 +139,7 @@ function addSpot() {
 
                 <label>Longitude</label>
 
-                <input
-                type="text"
-                id="airshowLng"
-                placeholder="e.g. 0°27'21.7&quot;W"
-                required
-                >
+                <input type="text" class="spot-lng" placeholder="e.g. 0°27'21.7&quot;W" required>
 
             </div>
 
