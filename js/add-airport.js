@@ -140,7 +140,6 @@ function addSpot() {
 
             </div>
 
-
             <div>
 
                 <label>Longitude</label>
