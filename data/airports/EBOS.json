@@ -36,12 +36,18 @@
 
         "photos": [
             "https://pub-6411be86c46a44edb6371cd742f7819e.r2.dev/legeweg1.jpg",
-            "https://pub-6411be86c46a44edb6371cd742f7819e.r2.dev/legeweg2.jpg"
+            "https://pub-6411be86c46a44edb6371cd742f7819e.r2.dev/legeweg2.jpg",
+            "https://tfshpcjfcibynsbdxztn.supabase.co/storage/v1/object/public/airport-images/52467d0b-b122-4332-93c4-d2d5121080fb/spots/bc240aea-d5fa-439e-8ac7-a7637e8d2c9e.jpg",
+            "https://tfshpcjfcibynsbdxztn.supabase.co/storage/v1/object/public/airport-images/52467d0b-b122-4332-93c4-d2d5121080fb/spots/fb3fd851-14fa-48bd-af39-6da11d65b01d.jpg",
+            "https://tfshpcjfcibynsbdxztn.supabase.co/storage/v1/object/public/airport-images/52467d0b-b122-4332-93c4-d2d5121080fb/spots/8f89afed-4378-45d8-a926-fda0fb83382f.jpg"
         ],
 
         "photoCredits": [
             "Gilles van Landeghem",
-            "Gilles van Landeghem"
+            "Gilles van Landeghem",
+            "maxim depoorter",
+            "maxim depoorter",
+            "maxim depoorter"
         ]
     },
 
@@ -145,6 +151,31 @@
         "photoCredits": [
             "Gilles van Landeghem"
         ]
-    }
+    },
+    {
+    "lat": "51.195000",
+    "lng": "2.854010",
+    "name": "nhv",
+    "notes": [
+      "None"
+    ],
+    "photos": [
+      "https://tfshpcjfcibynsbdxztn.supabase.co/storage/v1/object/public/airport-images/52467d0b-b122-4332-93c4-d2d5121080fb/spots/233b218b-559f-4549-b30d-85f4639ce5a9.jpg",
+      "https://tfshpcjfcibynsbdxztn.supabase.co/storage/v1/object/public/airport-images/52467d0b-b122-4332-93c4-d2d5121080fb/spots/25f09b95-a4d0-4adc-94a8-a28e4e1d9992.jpg",
+      "https://tfshpcjfcibynsbdxztn.supabase.co/storage/v1/object/public/airport-images/52467d0b-b122-4332-93c4-d2d5121080fb/spots/0f412fc2-3368-4532-9653-50a25ba856d3.jpg",
+      "https://tfshpcjfcibynsbdxztn.supabase.co/storage/v1/object/public/airport-images/52467d0b-b122-4332-93c4-d2d5121080fb/spots/980ad4b3-c785-4c45-9593-75a40f51091d.jpg"
+    ],
+    "parking": "Layby",
+    "direction": 165,
+    "photoCredits": [
+      "maxim depoorter",
+      "maxim depoorter",
+      "maxim depoorter",
+      "maxim depoorter"
+    ],
+    "bestForRunway": "08",
+    "bestTimeToVisit": "Late morning and early afternoon",
+    "recommendedFocalLength": "70-300mm"
+  }
 ]
 }
