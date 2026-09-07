@@ -3124,6 +3124,265 @@ function displayAirshows(){
 
 }
 
+function openAirshowEdit(){
+
+    if(!currentAirshow){
+
+        console.error(
+            "Cannot open airshow editor: no current airshow."
+        );
+
+        return;
+
+    }
+
+
+    const airshow = currentAirshow;
+
+
+    const description =
+        airshow.description || "";
+
+
+    const aircraft =
+        airshow.confirmed_aircraft || [];
+
+
+    document.getElementById("sidebar").innerHTML = `
+
+        <h2>✏️ Suggest an Edit</h2>
+
+        <p class="airport-details">
+            ${airshow.name}
+        </p>
+
+        <hr>
+
+
+        <h3>About This Airshow</h3>
+
+        <textarea
+            id="airshowEditDescription"
+            class="airshow-edit-textarea"
+            rows="7"
+            placeholder="Enter the airshow description..."
+        >${description}</textarea>
+
+
+        <hr>
+
+
+        <h3>✈️ Confirmed Aircraft</h3>
+
+        <textarea
+            id="airshowEditAircraft"
+            class="airshow-edit-textarea"
+            rows="8"
+            placeholder="Enter one aircraft per line..."
+        >${aircraft.join("\n")}</textarea>
+
+
+        <p class="airshow-edit-help">
+            Enter one confirmed aircraft per line.
+            Your changes will be reviewed before
+            appearing publicly.
+        </p>
+
+
+        <div class="airshow-edit-buttons">
+
+            <button
+                type="button"
+                onclick="cancelAirshowEdit()"
+            >
+                Cancel
+            </button>
+
+            <button
+                type="button"
+                onclick="submitAirshowEdit()"
+            >
+                Submit Edit
+            </button>
+
+        </div>
+
+    `;
+
+}
+
+function cancelAirshowEdit(){
+
+    if(!currentAirshow){
+
+        return;
+
+    }
+
+    showAirshow(currentAirshow);
+
+}
+
+async function submitAirshowEdit(){
+
+    if(!currentAirshow){
+
+        alert("Unable to identify the airshow.");
+
+        return;
+
+    }
+
+
+    if(!supabaseClient){
+
+        alert("Supabase is not available.");
+
+        return;
+
+    }
+
+
+    const submitButton =
+        document.querySelector(
+            ".airshow-edit-buttons button:last-child"
+        );
+
+
+    if(submitButton){
+
+        submitButton.disabled = true;
+        submitButton.textContent = "Submitting...";
+
+    }
+
+
+    try{
+
+        const {
+            data: {
+                user
+            },
+            error: userError
+        } = await supabaseClient.auth.getUser();
+
+
+        if(userError || !user){
+
+            alert(
+                "Please log in before suggesting an edit."
+            );
+
+            return;
+
+        }
+
+
+        const description =
+            document
+                .getElementById("airshowEditDescription")
+                .value
+                .trim();
+
+
+        const aircraftText =
+            document
+                .getElementById("airshowEditAircraft")
+                .value
+                .trim();
+
+
+        const confirmedAircraft =
+            aircraftText
+                ? aircraftText
+                    .split("\n")
+                    .map(function(aircraft){
+
+                        return aircraft.trim();
+
+                    })
+                    .filter(function(aircraft){
+
+                        return aircraft.length > 0;
+
+                    })
+                : [];
+
+
+        const {
+            error
+        } = await supabaseClient
+            .from("airshow_edit_submissions")
+            .insert({
+
+                airshow_id:
+                    currentAirshow.id,
+
+                user_id:
+                    user.id,
+
+                proposed_description:
+                    description,
+
+                proposed_confirmed_aircraft:
+                    confirmedAircraft,
+
+                status:
+                    "pending"
+
+            });
+
+
+        if(error){
+
+            console.error(
+                "Airshow edit submission error:",
+                error
+            );
+
+            throw error;
+
+        }
+
+
+        alert(
+            "Your edit has been submitted for review. Thank you!"
+        );
+
+
+        await showAirshow(currentAirshow);
+
+    }
+
+
+    catch(error){
+
+        console.error(
+            "Airshow edit error:",
+            error
+        );
+
+
+        alert(
+            "Something went wrong while submitting your edit."
+        );
+
+    }
+
+
+    finally{
+
+        if(submitButton){
+
+            submitButton.disabled = false;
+            submitButton.textContent = "Submit Edit";
+
+        }
+
+    }
+
+}
+
 function displayAirshowSpots(airshow){
 
 
@@ -3535,9 +3794,17 @@ if(!plusUser){
             }
         </p>
 
+        <button
+            type="button"
+            class="airshow-edit-button"
+            onclick="openAirshowEdit()"
+        >
+            ✏️ Suggest an Edit
+        </button>
+
         <hr>
 
-        <h3>About This Airshow</h3>
+                <h3>About This Airshow</h3>
 
         <p>
             ${airshow.description || "No description available."}

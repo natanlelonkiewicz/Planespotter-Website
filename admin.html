@@ -165,6 +165,14 @@
             Loading airshow submissions...
         </div>
 
+        <h2>✏️ Airshow Edit Suggestions</h2>
+
+<div id="airshowEditSubmissionList">
+
+    <p>Loading airshow edit suggestions...</p>
+
+</div>
+
         <h2 class="admin-section-title">
     Low Flying Area Submissions
 </h2>
@@ -239,6 +247,7 @@ async function checkAdmin(){
 
     loadSubmissions();
     loadAirshowSubmissions();
+    loadAirshowEditSubmissions();
     loadLowFlyingSubmissions();
 
 }
@@ -510,6 +519,402 @@ async function loadAirshowSubmissions(){
             `;
 
         }).join("");
+
+}
+
+async function loadAirshowEditSubmissions(){
+
+    const editList =
+        document.getElementById(
+            "airshowEditSubmissionList"
+        );
+
+
+    if(!editList){
+
+        console.error(
+            "Airshow edit submission list element not found."
+        );
+
+        return;
+
+    }
+
+
+    const {
+        data,
+        error
+    } = await supabaseClient
+
+        .from("airshow_edit_submissions")
+
+        .select("*")
+
+        .eq(
+            "status",
+            "pending"
+        )
+
+        .order(
+            "created_at",
+            {
+                ascending:false
+            }
+        );
+
+
+    if(error){
+
+        console.error(
+            "Airshow edit submission loading error:",
+            error
+        );
+
+        editList.innerHTML =
+            "<p>Unable to load airshow edit submissions.</p>";
+
+        return;
+
+    }
+
+
+    if(!data || data.length === 0){
+
+        editList.innerHTML =
+            "<p>No pending airshow edit suggestions.</p>";
+
+        return;
+
+    }
+
+
+    editList.innerHTML =
+        data.map(function(edit){
+
+            return `
+
+            <div class="admin-submission">
+
+                <h3>
+                    ✏️ Airshow Edit Suggestion
+                </h3>
+
+                <p>
+                    <b>Airshow ID:</b>
+                    ${escapeHtml(
+                        String(edit.airshow_id)
+                    )}
+                </p>
+
+                <p>
+                    <b>Submitted:</b>
+                    ${new Date(
+                        edit.created_at
+                    ).toLocaleString()}
+                </p>
+
+                <div class="admin-submission-buttons">
+
+    <button
+        class="review-button"
+        onclick="toggleAirshowEditPreview('${edit.id}')"
+    >
+        👁 Review edit
+    </button>
+
+    <button
+    class="approve-button"
+    onclick="approveAirshowEdit('${edit.id}')"
+>
+    ✅ Approve Edit
+</button>
+
+    <button
+        class="reject-button"
+        onclick="rejectAirshowEdit('${edit.id}')"
+    >
+        ❌ Reject Edit
+    </button>
+
+</div>
+
+                <div
+                    id="airshow-edit-preview-${edit.id}"
+                    class="submission-preview"
+                    style="display:none;"
+                >
+
+                    <div class="preview-section">
+
+                        <h4>
+                            📝 Proposed Description
+                        </h4>
+
+                        <p>
+                            ${escapeHtml(
+                                edit.proposed_description || "—"
+                            )}
+                        </p>
+
+                    </div>
+
+
+                    <div class="preview-section">
+
+                        <h4>
+                            ✈ Proposed Confirmed Aircraft
+                        </h4>
+
+                        ${
+                            Array.isArray(
+                                edit.proposed_confirmed_aircraft
+                            ) &&
+                            edit.proposed_confirmed_aircraft.length
+
+                            ?
+
+                            `
+                            <ul class="preview-list">
+
+                                ${
+                                    edit.proposed_confirmed_aircraft
+                                        .map(function(aircraft){
+
+                                            return `
+                                                <li>
+                                                    ${escapeHtml(
+                                                        aircraft
+                                                    )}
+                                                </li>
+                                            `;
+
+                                        })
+                                        .join("")
+                                }
+
+                            </ul>
+                            `
+
+                            :
+
+                            "<p>No aircraft proposed.</p>"
+                        }
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            `;
+
+        }).join("");
+
+}
+
+async function rejectAirshowEdit(id){
+
+    if(!confirm(
+        "Reject this airshow edit suggestion?"
+    )){
+        return;
+    }
+
+    const {
+        error
+    } = await supabaseClient
+        .from("airshow_edit_submissions")
+        .update({
+            status: "rejected"
+        })
+        .eq("id", id)
+        .eq("status", "pending");
+
+    if(error){
+
+        console.error(
+            "Airshow edit rejection error:",
+            error
+        );
+
+        alert(
+            "Could not reject this edit."
+        );
+
+        return;
+
+    }
+
+    alert(
+        "Airshow edit rejected."
+    );
+
+    loadAirshowEditSubmissions();
+
+}
+
+async function approveAirshowEdit(id){
+
+    if(!confirm(
+        "Approve this airshow edit and apply the changes?"
+    )){
+        return;
+    }
+
+    try{
+
+        // Get the edit submission
+        const {
+            data: edit,
+            error: editError
+        } = await supabaseClient
+            .from("airshow_edit_submissions")
+            .select("*")
+            .eq("id", id)
+            .eq("status", "pending")
+            .single();
+
+        if(editError || !edit){
+
+            console.error(
+                "Airshow edit loading error:",
+                editError
+            );
+
+            alert(
+                "Could not load this edit suggestion."
+            );
+
+            return;
+
+        }
+
+        // Make sure the proposed aircraft is an array
+        const confirmedAircraft =
+            Array.isArray(
+                edit.proposed_confirmed_aircraft
+            )
+            ?
+            edit.proposed_confirmed_aircraft
+            :
+            [];
+
+        // Apply the proposed changes to the airshow
+        const {
+            error: airshowError
+        } = await supabaseClient
+            .from("airshow_submissions")
+            .update({
+
+                description:
+                    edit.proposed_description,
+
+                confirmed_aircraft:
+                    confirmedAircraft
+
+            })
+            .eq(
+                "id",
+                edit.airshow_id
+            )
+            .eq(
+                "status",
+                "approved"
+            );
+
+        if(airshowError){
+
+            console.error(
+                "Airshow update error:",
+                airshowError
+            );
+
+            alert(
+                "Could not apply the changes to the airshow."
+            );
+
+            return;
+
+        }
+
+        // Mark the edit as approved
+        const {
+            error: approvalError
+        } = await supabaseClient
+            .from("airshow_edit_submissions")
+            .update({
+
+                status: "approved"
+
+            })
+            .eq(
+                "id",
+                id
+            )
+            .eq(
+                "status",
+                "pending"
+            );
+
+        if(approvalError){
+
+            console.error(
+                "Airshow edit approval error:",
+                approvalError
+            );
+
+            alert(
+                "The airshow was updated, but the edit submission could not be marked as approved."
+            );
+
+            return;
+
+        }
+
+        alert(
+            "Airshow edit approved."
+        );
+
+        loadAirshowEditSubmissions();
+
+    }
+
+    catch(error){
+
+        console.error(
+            "Airshow edit approval error:",
+            error
+        );
+
+        alert(
+            "Something went wrong while approving this edit."
+        );
+
+    }
+
+}
+
+function toggleAirshowEditPreview(id){
+
+    const preview =
+        document.getElementById(
+            "airshow-edit-preview-" + id
+        );
+
+    if(!preview){
+        return;
+    }
+
+    if(preview.style.display === "block"){
+
+        preview.style.display = "none";
+
+    }
+    else{
+
+        preview.style.display = "block";
+
+    }
 
 }
 
