@@ -3405,3 +3405,76 @@ body {
     color:#111 !important;
 
 }
+
+/* Edit Submission button */
+
+.edit-submission-button {
+
+    width: 100%;
+    box-sizing: border-box;
+
+    margin-top: 12px;
+    padding: 10px 16px;
+
+    background: transparent;
+    color: #ff4d4d;
+
+    border: 2px solid #ff4d4d;
+    border-radius: 6px;
+
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+
+    cursor: pointer;
+
+    transition:
+        background 0.2s ease,
+        color 0.2s ease,
+        border-color 0.2s ease;
+
+}
+
+
+/* Hover */
+
+.edit-submission-button:hover {
+
+    background: #ff4d4d;
+    color: #ffffff;
+
+}
+
+
+/* Disabled */
+
+.edit-submission-button:disabled {
+
+    opacity: 0.6;
+    cursor: not-allowed;
+
+}
+
+
+/* =================================
+   EDIT BUTTON OVERRIDE
+   ================================= */
+
+button.edit-submission-button {
+
+    background: transparent !important;
+    color: #ff4d4d !important;
+
+    border: 2px solid #ff4d4d !important;
+
+}
+
+
+/* Override hover */
+
+button.edit-submission-button:hover {
+
+    background: #ff4d4d !important;
+    color: #ffffff !important;
+
+}

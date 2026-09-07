@@ -598,6 +598,80 @@ function createImagePreview(
 
 }
 
+function createExistingImagePreview(
+    imageUrl,
+    container,
+    imageArray
+){
+
+    const preview =
+        document.createElement("div");
+
+    preview.className =
+        "image-preview";
+
+
+    const image =
+        document.createElement("img");
+
+    image.src =
+        imageUrl;
+
+
+    const removeButton =
+        document.createElement("button");
+
+    removeButton.type =
+        "button";
+
+    removeButton.className =
+        "remove-image-button";
+
+    removeButton.textContent =
+        "×";
+
+
+    removeButton.addEventListener(
+        "click",
+        function(){
+
+            const index =
+                imageArray.indexOf(
+                    imageUrl
+                );
+
+
+            if(index !== -1){
+
+                imageArray.splice(
+                    index,
+                    1
+                );
+
+            }
+
+
+            preview.remove();
+
+        }
+    );
+
+
+    preview.appendChild(
+        image
+    );
+
+    preview.appendChild(
+        removeButton
+    );
+
+
+    container.appendChild(
+        preview
+    );
+
+}
+
 function setupSpotPhotoUpload(spotCard){
 
     const photoInput =
@@ -623,6 +697,8 @@ function setupSpotPhotoUpload(spotCard){
     );
 
     spotCard.processedImages = [];
+
+    spotCard.existingPhotoUrls = [];
 
     photoInput.addEventListener(
         "change",
@@ -679,6 +755,8 @@ function setupSpotPhotoUpload(spotCard){
 addSpot();
 
 let processedAirshowImage = null;
+
+let editingAirshowImageUrl = undefined;
 
 
 const airshowImageInput =
@@ -825,6 +903,569 @@ airshowImageInput.addEventListener(
 );
 
 const airshowForm = document.getElementById("airshowSubmissionForm");
+
+function showEditSubmissionButton(
+    form,
+    submissionType,
+    submissionId
+){
+
+    const existingButton =
+        form.querySelector(
+            ".edit-submission-button"
+        );
+
+    if(existingButton){
+        existingButton.remove();
+    }
+
+
+    const editButton =
+        document.createElement("button");
+
+    editButton.type = "button";
+
+    editButton.className =
+        "edit-submission-button";
+
+    editButton.textContent =
+        "Edit Submission";
+
+
+    editButton.addEventListener(
+        "click",
+        async function(){
+
+            editButton.disabled = true;
+            editButton.textContent =
+                "Loading Submission...";
+
+
+            try {
+
+                const table =
+                    submissionType === "airport"
+                    ?
+                    "airport_submissions"
+                    :
+                    "airshow_submissions";
+
+
+                const {
+                    data,
+                    error
+                } =
+                    await window.supabaseClient
+                        .from(table)
+                        .select("*")
+                        .eq("id", submissionId)
+                        .single();
+
+
+                if(error){
+
+                    console.error(
+                        "Could not load submission:",
+                        error
+                    );
+
+                    alert(
+                        "Could not load your submission.\n\n" +
+                        error.message
+                    );
+
+                    editButton.disabled = false;
+                    editButton.textContent =
+                        "Edit Submission";
+
+                    return;
+
+                }
+
+
+                console.log(
+                    "Submission loaded for editing:",
+                    data
+                );
+
+
+                if(submissionType === "airport"){
+
+                    await loadAirportSubmissionForEditing(
+        submissionId
+    );
+
+}
+
+                else if(submissionType === "airshow"){
+
+                    await loadAirshowSubmissionForEditing(
+        submissionId
+    );
+
+}
+
+
+                editButton.disabled = false;
+                editButton.textContent =
+                    "Edit Submission";
+
+
+            }
+            catch(error){
+
+                console.error(
+                    "Edit submission error:",
+                    error
+                );
+
+                alert(
+                    "Something went wrong while loading the submission."
+                );
+
+                editButton.disabled = false;
+                editButton.textContent =
+                    "Edit Submission";
+
+            }
+
+        }
+    );
+
+
+    form.appendChild(editButton);
+
+}
+
+let editingAirshowSubmissionId = null;
+
+async function loadAirshowSubmissionForEditing(
+    submissionId
+){
+
+    try {
+
+        const {
+            data,
+            error
+        } =
+            await window.supabaseClient
+                .from("airshow_submissions")
+                .select("*")
+                .eq("id", submissionId)
+                .single();
+
+
+        if(error){
+
+            console.error(
+                "Could not load airshow submission:",
+                error
+            );
+
+            alert(
+                "Could not load your airshow submission.\n\n" +
+                error.message
+            );
+
+            return;
+
+        }
+
+
+        console.log(
+            "Airshow submission loaded for editing:",
+            data
+        );
+
+
+        editingAirshowSubmissionId =
+            submissionId;
+
+            // ---------------------------------
+// EXISTING MAIN AIRSHOW IMAGE
+// ---------------------------------
+
+editingAirshowImageUrl =
+    data.image || null;
+
+airshowPreviewContainer.innerHTML = "";
+
+if(editingAirshowImageUrl){
+
+    const preview =
+        document.createElement("div");
+
+    preview.className =
+        "image-preview";
+
+
+    const image =
+        document.createElement("img");
+
+    image.src =
+        editingAirshowImageUrl;
+
+
+    const removeButton =
+        document.createElement("button");
+
+    removeButton.type =
+        "button";
+
+    removeButton.className =
+        "remove-image-button";
+
+    removeButton.textContent =
+        "×";
+
+
+    removeButton.addEventListener(
+        "click",
+        function(){
+
+            editingAirshowImageUrl =
+                null;
+
+            preview.remove();
+
+        }
+    );
+
+
+    preview.appendChild(
+        image
+    );
+
+    preview.appendChild(
+        removeButton
+    );
+
+    airshowPreviewContainer.appendChild(
+        preview
+    );
+
+}
+
+
+        // ---------------------------------
+        // AIRSHOW INFORMATION
+        // ---------------------------------
+
+        document.getElementById(
+            "airshowName"
+        ).value =
+            data.name || "";
+
+
+        document.getElementById(
+            "airshowLocation"
+        ).value =
+            data.location || "";
+
+
+        document.getElementById(
+            "airshowStartDate"
+        ).value =
+            data.start_date || "";
+
+
+        document.getElementById(
+            "airshowEndDate"
+        ).value =
+            data.end_date || "";
+
+
+        document.getElementById(
+            "airshowDescription"
+        ).value =
+            data.description || "";
+
+
+        document.getElementById(
+            "airshowPhotoCredit"
+        ).value =
+            data.photo_credit || "";
+
+
+        // ---------------------------------
+        // LATITUDE / LONGITUDE
+        // ---------------------------------
+
+        const firstSpot =
+            document.querySelector(
+                ".spot-form-card"
+            );
+
+
+        if(firstSpot){
+
+            const latInput =
+                firstSpot.querySelector(
+                    ".spot-lat"
+                );
+
+            const lngInput =
+                firstSpot.querySelector(
+                    ".spot-lng"
+                );
+
+            if(latInput){
+                latInput.value =
+                    data.lat ?? "";
+            }
+
+            if(lngInput){
+                lngInput.value =
+                    data.lng ?? "";
+            }
+
+        }
+
+
+        // ---------------------------------
+        // CONFIRMED AIRCRAFT
+        // ---------------------------------
+
+        aircraftContainer.innerHTML = "";
+
+
+        const savedAircraft =
+            Array.isArray(
+                data.confirmed_aircraft
+            )
+            ?
+            data.confirmed_aircraft
+            :
+            [];
+
+
+        savedAircraft.forEach(
+            function(aircraftName){
+
+                /*
+                 * Use the existing function that
+                 * creates an aircraft input.
+                 *
+                 * If your function is called something
+                 * different, we will adjust this part.
+                 */
+                addAircraft();
+
+
+                const aircraftInputs =
+                    aircraftContainer.querySelectorAll(
+                        ".aircraft-name"
+                    );
+
+
+                const input =
+                    aircraftInputs[
+                        aircraftInputs.length - 1
+                    ];
+
+
+                if(input){
+
+                    input.value =
+                        aircraftName;
+
+                }
+
+            }
+        );
+
+
+        // ---------------------------------
+        // SPOTTING LOCATIONS
+        // ---------------------------------
+
+        spotsContainer.innerHTML = "";
+
+        spotNumber = 0;
+
+
+        const savedSpots =
+            Array.isArray(data.spots)
+            ?
+            data.spots
+            :
+            [];
+
+
+        savedSpots.forEach(
+            function(spot){
+
+                addSpot();
+
+
+                const spotCards =
+                    spotsContainer.querySelectorAll(
+                        ".spot-form-card"
+                    );
+
+
+                const card =
+                    spotCards[
+                        spotCards.length - 1
+                    ];
+
+
+                if(!card){
+                    return;
+                }
+
+
+                card.querySelector(
+                    ".spot-name"
+                ).value =
+                    spot.name || "";
+
+
+                card.querySelector(
+                    ".spot-lat"
+                ).value =
+                    spot.lat ?? "";
+
+
+                card.querySelector(
+                    ".spot-lng"
+                ).value =
+                    spot.lng ?? "";
+
+
+                const directionInput =
+                    card.querySelector(
+                        ".spot-direction"
+                    );
+
+
+                if(directionInput){
+
+                    directionInput.value =
+                        spot.direction ?? "";
+
+                }
+
+
+                card.querySelector(
+                    ".spot-focal-length"
+                ).value =
+                    spot.focalLength || "";
+
+
+                card.querySelector(
+                    ".spot-parking"
+                ).value =
+                    spot.parking || "";
+
+
+                card.querySelector(
+                    ".spot-best-time"
+                ).value =
+                    spot.bestTime || "";
+
+
+                card.querySelector(
+                    ".spot-notes"
+                ).value =
+                    spot.notes || "";
+
+
+                card.querySelector(
+                    ".spot-photo-credit"
+                ).value =
+                    spot.photoCredit || "";
+
+
+                /*
+                 * Keep the existing images so that
+                 * editing does not delete them.
+                 */
+                card.existingPhotoUrls =
+                    card.existingPhotoUrls =
+    Array.isArray(spot.images)
+    ?
+    [...spot.images]
+    :
+    [];
+
+
+const previewContainer =
+    card.querySelector(
+        ".image-preview-container"
+    );
+
+
+if(
+    previewContainer &&
+    card.existingPhotoUrls.length > 0
+){
+
+    previewContainer.innerHTML =
+        "";
+
+    card.existingPhotoUrls.forEach(
+        function(imageUrl){
+
+            createExistingImagePreview(
+                imageUrl,
+                previewContainer,
+                card.existingPhotoUrls
+            );
+
+        }
+    );
+
+}
+
+            }
+        );
+
+
+        // ---------------------------------
+        // CHANGE BUTTON TEXT
+        // ---------------------------------
+
+        const submitButton =
+            airshowForm.querySelector(
+                ".submit-airport-button"
+            );
+
+
+        if(submitButton){
+
+            submitButton.textContent =
+                "Update Airshow";
+
+        }
+
+
+        // ---------------------------------
+        // SCROLL TO FORM
+        // ---------------------------------
+
+        airshowForm.scrollIntoView({
+            behavior: "smooth",
+            block: "start"
+        });
+
+
+    }
+    catch(error){
+
+        console.error(
+            "Airshow edit error:",
+            error
+        );
+
+        alert(
+            "Something went wrong while loading the airshow submission."
+        );
+
+    }
+
+}
 
 airshowForm.addEventListener("submit", async function(event){
 
@@ -1003,7 +1644,16 @@ const lng =
                         ".spot-photo-credit"
                     ).value.trim(),
 
-                images: []
+                images: (
+    editingAirshowSubmissionId &&
+    Array.isArray(card.existingPhotoUrls)
+)
+?
+[
+    ...card.existingPhotoUrls
+]
+:
+[],
 
             };
 
@@ -1124,9 +1774,100 @@ const lng =
         }
 
 
-        const {
-            error: insertError
-        } = await supabaseClient
+let data;
+let databaseError;
+
+
+// ---------------------------------
+// EDIT EXISTING AIRSHOW
+// ---------------------------------
+
+if(editingAirshowSubmissionId){
+
+    const updateData = {
+
+        status:
+            "pending",
+
+        name:
+            name,
+
+        location:
+            location,
+
+        lat:
+            lat,
+
+        lng:
+            lng,
+
+        start_date:
+            startDate,
+
+        end_date:
+            endDate,
+
+        description:
+            description,
+
+        photo_credit:
+            photoCredit,
+
+        confirmed_aircraft:
+            confirmedAircraft,
+
+        spots:
+            spots
+
+    };
+
+
+    // ---------------------------------
+// MAIN AIRSHOW IMAGE
+// ---------------------------------
+
+if(editingAirshowImageUrl !== undefined){
+
+    updateData.image =
+        airshowImageUrl ||
+        editingAirshowImageUrl;
+
+}
+
+
+    const result =
+        await supabaseClient
+            .from("airshow_submissions")
+            .update(updateData)
+            .eq(
+                "id",
+                editingAirshowSubmissionId
+            )
+            .eq(
+                "user_id",
+                user.id
+            )
+            .select()
+            .single();
+
+
+    data =
+        result.data;
+
+    databaseError =
+        result.error;
+
+}
+
+
+// ---------------------------------
+// CREATE NEW AIRSHOW
+// ---------------------------------
+
+else{
+
+    const result =
+        await supabaseClient
             .from("airshow_submissions")
             .insert({
 
@@ -1169,23 +1910,55 @@ const lng =
                 spots:
                     spots
 
-            });
+            })
+            .select()
+            .single();
 
 
-        if(insertError){
+    data =
+        result.data;
 
-            throw insertError;
+    databaseError =
+        result.error;
 
-        }
+}
+
+
+if(databaseError){
+
+    throw databaseError;
+
+}
 
 
         // ---------------------------------
         // SUCCESS
         // ---------------------------------
 
-        alert(
-            "Airshow submitted successfully! It will be reviewed before appearing on Avspot."
-        );
+        if(editingAirshowSubmissionId){
+
+    alert(
+        "Airshow updated successfully! It will be reviewed again before appearing on Avspot."
+    );
+
+}
+else{
+
+    showEditSubmissionButton(
+        airshowForm,
+        "airshow",
+        data.id
+    );
+
+    alert(
+        "Airshow submitted successfully! It will be reviewed before appearing on Avspot."
+    );
+
+}
+
+editingAirshowSubmissionId = null;
+
+editingAirshowImageUrl = undefined;
 
 
         airshowForm.reset();

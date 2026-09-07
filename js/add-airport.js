@@ -562,6 +562,415 @@ airportImageInput.addEventListener(
     }
 );
 
+function createExistingImagePreview(
+    imageUrl,
+    container,
+    imageArray
+) {
+
+    const preview =
+        document.createElement("div");
+
+
+    preview.className =
+        "image-preview";
+
+
+    const image =
+        document.createElement("img");
+
+
+    image.src =
+        imageUrl;
+
+
+    const removeButton =
+        document.createElement("button");
+
+
+    removeButton.type =
+        "button";
+
+    removeButton.className =
+        "remove-image-button";
+
+    removeButton.textContent =
+        "×";
+
+
+    removeButton.addEventListener(
+        "click",
+        () => {
+
+            const index =
+                imageArray.indexOf(imageUrl);
+
+
+            if(index !== -1){
+
+                imageArray.splice(
+                    index,
+                    1
+                );
+
+            }
+
+
+            preview.remove();
+
+        }
+    );
+
+
+    preview.appendChild(
+        image
+    );
+
+    preview.appendChild(
+        removeButton
+    );
+
+
+    container.appendChild(
+        preview
+    );
+
+}
+
+async function loadAirportSubmissionForEditing(
+    submissionId
+){
+
+    try {
+
+        const {
+            data,
+            error
+        } =
+            await window.supabaseClient
+                .from("airport_submissions")
+                .select("*")
+                .eq("id", submissionId)
+                .single();
+
+
+        if(error){
+
+            console.error(
+                "Could not load airport submission:",
+                error
+            );
+
+            alert(
+                "Could not load your airport submission.\n\n" +
+                error.message
+            );
+
+            return;
+
+        }
+
+
+        editingAirportSubmissionId =
+            submissionId;
+
+
+        /*
+         * Basic airport information
+         */
+
+        document.getElementById(
+            "airportName"
+        ).value =
+            data.airport_name || "";
+
+
+        document.getElementById(
+            "airportICAO"
+        ).value =
+            data.icao || "";
+
+
+        document.getElementById(
+            "airportLocation"
+        ).value =
+            data.location || "";
+
+
+        document.getElementById(
+            "airportLat"
+        ).value =
+            data.airport_lat ?? "";
+
+
+        document.getElementById(
+            "airportLng"
+        ).value =
+            data.airport_lng ?? "";
+
+
+        document.getElementById(
+            "airportPhotoCredit"
+        ).value =
+            data.airport_credits || "";
+
+
+        /*
+         * Recreate runways
+         */
+
+        runwaysContainer.innerHTML = "";
+
+        const savedRunways =
+            Array.isArray(data.runways)
+            ? data.runways
+            : [];
+
+
+        savedRunways.forEach(
+            function(){
+
+                addRunway();
+
+            }
+        );
+
+
+        const runwayCards =
+            document.querySelectorAll(
+                ".runway-card"
+            );
+
+
+        runwayCards.forEach(
+            function(card, index){
+
+                const runway =
+                    savedRunways[index];
+
+                if(!runway){
+                    return;
+                }
+
+
+                card.querySelector(
+                    ".runway-name"
+                ).value =
+                    runway.name || "";
+
+
+                card.querySelector(
+                    ".runway-heading1"
+                ).value =
+                    runway.heading1 ?? "";
+
+
+                card.querySelector(
+                    ".runway-heading2"
+                ).value =
+                    runway.heading2 ?? "";
+
+            }
+        );
+
+
+        /*
+         * Recreate spotting locations
+         */
+
+        spotsContainer.innerHTML = "";
+
+        spotNumber = 0;
+
+
+        const savedSpots =
+            Array.isArray(data.spots)
+            ? data.spots
+            : [];
+
+
+        savedSpots.forEach(
+            function(spot){
+
+                addSpot();
+
+
+                const spotCards =
+                    document.querySelectorAll(
+                        ".spot-form-card"
+                    );
+
+
+                const card =
+                    spotCards[
+                        spotCards.length - 1
+                    ];
+
+
+                if(!card){
+                    return;
+                }
+
+
+                card.querySelector(
+                    ".spot-name"
+                ).value =
+                    spot.name || "";
+
+
+                card.querySelector(
+                    ".spot-lat"
+                ).value =
+                    spot.lat ?? "";
+
+
+                card.querySelector(
+                    ".spot-lng"
+                ).value =
+                    spot.lng ?? "";
+
+
+                card.querySelector(
+                    ".spot-runway"
+                ).value =
+                    spot.bestForRunway || "";
+
+
+                card.querySelector(
+                    ".spot-focal-length"
+                ).value =
+                    spot.recommendedFocalLength || "";
+
+
+                card.querySelector(
+                    ".spot-parking"
+                ).value =
+                    spot.parking || "";
+
+
+                card.querySelector(
+                    ".spot-best-time"
+                ).value =
+                    spot.bestTimeToVisit || "";
+
+
+                card.querySelector(
+                    ".spot-notes"
+                ).value =
+                    Array.isArray(spot.notes)
+                    ?
+                    spot.notes.join("\n")
+                    :
+                    spot.notes || "";
+
+
+                card.querySelector(
+                    ".spot-photo-credit"
+                ).value =
+                    Array.isArray(
+                        spot.photoCredits
+                    )
+                    ?
+                    spot.photoCredits[0] || ""
+                    :
+                    spot.photoCredits || "";
+
+
+                /*
+                 * Existing uploaded photos are retained
+                 * in the submission data.
+                 *
+                 * We don't download them back into
+                 * the file input.
+                 */
+
+                card.existingPhotoUrls =
+    Array.isArray(spot.photos)
+    ?
+    [...spot.photos]
+    :
+    [];
+
+
+// Show existing uploaded photos
+// in the normal preview area.
+
+const previewContainer =
+    card.querySelector(
+        ".image-preview-container"
+    );
+
+
+if(
+    previewContainer &&
+    card.existingPhotoUrls.length > 0
+){
+
+    previewContainer.innerHTML =
+        "";
+
+    card.existingPhotoUrls.forEach(
+        function(imageUrl){
+
+            createExistingImagePreview(
+                imageUrl,
+                previewContainer,
+                card.existingPhotoUrls
+            );
+
+        }
+    );
+
+}
+
+            }
+        );
+
+
+        /*
+         * Change the button text so the user
+         * knows the form is now being edited.
+         */
+
+        const submitButton =
+            airportSubmissionForm.querySelector(
+                ".submit-airport-button"
+            );
+
+
+        if(submitButton){
+
+            submitButton.textContent =
+                "Update Airport";
+
+        }
+
+
+        /*
+         * Scroll back to the form.
+         */
+
+        airportSubmissionForm.scrollIntoView({
+            behavior: "smooth",
+            block: "start"
+        });
+
+
+    }
+    catch(error){
+
+        console.error(
+            "Airport edit error:",
+            error
+        );
+
+        alert(
+            "Something went wrong while loading the airport submission."
+        );
+
+    }
+
+}
 
 function setupSpotPhotoUpload(spotCard) {
 
@@ -590,6 +999,8 @@ function setupSpotPhotoUpload(spotCard) {
     );
 
     spotCard.processedImages = [];
+
+    spotCard.existingPhotoUrls = [];
 
 
     photoInput.addEventListener(
@@ -653,6 +1064,92 @@ function setupSpotPhotoUpload(spotCard) {
 
 const airportSubmissionForm =
     document.getElementById("airportSubmissionForm");
+
+    let editingAirportSubmissionId = null;
+
+    function showEditSubmissionButton(
+    form,
+    submissionType,
+    submissionId
+){
+
+    const existingButton =
+        form.querySelector(
+            ".edit-submission-button"
+        );
+
+    if(existingButton){
+        existingButton.remove();
+    }
+
+
+    const editButton =
+        document.createElement("button");
+
+
+    editButton.type =
+        "button";
+
+
+    editButton.className =
+        "edit-submission-button";
+
+
+    editButton.textContent =
+        "Edit Submission";
+
+
+    editButton.addEventListener(
+        "click",
+        async function(){
+
+            editButton.disabled = true;
+
+            editButton.textContent =
+                "Loading Submission...";
+
+
+            try {
+
+                if(
+                    submissionType === "airport"
+                ){
+
+                    await loadAirportSubmissionForEditing(
+                        submissionId
+                    );
+
+                }
+
+            }
+            catch(error){
+
+                console.error(
+                    "Edit submission error:",
+                    error
+                );
+
+                alert(
+                    "Something went wrong while loading the submission."
+                );
+
+            }
+
+
+            editButton.disabled = false;
+
+            editButton.textContent =
+                "Edit Submission";
+
+        }
+    );
+
+
+    form.appendChild(
+        editButton
+    );
+
+}
 
 
 airportSubmissionForm.addEventListener("submit", async (event) => {
@@ -743,6 +1240,21 @@ for (const card of spotCards) {
 
 
     const photoUrls = [];
+
+
+// Keep photos that were already uploaded
+// when editing an existing submission.
+if (
+    editingAirportSubmissionId &&
+    Array.isArray(card.existingPhotoUrls)
+) {
+
+    photoUrls.push(
+        ...card.existingPhotoUrls
+    );
+
+}
+
 
     const processedImages =
         card.processedImages || [];
@@ -955,61 +1467,199 @@ if (airportImageFile) {
 }
 
 
-        const { data, error } = await window.supabaseClient
+        let data;
+let databaseError;
+
+
+// ---------------------------------
+// EDIT EXISTING AIRPORT
+// ---------------------------------
+
+if(editingAirportSubmissionId){
+
+    const updateData = {
+
+        status:
+            "pending",
+
+        airport_name:
+            airportName,
+
+        icao:
+            icao,
+
+        location:
+            location,
+
+        airport_lat:
+            airportLat,
+
+        airport_lng:
+            airportLng,
+
+        airport_credits:
+            airportCredit,
+
+        runways:
+            runways,
+
+        spots:
+            spots
+
+    };
+
+
+    // Only replace the airport image
+    // if a new image was selected.
+    if(airportImageUrl){
+
+        updateData.airport_image =
+            airportImageUrl;
+
+    }
+
+
+    const result =
+        await window.supabaseClient
+            .from("airport_submissions")
+            .update(updateData)
+            .eq(
+                "id",
+                editingAirportSubmissionId
+            )
+            .eq(
+                "user_id",
+                user.id
+            )
+            .select()
+            .single();
+
+
+    data =
+        result.data;
+
+    databaseError =
+        result.error;
+
+}
+
+
+// ---------------------------------
+// CREATE NEW AIRPORT
+// ---------------------------------
+
+else{
+
+    const result =
+        await window.supabaseClient
             .from("airport_submissions")
             .insert({
 
-                user_id: user.id,
+                user_id:
+                    user.id,
 
-                status: "pending",
+                status:
+                    "pending",
 
-                airport_name: airportName,
+                airport_name:
+                    airportName,
 
-                icao: icao,
+                icao:
+                    icao,
 
-                location: location,
+                location:
+                    location,
 
-                airport_lat: airportLat,
+                airport_lat:
+                    airportLat,
 
-                airport_lng: airportLng,
-                
-                airport_image: airportImageUrl,
+                airport_lng:
+                    airportLng,
 
-                airport_credits: airportCredit,
+                airport_image:
+                    airportImageUrl,
 
-                runways: runways,
+                airport_credits:
+                    airportCredit,
 
-                spots: spots
+                runways:
+                    runways,
+
+                spots:
+                    spots
 
             })
             .select()
             .single();
 
 
-        if (error) {
+    data =
+        result.data;
 
-            console.error("Submission error:", error);
+    databaseError =
+        result.error;
 
-            alert(
-                "There was a problem submitting the airport.\n\n" +
-                error.message
-            );
-
-            submitButton.disabled = false;
-            submitButton.textContent = "Submit Airport";
-
-            return;
-        }
+}
 
 
-        console.log("Airport submission created:", data);
+if(databaseError){
 
-        alert(
-            "Airport submitted successfully!\n\n" +
-            "Your submission will be reviewed before it is added to Avspot."
-        );
+    console.error(
+        "Airport submission error:",
+        databaseError
+    );
 
-        airportSubmissionForm.reset();
+    alert(
+        "There was a problem submitting the airport.\n\n" +
+        databaseError.message
+    );
+
+    submitButton.disabled = false;
+    submitButton.textContent =
+        "Submit Airport";
+
+    return;
+
+}
+
+
+console.log(
+    "Airport submission saved:",
+    data
+);
+
+        // ---------------------------------
+// SUCCESS
+// ---------------------------------
+
+if(editingAirportSubmissionId){
+
+    alert(
+        "Airport updated successfully!\n\n" +
+        "Your updated submission will be reviewed before it is added to Avspot."
+    );
+
+}
+else{
+
+    showEditSubmissionButton(
+        airportSubmissionForm,
+        "airport",
+        data.id
+    );
+
+    alert(
+        "Airport submitted successfully!\n\n" +
+        "Your submission will be reviewed before it is added to Avspot."
+    );
+
+}
+
+
+editingAirportSubmissionId = null;
+
+
+airportSubmissionForm.reset();
 
         runwaysContainer.innerHTML = "";
         spotsContainer.innerHTML = "";
