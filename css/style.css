@@ -3882,3 +3882,7 @@ appearance: none;
     color: #c5a0a0 !important;
 
 }
+
+#cancelPlusButton {
+    background: red !important;
+}
