@@ -277,6 +277,16 @@ oninput="changeSunTime()"
 
 <button
     type="button"
+    id="cancelPlusButton"
+    class="account-add-airport-btn"
+    onclick="cancelAvspotPlus()"
+    style="display:none;"
+>
+    Cancel Subscription
+</button>
+
+<button
+    type="button"
     id="planeLogButton"
     class="account-add-airport-btn"
     onclick="window.location.href='/planelogs'"
@@ -7741,7 +7751,7 @@ async function showLoggedInAccount(user) {
         error
     } = await supabaseClient
         .from("profiles")
-        .select("role")
+        .select("role, stripe_subscription_id, subscription_status")
         .eq("id", user.id)
         .single();
 
@@ -7760,6 +7770,9 @@ async function showLoggedInAccount(user) {
 
     const upgradeButton =
         document.getElementById("upgradePlusButton");
+
+    const cancelButton =
+        document.getElementById("cancelPlusButton");
 
 
     if(profile && profile.role === "plus"){
@@ -7786,6 +7799,29 @@ async function showLoggedInAccount(user) {
 
         }
 
+
+        // Show cancel button only for
+        // users with an active subscription
+
+        if(
+            cancelButton &&
+            profile.stripe_subscription_id &&
+            (
+                profile.subscription_status === "active" ||
+                profile.subscription_status === "trialing"
+            )
+        ){
+
+            cancelButton.style.display = "block";
+
+        }
+
+        else if(cancelButton){
+
+            cancelButton.style.display = "none";
+
+        }
+
     }
 
     else{
@@ -7806,9 +7842,16 @@ async function showLoggedInAccount(user) {
                 </span>
 
                 <span class="plusButtonSubtitle">
-                    · Cancel anytime
+                    £2.99/month · Cancel anytime
                 </span>
             `;
+
+        }
+
+
+        if(cancelButton){
+
+            cancelButton.style.display = "none";
 
         }
 
@@ -7901,6 +7944,143 @@ function loadFromURL() {
 
     console.log("Requested airport:", airportCode);
     console.log("Requested spot:", spotName);
+
+}
+
+async function cancelAvspotPlus(){
+
+    if(!supabaseClient){
+
+        alert("Supabase is not available.");
+        return;
+
+    }
+
+
+    const confirmed =
+        confirm(
+            "Are you sure you want to cancel your Avspot Plus subscription?\n\nYour Plus access will remain active until the end of your current billing period."
+        );
+
+
+    if(!confirmed){
+
+        return;
+
+    }
+
+
+    const button =
+        document.getElementById("cancelPlusButton");
+
+
+    if(button){
+
+        button.disabled = true;
+
+        button.innerText =
+            "Cancelling...";
+
+    }
+
+
+    try{
+
+        const {
+            data,
+            error
+        } = await supabaseClient.functions.invoke(
+            "cancel-avspot-plus",
+            {
+                body: {}
+            }
+        );
+
+
+        if(error){
+
+            console.error(
+                "Cancellation error:",
+                error
+            );
+
+            if(error.context){
+
+                try{
+
+                    console.error(
+                        "Cancellation details:",
+                        await error.context.json()
+                    );
+
+                }
+                catch(e){
+
+                    console.error(
+                        "Unable to read cancellation details:",
+                        e
+                    );
+
+                }
+
+            }
+
+            throw error;
+
+        }
+
+
+        if(!data || !data.success){
+
+            throw new Error(
+                data?.error ||
+                "Unable to cancel subscription."
+            );
+
+        }
+
+
+        alert(
+            "Your Avspot Plus subscription has been cancelled. You will keep Plus access until the end of your current billing period."
+        );
+
+
+        if(button){
+
+            button.disabled = true;
+
+            button.innerText =
+                "Subscription cancelled";
+
+        }
+
+    }
+
+
+    catch(error){
+
+        console.error(
+            "Avspot Plus cancellation failed:",
+            error
+        );
+
+
+        alert(
+            error.message ||
+            "Something went wrong while cancelling your subscription."
+        );
+
+
+        if(button){
+
+            button.disabled = false;
+
+            button.innerText =
+                "Cancel Subscription";
+
+        }
+
+    }
 
 }
 
