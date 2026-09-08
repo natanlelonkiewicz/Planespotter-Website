@@ -1382,7 +1382,6 @@ if(editingAirshowImageUrl){
                  * Keep the existing images so that
                  * editing does not delete them.
                  */
-                card.existingPhotoUrls =
                     card.existingPhotoUrls =
     Array.isArray(spot.images)
     ?
