@@ -3868,7 +3868,7 @@ button.edit-submission-button:hover {
 
 @media (max-width: 768px){
 
-    #accountPopup #loggedInScreen .cancel-subscription-btn{
+    #accountPopup #loggedInScreen #cancelPlusButton{
 
         width: 100% !important;
         box-sizing: border-box !important;
