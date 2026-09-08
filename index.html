@@ -7945,6 +7945,36 @@ async function showLoggedInAccount(user) {
         ){
 
             cancelButton.style.display = "block";
+cancelButton.style.background = "#252525";
+cancelButton.style.color = "#9a9a9a";
+cancelButton.style.border = "1px solid #6b3030";
+cancelButton.style.borderRadius = "6px";
+cancelButton.style.padding = "10px 12px";
+cancelButton.style.fontSize = "12px";
+cancelButton.style.fontWeight = "600";
+cancelButton.style.width = "100%";
+cancelButton.style.boxSizing = "border-box";
+cancelButton.style.textAlign = "center";
+cancelButton.style.cursor = "pointer";
+
+        }
+
+        else if(cancelButton){
+
+            cancelButton.style.display = "none";
+
+        }
+
+    }if(
+            cancelButton &&
+            profile.stripe_subscription_id &&
+            (
+                profile.subscription_status === "active" ||
+                profile.subscription_status === "trialing"
+            )
+        ){
+
+            cancelButton.style.display = "block";
 
         }
 
