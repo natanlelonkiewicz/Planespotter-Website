@@ -1126,7 +1126,12 @@ body {
     }
 }
 
+/* ========================================
+   ACCOUNT POPUP
+======================================== */
+
 #accountPopup {
+
     display: none;
 
     position: absolute;
@@ -1151,13 +1156,23 @@ body {
     box-shadow: 0 8px 30px rgba(0, 0, 0, 0.45);
 
     text-align: center;
+
 }
+
 
 #accountPopup.open {
+
     display: block;
+
 }
 
+
+/* ========================================
+   CLOSE BUTTON
+======================================== */
+
 #closeAccountPopup {
+
     position: absolute;
 
     top: 8px;
@@ -1171,13 +1186,23 @@ body {
     font-size: 26px;
 
     cursor: pointer;
+
 }
+
 
 #closeAccountPopup:hover {
+
     color: white;
+
 }
 
+
+/* ========================================
+   ACCOUNT ICON
+======================================== */
+
 .account-popup-icon {
+
     width: 60px;
     height: 60px;
 
@@ -1185,91 +1210,85 @@ body {
 
     background: #181818;
 
+    border: 1px solid #3f3f3f;
+
     border-radius: 50%;
 
     display: flex;
+
     align-items: center;
     justify-content: center;
+
 }
 
+
 .account-popup-icon svg {
+
     width: 32px;
     height: 32px;
 
     stroke: #aaa;
+
 }
 
+
+/* ========================================
+   ACCOUNT HEADINGS
+======================================== */
+
 #accountPopup h2 {
-    margin: 0 0 10px;
+
+    margin: 0 0 7px;
 
     color: #f5c542;
 
     font-size: 22px;
+
 }
 
+
 #accountPopup p {
-    color: #aaa;
+
+    color: #999;
 
     line-height: 1.5;
 
-    font-size: 14px;
+    font-size: 13px;
 
-    margin-bottom: 22px;
+    margin-bottom: 20px;
+
 }
 
-.account-login-btn,
-.account-register-btn {
-    width: 100%;
 
-    padding: 11px;
-
-    border-radius: 8px;
-
-    font-size: 15px;
-
-    font-weight: bold;
-
-    cursor: pointer;
-
-    margin-top: 8px;
-}
-
-.account-login-btn {
-    background: #f5c542;
-    color: #111;
-
-    border: none;
-}
-
-.account-login-btn:hover {
-    background: #ffd95e;
-}
-
-.account-register-btn {
-    background: transparent;
-    color: #f5c542;
-
-    border: 1px solid #f5c542;
-}
-
-.account-register-btn:hover {
-    background: #f5c542;
-    color: #111;
-}
+/* ========================================
+   ACCOUNT SCREENS
+======================================== */
 
 .account-screen {
+
     display: none;
+
 }
+
 
 .account-screen.active {
+
     display: block;
+
 }
 
+
+/* ========================================
+   BACK BUTTON
+======================================== */
+
 .backAccountButton {
+
     background: transparent;
+
     border: none;
 
-    color: #aaa;
+    color: #999;
 
     cursor: pointer;
 
@@ -1280,23 +1299,38 @@ body {
     margin-bottom: 20px;
 
     float: left;
+
 }
 
+
 .backAccountButton:hover {
+
     color: #f5c542;
+
 }
+
+
+/* ========================================
+   LOGIN / REGISTER FORMS
+======================================== */
 
 #loginForm,
 #registerForm {
+
     display: flex;
+
     flex-direction: column;
+
     gap: 10px;
 
     clear: both;
+
 }
+
 
 #loginForm input,
 #registerForm input {
+
     width: 100%;
 
     box-sizing: border-box;
@@ -1314,21 +1348,97 @@ body {
     outline: none;
 
     font-size: 14px;
+
 }
+
 
 #loginForm input:focus,
 #registerForm input:focus {
+
     border-color: #f5c542;
+
 }
 
+
+/* ========================================
+   LOGIN / REGISTER BUTTONS
+======================================== */
+
+.account-login-btn,
+.account-register-btn {
+
+    width: 100%;
+
+    padding: 11px;
+
+    border-radius: 8px;
+
+    font-size: 15px;
+
+    font-weight: bold;
+
+    cursor: pointer;
+
+    margin-top: 8px;
+
+}
+
+
+.account-login-btn {
+
+    background: #f5c542;
+
+    color: #111;
+
+    border: none;
+
+}
+
+
+.account-login-btn:hover {
+
+    background: #ffd95e;
+
+}
+
+
+.account-register-btn {
+
+    background: transparent;
+
+    color: #f5c542;
+
+    border: 1px solid #f5c542;
+
+}
+
+
+.account-register-btn:hover {
+
+    background: #f5c542;
+
+    color: #111;
+
+}
+
+
+/* ========================================
+   LOGIN / REGISTER SWITCH TEXT
+======================================== */
+
 .switchAccountText {
+
     margin-top: 20px !important;
 
     font-size: 13px !important;
+
 }
 
+
 .switchAccountText button {
+
     background: none;
+
     border: none;
 
     color: #f5c542;
@@ -1338,10 +1448,232 @@ body {
     padding: 0;
 
     font-size: inherit;
+
 }
 
+
 .switchAccountText button:hover {
+
     text-decoration: underline;
+
+}
+
+
+/* ========================================
+   AVSPOT PLUS BUTTON
+======================================== */
+
+#upgradePlusButton {
+
+    width: 100%;
+
+    box-sizing: border-box;
+
+    padding: 13px 14px;
+
+    margin: 0 0 8px;
+
+    background: #2b2920;
+
+    color: #f5c542;
+
+    border: 1px solid #665825;
+
+    border-radius: 8px;
+
+    cursor: pointer;
+
+    text-align: left;
+
+    transition:
+        background 0.2s ease,
+        border-color 0.2s ease;
+
+}
+
+
+#upgradePlusButton:hover:not(:disabled) {
+
+    background: #332f20;
+
+    border-color: #8a762c;
+
+}
+
+
+#upgradePlusButton:disabled {
+
+    cursor: default;
+
+}
+
+
+/* Plus title */
+
+.plusButtonTitle {
+
+    display: block;
+
+    font-size: 14px;
+
+    font-weight: 700;
+
+}
+
+
+/* Plus subtitle */
+
+.plusButtonSubtitle {
+
+    display: block;
+
+    margin-top: 3px;
+
+    color: #999;
+
+    font-size: 12px;
+
+    font-weight: 400;
+
+}
+
+
+/* ========================================
+   ACCOUNT ACTION BUTTONS
+======================================== */
+
+.account-add-airport-btn {
+
+    width: 100%;
+
+    box-sizing: border-box;
+
+    padding: 11px 13px;
+
+    margin-top: 7px;
+
+    background: #2b2b2b;
+
+    color: #ddd;
+
+    border: 1px solid #444;
+
+    border-radius: 7px;
+
+    font-size: 13px;
+
+    font-weight: 600;
+
+    cursor: pointer;
+
+    text-align: left;
+
+    transition:
+        background 0.2s ease,
+        border-color 0.2s ease,
+        color 0.2s ease;
+
+}
+
+
+.account-add-airport-btn:hover {
+
+    background: #323232;
+
+    border-color: #666;
+
+    color: white;
+
+}
+
+
+/* ========================================
+   CANCEL SUBSCRIPTION
+======================================== */
+
+.cancel-subscription-btn {
+
+    width: 100%;
+
+    background: #252525;
+
+    color: #9a9a9a;
+
+    border: 1px solid #6b3030;
+
+    border-radius: 6px;
+
+    padding: 9px 10px;
+
+    margin-top: 7px;
+
+    font-size: 12px;
+
+    font-weight: 600;
+
+    cursor: pointer;
+
+    text-align: center;
+
+    transition:
+        background 0.2s ease,
+        border-color 0.2s ease,
+        color 0.2s ease;
+
+}
+
+
+.cancel-subscription-btn:hover {
+
+    background: #2b2424;
+
+    border-color: #8a3a3a;
+
+    color: #c5a0a0;
+
+}
+
+
+.cancel-subscription-btn:disabled {
+
+    opacity: 0.6;
+
+    cursor: default;
+
+}
+
+
+/* ========================================
+   LOG OUT
+======================================== */
+
+#loggedInScreen #logoutButton {
+
+    margin-top: 18px;
+
+    padding: 9px;
+
+    background: transparent;
+
+    color: #888;
+
+    border: 1px solid #444;
+
+    border-radius: 7px;
+
+    font-size: 12px;
+
+}
+
+
+#loggedInScreen #logoutButton:hover {
+
+    background: #2d2d2d;
+
+    color: #bbb;
+
+    border-color: #555;
+
 }
 
 .favourite-airport-button {
@@ -3476,5 +3808,56 @@ button.edit-submission-button:hover {
 
     background: #ff4d4d !important;
     color: #ffffff !important;
+
+}
+
+/* Cancel subscription */
+
+.cancel-subscription-btn{
+
+    width:100%;
+
+    background:#252525;
+
+    color:#9a9a9a;
+
+    border:1px solid #6b3030;
+
+    border-radius:6px;
+
+    padding:10px;
+
+    margin-top:8px;
+
+    font-size:13px;
+
+    font-weight:600;
+
+    cursor:pointer;
+
+    transition:
+        background 0.2s ease,
+        border-color 0.2s ease,
+        color 0.2s ease;
+
+}
+
+
+.cancel-subscription-btn:hover{
+
+    background:#2b2424;
+
+    border-color:#8a3a3a;
+
+    color:#c5a0a0;
+
+}
+
+
+.cancel-subscription-btn:disabled{
+
+    opacity:0.6;
+
+    cursor:default;
 
 }
