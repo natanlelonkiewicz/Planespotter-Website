@@ -3815,29 +3815,10 @@ appearance: none;
 @media (max-width: 768px){
 
     #accountPopup #loggedInScreen #cancelPlusButton{
-
-        width: 100% !important;
-        box-sizing: border-box !important;
-
-        display: block !important;
-
-        padding: 10px 12px !important;
-        margin: 8px 0 0 0 !important;
-
-        background: #252525 !important;
-        color: #9a9a9a !important;
-
-        border: 1px solid #6b3030 !important;
-        border-radius: 6px !important;
-
-        font-size: 12px !important;
-        font-weight: 600 !important;
-
-        text-align: center !important;
-
-        cursor: pointer !important;
-
-    }
+    width: 100%;
+    box-sizing: border-box;
+    display: block;
+}
 
 
     #accountPopup #loggedInScreen #logoutButton{
