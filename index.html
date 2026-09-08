@@ -267,11 +267,11 @@ oninput="changeSunTime()"
     onclick="upgradeToAvspotPlus()"
 >
     <span class="plusButtonTitle">
-        ⭐ Get Avspot Plus — £2.99
+        ⭐ Get Avspot Plus - £2.99/month
     </span>
 
     <span class="plusButtonSubtitle">
-        £2.99 one-time · Lifetime access
+        £2.99/month · Cancel anytime
     </span>
 </button>
 
@@ -2795,7 +2795,7 @@ function showAirshowsLocked() {
             </p>
 
             <p class="plusLockedPrice">
-    £2.99 one-time · Lifetime access
+    £2.99/month · Cancel anytime
 </p>
 
             <button
@@ -3680,7 +3680,7 @@ if(!plusUser){
             </button>
 
             <p class="plus-lock-footer">
-    £2.99 one-time · Lifetime access
+    £2.99/month · Cancel anytime
 </p>
 
         </div>
@@ -3961,6 +3961,124 @@ if(!plusUser){
 
 }
 
+function updateAirshowSpotCards(){
+
+    if(!currentAirshow){
+        return;
+    }
+
+    var container =
+        document.getElementById("airshowSpots");
+
+    if(!container){
+        return;
+    }
+
+    var spots =
+        currentAirshow.spots || [];
+
+    container.innerHTML =
+        spots.map(function(spot, index){
+
+            var lightingClass = "backlit";
+
+            var lightingText =
+                spot.lighting
+                ? spot.lighting.text
+                : "";
+
+            if(lightingText === "Excellent"){
+
+                lightingClass = "excellent";
+
+            }
+
+            else if(
+                lightingText === "Side lighting" ||
+                lightingText === "Diffused light" ||
+                lightingText === "Favourable light"
+            ){
+
+                lightingClass = "side";
+
+            }
+
+            return `
+
+                <div
+                    class="spot-card airshow-spot-card ${lightingClass}"
+                    id="airshowSpot${index}"
+                    onclick="showAirshowSpot(
+                        currentAirshow.spots[${index}],
+                        currentAirshow
+                    )"
+                    style="cursor:pointer;"
+                >
+
+                    <h3>
+                        ${spot.name}
+                    </h3>
+
+                    <p>
+
+                        <b>Lighting:</b>
+
+                        <span class="airshow-spot-lighting">
+
+                            ${
+                                spot.lighting
+                                ?
+                                spot.lighting.stars +
+                                " " +
+                                spot.lighting.text
+                                :
+                                "Lighting direction not set"
+                            }
+
+                        </span>
+
+                    </p>
+
+                    ${
+                        spot.description
+                        ?
+                        `<p>${spot.description}</p>`
+                        :
+                        ""
+                    }
+
+                    ${
+                        spot.bestForRunway
+                        ?
+                        `<p><b>Best For:</b> ${spot.bestForRunway}</p>`
+                        :
+                        ""
+                    }
+
+                    ${
+                        spot.recommendedFocalLength
+                        ?
+                        `<p><b>Focal Length:</b> ${spot.recommendedFocalLength}</p>`
+                        :
+                        ""
+                    }
+
+                    ${
+                        spot.bestTimeToVisit
+                        ?
+                        `<p><b>Best Time:</b> ${spot.bestTimeToVisit}</p>`
+                        :
+                        ""
+                    }
+
+                </div>
+
+            `;
+
+        }).join("");
+
+}
+
 
 async function upgradeToAvspotPlus(){
 
@@ -4097,7 +4215,7 @@ async function upgradeToAvspotPlus(){
             button.disabled = false;
 
             button.innerText =
-                "⭐ Get Avspot Plus — £2.99";
+                "⭐ Get Avspot Plus - £2.99/month";
 
         }
 
@@ -5569,11 +5687,63 @@ function updateSpotLighting(){
 
     if(currentAirshow){
 
-        displayAirshowSpots(
-            currentAirshow
-        );
+    currentAirshow.spots.forEach(function(spot){
 
-    }
+        if(
+            typeof spot.lat !== "number" ||
+            typeof spot.lng !== "number"
+        ){
+            return;
+        }
+
+        var spotSunBearing =
+            getSunBearing(
+                date,
+                spot.lat,
+                spot.lng
+            );
+
+        var spotSun =
+            SunCalc.getPosition(
+                date,
+                spot.lat,
+                spot.lng
+            );
+
+        var spotSunAltitude =
+            spotSun.altitude *
+            180 /
+            Math.PI;
+
+        if(typeof spot.direction === "number"){
+
+            spot.lighting =
+                getLightingRating(
+                    spotSunBearing,
+                    spot.direction,
+                    spotSunAltitude,
+                    cloudCover,
+                    lowCloud,
+                    midCloud,
+                    highCloud
+                );
+
+        }
+        else{
+
+            spot.lighting = null;
+
+        }
+
+    });
+
+    displayAirshowSpots(
+        currentAirshow
+    );
+
+    updateAirshowSpotCards();
+
+}
 
 
     /*
@@ -6791,10 +6961,18 @@ document.addEventListener("mousemove", function(e){
 
     updateSpotLighting();
 
+    if(currentAirshow){
+
+    updateAirshowSpotCards();
+
+}
+else if(airport){
+
     renderSidebar();
 
+}
 
-});
+    });
 
 
 document.addEventListener("mouseup", function(){
@@ -7602,7 +7780,7 @@ async function showLoggedInAccount(user) {
                 </span>
 
                 <span class="plusButtonSubtitle">
-                    Lifetime access active
+                    Subscription active
                 </span>
             `;
 
@@ -7624,11 +7802,11 @@ async function showLoggedInAccount(user) {
 
             upgradeButton.innerHTML = `
                 <span class="plusButtonTitle">
-                    ⭐ Get Avspot Plus — £2.99
+                    ⭐ Get Avspot Plus - £2.99/month
                 </span>
 
                 <span class="plusButtonSubtitle">
-                    One-time payment · Lifetime access
+                    · Cancel anytime
                 </span>
             `;
 
