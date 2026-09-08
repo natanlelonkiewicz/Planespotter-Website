@@ -7883,7 +7883,7 @@ async function showLoggedInAccount(user) {
         error
     } = await supabaseClient
         .from("profiles")
-        .select("role, stripe_subscription_id, subscription_status")
+        .select("role, stripe_subscription_id, subscription_status, subscription_expires_at")
         .eq("id", user.id)
         .single();
 
@@ -7925,8 +7925,18 @@ async function showLoggedInAccount(user) {
                 </span>
 
                 <span class="plusButtonSubtitle">
-                    Subscription active
-                </span>
+    ${
+        profile.subscription_expires_at
+            ? "Subscription active until " +
+              new Date(profile.subscription_expires_at)
+                  .toLocaleDateString("en-GB", {
+                      day: "numeric",
+                      month: "long",
+                      year: "numeric"
+                  })
+            : "Subscription active"
+    }
+</span>
             `;
 
         }
