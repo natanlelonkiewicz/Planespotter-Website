@@ -1586,63 +1586,6 @@ body {
 
 }
 
-
-/* ========================================
-   CANCEL SUBSCRIPTION
-======================================== */
-
-.cancel-subscription-btn {
-
-    width: 100%;
-
-    background: #252525;
-
-    color: #9a9a9a;
-
-    border: 1px solid #6b3030;
-
-    border-radius: 6px;
-
-    padding: 9px 10px;
-
-    margin-top: 7px;
-
-    font-size: 12px;
-
-    font-weight: 600;
-
-    cursor: pointer;
-
-    text-align: center;
-
-    transition:
-        background 0.2s ease,
-        border-color 0.2s ease,
-        color 0.2s ease;
-
-}
-
-
-.cancel-subscription-btn:hover {
-
-    background: #2b2424;
-
-    border-color: #8a3a3a;
-
-    color: #c5a0a0;
-
-}
-
-
-.cancel-subscription-btn:disabled {
-
-    opacity: 0.6;
-
-    cursor: default;
-
-}
-
-
 /* ========================================
    LOG OUT
 ======================================== */
