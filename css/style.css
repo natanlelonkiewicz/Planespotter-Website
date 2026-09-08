@@ -3760,6 +3760,9 @@ button.edit-submission-button:hover {
 
     width:100%;
 
+    -webkit-appearance: none;
+appearance: none;
+
     background:#252525;
 
     color:#9a9a9a;
