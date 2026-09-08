@@ -3920,3 +3920,38 @@ button.edit-submission-button:hover {
     }
 
 }
+
+/* FORCE CANCEL SUBSCRIPTION BUTTON */
+
+#cancelPlusButton{
+
+    width: 100% !important;
+    box-sizing: border-box !important;
+
+    display: block;
+
+    padding: 10px 12px !important;
+    margin: 8px 0 0 0 !important;
+
+    background: #252525 !important;
+    color: #9a9a9a !important;
+
+    border: 1px solid #6b3030 !important;
+    border-radius: 6px !important;
+
+    font-size: 12px !important;
+    font-weight: 600 !important;
+
+    text-align: center !important;
+
+    cursor: pointer !important;
+
+}
+
+#cancelPlusButton:hover{
+
+    background: #2b2424 !important;
+    border-color: #8a3a3a !important;
+    color: #c5a0a0 !important;
+
+}
