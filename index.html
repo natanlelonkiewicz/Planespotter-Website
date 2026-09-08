@@ -7954,25 +7954,6 @@ async function showLoggedInAccount(user) {
 
         }
 
-    }if(
-            cancelButton &&
-            profile.stripe_subscription_id &&
-            (
-                profile.subscription_status === "active" ||
-                profile.subscription_status === "trialing"
-            )
-        ){
-
-            cancelButton.style.display = "block";
-
-        }
-
-        else if(cancelButton){
-
-            cancelButton.style.display = "none";
-
-        }
-
     }
 
     else{
