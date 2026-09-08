@@ -1520,19 +1520,46 @@ if(editingAirportSubmissionId){
 
 
     const result =
-        await window.supabaseClient
-            .from("airport_submissions")
-            .update(updateData)
-            .eq(
-                "id",
-                editingAirportSubmissionId
-            )
-            .eq(
-                "user_id",
-                user.id
-            )
-            .select()
-            .single();
+    await window.supabaseClient
+        .from("airport_submissions")
+        .update(updateData)
+        .eq(
+            "id",
+            editingAirportSubmissionId
+        )
+        .eq(
+            "user_id",
+            user.id
+        )
+        .select();
+
+console.log(
+    "Airport update result:",
+    result
+);
+
+if(
+    result.error
+){
+    throw result.error;
+}
+
+if(
+    !result.data ||
+    result.data.length === 0
+){
+
+    throw new Error(
+        "The airport submission could not be updated because no matching submission was found."
+    );
+
+}
+
+data =
+    result.data[0];
+
+databaseError =
+    null;
 
 
     data =
