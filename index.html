@@ -8172,19 +8172,51 @@ async function cancelAvspotPlus(){
         }
 
 
-        alert(
-            "Your Avspot Plus subscription has been cancelled. You will keep Plus access until the end of your current billing period."
-        );
+        if(data.current_period_end){
 
+    const expiryDate =
+        new Date(data.current_period_end * 1000);
 
-        if(button){
+    const formattedDate =
+        expiryDate.toLocaleDateString("en-GB", {
+            day: "numeric",
+            month: "long",
+            year: "numeric"
+        });
 
-            button.disabled = true;
+    alert(
+        "Your Avspot Plus subscription has been cancelled.\n\n" +
+        "Subscription active until " +
+        formattedDate +
+        "."
+    );
 
-            button.innerText =
-                "Subscription cancelled";
+    if(button){
 
-        }
+        button.disabled = true;
+
+        button.innerText =
+            "Active until " + formattedDate;
+
+    }
+
+}
+else{
+
+    alert(
+        "Your Avspot Plus subscription has been cancelled. You will keep Plus access until the end of your current billing period."
+    );
+
+    if(button){
+
+        button.disabled = true;
+
+        button.innerText =
+            "Subscription cancelled";
+
+    }
+
+}
 
     }
 
