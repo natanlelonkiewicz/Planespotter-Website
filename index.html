@@ -724,6 +724,16 @@ ${airport.location}
 </p>
 
 <button
+    type="button"
+    id="airportNotificationButton"
+    class="account-add-airport-btn"
+    onclick="toggleAirportNotifications()"
+    style="display:none;"
+>
+    🔔 Enable Notifications
+</button>
+
+<button
     id="favouriteAirportButton"
     class="favourite-airport-button"
 >
@@ -922,6 +932,8 @@ ${getWeatherAdvice()}
 `;
 
 updateCurrentTime();
+
+updateAirportNotificationButton();
 
 
 const favouriteButton =
@@ -1572,6 +1584,417 @@ async function updateSpotNotificationButton(){
 
         button.textContent =
             "🔔 Enable Notifications";
+
+    }
+
+}
+
+async function updateAirportNotificationButton(){
+
+    const button =
+        document.getElementById(
+            "airportNotificationButton"
+        );
+
+    if(!button){
+
+        return;
+
+    }
+
+    if(
+        !isAvspotInstalledApp() ||
+        !supabaseClient ||
+        !airport
+    ){
+
+        button.style.display =
+            "none";
+
+        return;
+
+    }
+
+    try{
+
+        const {
+            data: {
+                user
+            },
+            error: userError
+        } =
+            await supabaseClient.auth.getUser();
+
+        if(userError || !user){
+
+            button.style.display =
+                "block";
+
+            button.textContent =
+                "🔔 Enable Notifications";
+
+            return;
+
+        }
+
+        const airportKey =
+            String(
+                airport.icao ||
+                airport.id ||
+                airport.name ||
+                ""
+            );
+
+        const {
+            data,
+            error
+        } =
+            await supabaseClient
+                .from(
+                    "notification_preferences"
+                )
+                .select(
+                    "enabled"
+                )
+                .eq(
+                    "user_id",
+                    user.id
+                )
+                .eq(
+                    "target_type",
+                    "airport"
+                )
+                .eq(
+                    "airport_key",
+                    airportKey
+                )
+                .is(
+                    "spot_key",
+                    null
+                )
+                .maybeSingle();
+
+        if(error){
+
+            console.error(
+                "Airport notification preference error:",
+                error
+            );
+
+            button.style.display =
+                "block";
+
+            button.textContent =
+                "🔔 Enable Notifications";
+
+            return;
+
+        }
+
+        button.style.display =
+            "block";
+
+        button.textContent =
+            data &&
+            data.enabled === true
+            ?
+            "🔕 Disable Notifications"
+            :
+            "🔔 Enable Notifications";
+
+    }
+    catch(error){
+
+        console.error(
+            "Airport notification button error:",
+            error
+        );
+
+        button.style.display =
+            "block";
+
+        button.textContent =
+            "🔔 Enable Notifications";
+
+    }
+
+}
+
+async function toggleAirportNotifications(){
+
+    if(!isAvspotInstalledApp()){
+
+        alert(
+            "Airport notifications are only available in the Avspot app."
+        );
+
+        return;
+
+    }
+
+    if(!supabaseClient){
+
+        alert(
+            "Supabase is not available."
+        );
+
+        return;
+
+    }
+
+    if(!airport){
+
+        return;
+
+    }
+
+    try{
+
+        const {
+            data: { user },
+            error: userError
+        } =
+            await supabaseClient.auth.getUser();
+
+        if(userError || !user){
+
+            alert(
+                "Please log in before enabling airport notifications."
+            );
+
+            return;
+
+        }
+
+        const button =
+            document.getElementById(
+                "airportNotificationButton"
+            );
+
+        if(button){
+
+            button.disabled = true;
+
+        }
+
+        const airportKey =
+            String(
+                airport.icao ||
+                airport.id ||
+                airport.name ||
+                ""
+            );
+
+        const {
+            data: existingPreference,
+            error: preferenceError
+        } =
+            await supabaseClient
+                .from(
+                    "notification_preferences"
+                )
+                .select(
+                    "id, enabled"
+                )
+                .eq(
+                    "user_id",
+                    user.id
+                )
+                .eq(
+                    "target_type",
+                    "airport"
+                )
+                .eq(
+                    "airport_key",
+                    airportKey
+                )
+                .is(
+                    "spot_key",
+                    null
+                )
+                .maybeSingle();
+
+        if(preferenceError){
+
+            throw preferenceError;
+
+        }
+
+        const currentlyEnabled =
+            existingPreference &&
+            existingPreference.enabled === true;
+
+        if(currentlyEnabled){
+
+            const {
+                error
+            } =
+                await supabaseClient
+                    .from(
+                        "notification_preferences"
+                    )
+                    .update({
+
+                        enabled:
+                            false,
+
+                        updated_at:
+                            new Date().toISOString()
+
+                    })
+                    .eq(
+                        "id",
+                        existingPreference.id
+                    );
+
+            if(error){
+
+                throw error;
+
+            }
+
+        }
+        else{
+
+            const registration =
+                await navigator.serviceWorker.ready;
+
+            let subscription =
+                await registration.pushManager
+                    .getSubscription();
+
+            if(
+                Notification.permission !==
+                "granted" ||
+                !subscription
+            ){
+
+                const enabled =
+                    await enableAvspotNotifications();
+
+                if(!enabled){
+
+                    await updateAirportNotificationButton();
+
+                    return;
+
+                }
+
+                subscription =
+                    await registration.pushManager
+                        .getSubscription();
+
+                if(!subscription){
+
+                    alert(
+                        "Unable to create a push subscription."
+                    );
+
+                    await updateAirportNotificationButton();
+
+                    return;
+
+                }
+
+            }
+
+            if(existingPreference){
+
+                const {
+                    error
+                } =
+                    await supabaseClient
+                        .from(
+                            "notification_preferences"
+                        )
+                        .update({
+
+                            enabled:
+                                true,
+
+                            updated_at:
+                                new Date().toISOString()
+
+                        })
+                        .eq(
+                            "id",
+                            existingPreference.id
+                        );
+
+                if(error){
+
+                    throw error;
+
+                }
+
+            }
+            else{
+
+                const {
+                    error
+                } =
+                    await supabaseClient
+                        .from(
+                            "notification_preferences"
+                        )
+                        .insert({
+
+                            user_id:
+                                user.id,
+
+                            target_type:
+                                "airport",
+
+                            airport_key:
+                                airportKey,
+
+                            spot_key:
+                                null,
+
+                            enabled:
+                                true
+
+                        });
+
+                if(error){
+
+                    throw error;
+
+                }
+
+            }
+
+        }
+
+        await updateAirportNotificationButton();
+
+    }
+    catch(error){
+
+        console.error(
+            "Airport notification toggle error:",
+            error
+        );
+
+        alert(
+            "Something went wrong while updating airport notifications."
+        );
+
+        await updateAirportNotificationButton();
+
+    }
+    finally{
+
+        const button =
+            document.getElementById(
+                "airportNotificationButton"
+            );
+
+        if(button){
+
+            button.disabled = false;
+
+        }
 
     }
 
