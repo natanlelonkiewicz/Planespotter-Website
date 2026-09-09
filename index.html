@@ -308,16 +308,6 @@ oninput="changeSunTime()"
 </button>
 
 <button
-    type="button"
-    id="testNotificationsButton"
-    class="account-add-airport-btn"
-    onclick="sendTestAvspotNotification()"
-    style="display:none;"
->
-    🔔 Test Notification
-</button>
-
-<button
     id="upgradePlusButton"
     onclick="upgradeToAvspotPlus()"
 >
@@ -1318,6 +1308,16 @@ function showSpot(spot){
     
     <h2>${spot.name}</h2>
 
+    <button
+    type="button"
+    id="spotNotificationButton"
+    class="account-add-airport-btn"
+    onclick="toggleSpotNotifications()"
+    style="display:none;"
+>
+    🔔 Enable Notifications
+</button>
+
     <hr>
 
     <p><b>Lighting</b></p>
@@ -1412,6 +1412,436 @@ spot.notes
 }
 
     `;
+
+        updateSpotNotificationButton();
+
+}
+
+async function updateSpotNotificationButton(){
+
+    const button =
+        document.getElementById(
+            "spotNotificationButton"
+        );
+
+    if(!button){
+
+        return;
+
+    }
+
+    if(
+        !isAvspotInstalledApp() ||
+        !supabaseClient ||
+        !currentSpot ||
+        !airport
+    ){
+
+        button.style.display =
+            "none";
+
+        return;
+
+    }
+
+    try{
+
+        const {
+            data: {
+                user
+            },
+            error: userError
+        } =
+            await supabaseClient.auth.getUser();
+
+        if(userError){
+
+            console.error(
+                "Spot notification user lookup error:",
+                userError
+            );
+
+            button.style.display =
+                "block";
+
+            button.textContent =
+                "🔔 Enable Notifications";
+
+            return;
+
+        }
+
+        if(!user){
+
+            button.style.display =
+                "block";
+
+            button.textContent =
+                "🔔 Enable Notifications";
+
+            return;
+
+        }
+
+        const airportKey =
+            String(
+                airport.icao ||
+                airport.id ||
+                airport.name ||
+                ""
+            );
+
+        const spotKey =
+            String(
+                currentSpot.lat
+            )
+            +
+            "|"
+            +
+            String(
+                currentSpot.lng
+            );
+
+        const {
+            data,
+            error
+        } =
+            await supabaseClient
+                .from(
+                    "notification_preferences"
+                )
+                .select(
+                    "enabled"
+                )
+                .eq(
+                    "user_id",
+                    user.id
+                )
+                .eq(
+                    "target_type",
+                    "spot"
+                )
+                .eq(
+                    "airport_key",
+                    airportKey
+                )
+                .eq(
+                    "spot_key",
+                    spotKey
+                )
+                .maybeSingle();
+
+        if(error){
+
+            console.error(
+                "Spot notification preference error:",
+                error
+            );
+
+            button.style.display =
+                "block";
+
+            button.textContent =
+                "🔔 Enable Notifications";
+
+            return;
+
+        }
+
+        button.style.display =
+            "block";
+
+        button.textContent =
+            data &&
+            data.enabled === true
+            ?
+            "🔕 Disable Notifications"
+            :
+            "🔔 Enable Notifications";
+
+    }
+    catch(error){
+
+        console.error(
+            "Spot notification button error:",
+            error
+        );
+
+        button.style.display =
+            "block";
+
+        button.textContent =
+            "🔔 Enable Notifications";
+
+    }
+
+}
+
+async function toggleSpotNotifications(){
+
+    if(!isAvspotInstalledApp()){
+
+        alert(
+            "Spot notifications are only available in the Avspot app."
+        );
+
+        return;
+
+    }
+
+    if(!supabaseClient){
+
+        alert(
+            "Supabase is not available."
+        );
+
+        return;
+
+    }
+
+    if(!currentSpot || !airport){
+
+        return;
+
+    }
+
+    try{
+
+        const {
+            data: { user },
+            error: userError
+        } =
+            await supabaseClient.auth.getUser();
+
+        if(userError || !user){
+
+            alert(
+                "Please log in before enabling spot notifications."
+            );
+
+            return;
+
+        }
+
+        const button =
+            document.getElementById(
+                "spotNotificationButton"
+            );
+
+        if(button){
+
+            button.disabled = true;
+
+        }
+
+        const airportKey =
+            String(
+                airport.icao ||
+                airport.id ||
+                airport.name ||
+                ""
+            );
+
+        const spotKey =
+            String(
+                currentSpot.lat
+            )
+            +
+            "|"
+            +
+            String(
+                currentSpot.lng
+            );
+
+        const {
+            data: existingPreference,
+            error: preferenceError
+        } =
+            await supabaseClient
+                .from(
+                    "notification_preferences"
+                )
+                .select(
+                    "id, enabled"
+                )
+                .eq(
+                    "user_id",
+                    user.id
+                )
+                .eq(
+                    "target_type",
+                    "spot"
+                )
+                .eq(
+                    "airport_key",
+                    airportKey
+                )
+                .eq(
+                    "spot_key",
+                    spotKey
+                )
+                .maybeSingle();
+
+        if(preferenceError){
+
+            throw preferenceError;
+
+        }
+
+        const currentlyEnabled =
+            existingPreference &&
+            existingPreference.enabled === true;
+
+        if(currentlyEnabled){
+
+            const {
+                error
+            } =
+                await supabaseClient
+                    .from(
+                        "notification_preferences"
+                    )
+                    .update({
+
+                        enabled:
+                            false,
+
+                        updated_at:
+                            new Date().toISOString()
+
+                    })
+                    .eq(
+                        "id",
+                        existingPreference.id
+                    );
+
+            if(error){
+
+                throw error;
+
+            }
+
+        }
+        else{
+
+            const registration =
+                await navigator.serviceWorker.ready;
+
+            let subscription =
+                await registration.pushManager
+                    .getSubscription();
+
+            if(
+                Notification.permission !==
+                "granted" ||
+                !subscription
+            ){
+
+                const enabled =
+                    await enableAvspotNotifications();
+
+                if(!enabled){
+
+                    await updateSpotNotificationButton();
+
+                    return;
+
+                }
+
+                subscription =
+                    await registration.pushManager
+                        .getSubscription();
+
+                if(!subscription){
+
+                    alert(
+                        "Unable to create a push subscription."
+                    );
+
+                    await updateSpotNotificationButton();
+
+                    return;
+
+                }
+
+            }
+
+            const {
+                error
+            } =
+                await supabaseClient
+                    .from(
+                        "notification_preferences"
+                    )
+                    .upsert(
+                        {
+
+                            user_id:
+                                user.id,
+
+                            target_type:
+                                "spot",
+
+                            airport_key:
+                                airportKey,
+
+                            spot_key:
+                                spotKey,
+
+                            enabled:
+                                true,
+
+                            updated_at:
+                                new Date().toISOString()
+
+                        },
+                        {
+
+                            onConflict:
+                                "user_id,target_type,airport_key,spot_key"
+
+                        }
+                    );
+
+            if(error){
+
+                throw error;
+
+            }
+
+        }
+
+        await updateSpotNotificationButton();
+
+    }
+    catch(error){
+
+        console.error(
+            "Spot notification toggle error:",
+            error
+        );
+
+        alert(
+            "Something went wrong while updating spot notifications."
+        );
+
+        await updateSpotNotificationButton();
+
+    }
+    finally{
+
+        const button =
+            document.getElementById(
+                "spotNotificationButton"
+            );
+
+        if(button){
+
+            button.disabled = false;
+
+        }
+
+    }
 
 }
 
@@ -8172,9 +8602,9 @@ async function enableAvspotNotifications(){
 
     if(!isAvspotInstalledApp()){
 
-        return;
+    return false;
 
-    }
+}
 
     if(!("Notification" in window)){
 
@@ -8182,7 +8612,7 @@ async function enableAvspotNotifications(){
             "Notifications are not supported on this device."
         );
 
-        return;
+        return false;
 
     }
 
@@ -8192,7 +8622,7 @@ async function enableAvspotNotifications(){
             "Push notifications are not supported on this device."
         );
 
-        return;
+        return false;
 
     }
 
@@ -8210,7 +8640,7 @@ async function enableAvspotNotifications(){
                 "Please log in before enabling notifications."
             );
 
-            return;
+            return false;
 
         }
 
@@ -8226,7 +8656,7 @@ async function enableAvspotNotifications(){
                 "Notification permission was not granted."
             );
 
-            return;
+            return false;
 
         }
 
@@ -8301,8 +8731,10 @@ async function enableAvspotNotifications(){
         );
 
         console.log(
-            "Avspot push subscription saved."
-        );
+    "Avspot push subscription saved."
+);
+
+return true;
 
     }
     catch(error){
@@ -8313,30 +8745,56 @@ async function enableAvspotNotifications(){
         );
 
         alert(
-            "Something went wrong while enabling notifications."
-        );
+    "Something went wrong while enabling notifications."
+);
+
+return false;
 
     }
 
 }
 
-async function sendTestAvspotNotification(){
+async function updateNotificationButton(){
 
-    if(!isAvspotInstalledApp()){
-
-        alert(
-            "Test notifications are only available in the Avspot app."
+    const enableButton =
+        document.getElementById(
+            "enableNotificationsButton"
         );
+
+    if(!enableButton){
 
         return;
 
     }
 
-    if(!supabaseClient){
+    if(!isAvspotInstalledApp()){
 
-        alert(
-            "Supabase is not available."
-        );
+        enableButton.style.display =
+            "none";
+
+        return;
+
+    }
+
+    if(
+        !("Notification" in window) ||
+        !("serviceWorker" in navigator)
+    ){
+
+        enableButton.style.display =
+            "none";
+
+        return;
+
+    }
+
+    if(
+        Notification.permission !==
+        "granted"
+    ){
+
+        enableButton.style.display =
+            "block";
 
         return;
 
@@ -8344,106 +8802,36 @@ async function sendTestAvspotNotification(){
 
     try{
 
-        const {
-            data: { user },
-            error: userError
-        } =
-            await supabaseClient.auth.getUser();
+        const registration =
+            await navigator.serviceWorker.ready;
 
-        if(userError || !user){
+        const subscription =
+            await registration.pushManager
+                .getSubscription();
 
-            alert(
-                "Please log in before testing notifications."
-            );
+        if(subscription){
 
-            return;
+            enableButton.style.display =
+                "none";
 
         }
+        else{
 
-        const {
-            data,
-            error
-        } =
-            await supabaseClient.functions.invoke(
-                "send-test-notification",
-                {
-                    body: {}
-                }
-            );
-
-        if(error){
-
-            console.error(
-                "Test notification error:",
-                error
-            );
-
-            throw error;
+            enableButton.style.display =
+                "block";
 
         }
-
-        console.log(
-            "Test notification result:",
-            data
-        );
-
-        alert(
-            "Test notification sent."
-        );
 
     }
     catch(error){
 
         console.error(
-            "Send test notification error:",
+            "Notification button update error:",
             error
         );
 
-        alert(
-            "Something went wrong while sending the test notification."
-        );
-
-    }
-
-}
-
-function updateNotificationButton(){
-
-    const enableButton =
-        document.getElementById(
-            "enableNotificationsButton"
-        );
-
-    const testButton =
-        document.getElementById(
-            "testNotificationsButton"
-        );
-
-    if(
-        !enableButton ||
-        !testButton
-    ){
-
-        return;
-
-    }
-
-    if(isAvspotInstalledApp()){
-
         enableButton.style.display =
             "block";
-
-        testButton.style.display =
-            "block";
-
-    }
-    else{
-
-        enableButton.style.display =
-            "none";
-
-        testButton.style.display =
-            "none";
 
     }
 
