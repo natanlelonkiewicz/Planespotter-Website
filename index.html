@@ -4,12 +4,47 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+<link
+    rel="manifest"
+    href="/manifest.json"
+>
+
+<meta
+    name="theme-color"
+    content="#252525"
+>
+
+<meta
+    name="mobile-web-app-capable"
+    content="yes"
+>
+
+<meta
+    name="apple-mobile-web-app-capable"
+    content="yes"
+>
+
+<meta
+    name="apple-mobile-web-app-status-bar-style"
+    content="black-translucent"
+>
+
+<meta
+    name="apple-mobile-web-app-title"
+    content="Avspot"
+>
+
 <title>Avspot</title>
 
 <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css"/>
 <link rel="stylesheet" href="css/style.css">
 
 <link rel="icon" type="image/png" href="images/favicon.png">
+
+<link
+    rel="apple-touch-icon"
+    href="/icon-192.png"
+>
 
 </head>
 
@@ -263,6 +298,16 @@ oninput="changeSunTime()"
     <p id="loggedInEmail"></p>
 
 <button
+    type="button"
+    id="enableNotificationsButton"
+    class="account-add-airport-btn"
+    onclick="enableAvspotNotifications()"
+    style="display:none;"
+>
+    🔔 Enable Notifications
+</button>
+
+<button
     id="upgradePlusButton"
     onclick="upgradeToAvspotPlus()"
 >
@@ -365,6 +410,9 @@ oninput="changeSunTime()"
 <script src="https://cdn.jsdelivr.net/npm/tz-lookup@6.1.25/tz.js"></script>
 
 <script>
+
+const AVSPOT_VAPID_PUBLIC_KEY =
+    "BA7QnZf9zuZEW3ao5NcnysZo9qLsTu-CqHILDkqgSE0MsVPLRr9K5C6UogMS7Fl7VVMkObqHCooeFqGAtZkV10I";
 
 const SUPABASE_URL = "https://tfshpcjfcibynsbdxztn.supabase.co";
 const SUPABASE_KEY = "sb_publishable_97SyMugx0LKqTgE7RjI8lw_UPHD7Wfl";
@@ -8013,6 +8061,280 @@ function showAccountWelcome() {
 
 }
 
+function isAvspotInstalledApp(){
+
+    return (
+        window.matchMedia(
+            "(display-mode: standalone)"
+        ).matches
+        ||
+        window.navigator.standalone === true
+    );
+
+}
+
+
+async function registerAvspotServiceWorker(){
+
+    if(!("serviceWorker" in navigator)){
+
+        console.error(
+            "Service workers are not supported."
+        );
+
+        return null;
+
+    }
+
+    try{
+
+        const registration =
+            await navigator.serviceWorker.register(
+                "/sw.js"
+            );
+
+        console.log(
+            "Avspot service worker registered:",
+            registration
+        );
+
+        return registration;
+
+    }
+    catch(error){
+
+        console.error(
+            "Avspot service worker registration failed:",
+            error
+        );
+
+        return null;
+
+    }
+
+}
+
+function urlBase64ToUint8Array(base64String){
+
+    const padding =
+        "=".repeat(
+            (4 - base64String.length % 4) % 4
+        );
+
+    const base64 =
+        (
+            base64String
+                + padding
+        )
+        .replace(
+            /-/g,
+            "+"
+        )
+        .replace(
+            /_/g,
+            "/"
+        );
+
+    const rawData =
+        window.atob(base64);
+
+    const outputArray =
+        new Uint8Array(
+            rawData.length
+        );
+
+    for(
+        let i = 0;
+        i < rawData.length;
+        ++i
+    ){
+
+        outputArray[i] =
+            rawData.charCodeAt(i);
+
+    }
+
+    return outputArray;
+
+}
+
+async function enableAvspotNotifications(){
+
+    if(!isAvspotInstalledApp()){
+
+        return;
+
+    }
+
+    if(!("Notification" in window)){
+
+        alert(
+            "Notifications are not supported on this device."
+        );
+
+        return;
+
+    }
+
+    if(!("PushManager" in window)){
+
+        alert(
+            "Push notifications are not supported on this device."
+        );
+
+        return;
+
+    }
+
+    try{
+
+        const {
+            data: { user },
+            error: userError
+        } =
+            await supabaseClient.auth.getUser();
+
+        if(userError || !user){
+
+            alert(
+                "Please log in before enabling notifications."
+            );
+
+            return;
+
+        }
+
+        const registration =
+            await navigator.serviceWorker.ready;
+
+        const permission =
+            await Notification.requestPermission();
+
+        if(permission !== "granted"){
+
+            alert(
+                "Notification permission was not granted."
+            );
+
+            return;
+
+        }
+
+        let subscription =
+            await registration.pushManager.getSubscription();
+
+        if(!subscription){
+
+            subscription =
+                await registration.pushManager.subscribe({
+
+                    userVisibleOnly:
+                        true,
+
+                    applicationServerKey:
+    urlBase64ToUint8Array(
+        AVSPOT_VAPID_PUBLIC_KEY
+    )
+
+                });
+
+        }
+
+        const subscriptionJson =
+            subscription.toJSON();
+
+        const keys =
+            subscriptionJson.keys;
+
+        const {
+            error
+        } =
+            await supabaseClient
+                .from("push_subscriptions")
+                .upsert({
+
+                    user_id:
+                        user.id,
+
+                    endpoint:
+                        subscription.endpoint,
+
+                    p256dh:
+                        keys.p256dh,
+
+                    auth:
+                        keys.auth,
+
+                    updated_at:
+                        new Date().toISOString()
+
+                }, {
+
+                    onConflict:
+                        "endpoint"
+
+                });
+
+        if(error){
+
+            console.error(
+                "Push subscription save error:",
+                error
+            );
+
+            throw error;
+
+        }
+
+        alert(
+            "Avspot notifications have been enabled."
+        );
+
+        console.log(
+            "Avspot push subscription saved."
+        );
+
+    }
+    catch(error){
+
+        console.error(
+            "Enable notifications error:",
+            error
+        );
+
+        alert(
+            "Something went wrong while enabling notifications."
+        );
+
+    }
+
+}
+
+function updateNotificationButton(){
+
+    const button =
+        document.getElementById(
+            "enableNotificationsButton"
+        );
+
+    if(!button){
+
+        return;
+
+    }
+
+    if(isAvspotInstalledApp()){
+
+        button.style.display = "block";
+
+    }
+    else{
+
+        button.style.display = "none";
+
+    }
+
+}
 
 function formatAirshowDate(dateString){
 
@@ -8501,6 +8823,10 @@ else{
     }
 
 }
+
+registerAvspotServiceWorker();
+
+updateNotificationButton();
 
 </script>
 
