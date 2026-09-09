@@ -8310,6 +8310,93 @@ async function enableAvspotNotifications(){
 
 }
 
+async function sendTestAvspotNotification(){
+
+    if(!isAvspotInstalledApp()){
+
+        alert(
+            "Test notifications are only available in the Avspot app."
+        );
+
+        return;
+
+    }
+
+    if(!supabaseClient){
+
+        alert(
+            "Supabase is not available."
+        );
+
+        return;
+
+    }
+
+    try{
+
+        const {
+            data: { user },
+            error: userError
+        } =
+            await supabaseClient.auth.getUser();
+
+        if(userError || !user){
+
+            alert(
+                "Please log in before testing notifications."
+            );
+
+            return;
+
+        }
+
+        const {
+            data,
+            error
+        } =
+            await supabaseClient.functions.invoke(
+                "send-test-notification",
+                {
+                    body: {}
+                }
+            );
+
+        if(error){
+
+            console.error(
+                "Test notification error:",
+                error
+            );
+
+            throw error;
+
+        }
+
+        console.log(
+            "Test notification result:",
+            data
+        );
+
+        alert(
+            "Test notification sent."
+        );
+
+    }
+    catch(error){
+
+        console.error(
+            "Send test notification error:",
+            error
+        );
+
+        alert(
+            "Something went wrong while sending the test notification."
+        );
+
+    }
+
+}
+
 function updateNotificationButton(){
 
     const button =
