@@ -714,6 +714,11 @@ async function loadAirportSubmissionForEditing(
         ).value =
             data.airport_credits || "";
 
+        document.getElementById(
+    "commonAircraft"
+).value =
+    data.common_aircraft || "";
+
 
         /*
          * Recreate runways
@@ -1200,6 +1205,9 @@ airportSubmissionForm.addEventListener("submit", async (event) => {
         const airportCredit =
             document.getElementById("airportPhotoCredit").value.trim();
 
+        const commonAircraft =
+    document.getElementById("commonAircraft").value.trim();
+
 
         const runways = [];
 
@@ -1500,6 +1508,9 @@ if(editingAirportSubmissionId){
         airport_credits:
             airportCredit,
 
+        common_aircraft:
+        commonAircraft,
+
         runways:
             runways,
 
@@ -1608,6 +1619,9 @@ else{
 
                 airport_credits:
                     airportCredit,
+
+                common_aircraft:
+            commonAircraft,
 
                 runways:
                     runways,

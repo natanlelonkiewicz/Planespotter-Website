@@ -722,6 +722,14 @@ runway.heading2 + "°";
 
 <hr>
 
+<h3>Common Aircraft</h3>
+
+<p>
+${airport.commonAircraft || ""}
+</p>
+
+<hr>
+
 
 <h3>Best Spot Right Now</h3>
 
@@ -853,6 +861,16 @@ ${getWeatherAdvice()}
 <p><b>Current Time</b></p>
 <p id="currentTime"></p>
 
+<hr>
+
+<button
+    type="button"
+    class="airshow-edit-button"
+    onclick="openAirportEdit()"
+>
+    Suggest an Edit
+</button>
+
 `;
 
 updateCurrentTime();
@@ -885,7 +903,6 @@ var airshowSpotMarkers = [];
 var lowFlyingAreas = [];
 
 var lowFlyingMarkers = [];
-
 
 async function loadAirportList(){
 
@@ -941,53 +958,59 @@ async function loadAirportList(){
         // the same structure as airports.json
 
         const communityAirports =
-            (submissions || []).map(function(submission){
+    (submissions || []).map(function(submission){
 
-                return {
+        return {
 
-                    name:
-                        submission.airport_name,
+            id:
+                submission.id,
 
-                    icao:
-                        submission.icao,
+            name:
+                submission.airport_name,
 
-                    code:
-                        submission.icao,
+            icao:
+                submission.icao,
 
-                    location:
-                        submission.location,
+            code:
+                submission.icao,
 
-                    lat:
-                        submission.airport_lat,
+            location:
+                submission.location,
 
-                    lng:
-                        submission.airport_lng,
+            lat:
+                submission.airport_lat,
 
-                    image:
-                        submission.airport_image,
+            lng:
+                submission.airport_lng,
 
-                    airportCredits:
-                        submission.airport_credits
-                        ?
-                        [submission.airport_credits]
-                        :
-                        [],
+            image:
+                submission.airport_image,
 
-                    runways:
-                        submission.runways || [],
+            airportCredits:
+                submission.airport_credits
+                ?
+                [submission.airport_credits]
+                :
+                [],
 
-                    spots:
-                        submission.spots || [],
+            runways:
+                submission.runways || [],
 
-                    flightRadius:
-                        50,
+            spots:
+                submission.spots || [],
 
-                    community:
-                        true
+            commonAircraft:
+                submission.common_aircraft || "",
 
-                };
+            flightRadius:
+                50,
 
-            });
+            community:
+                true
+
+        };
+
+    });
 
 
         // Combine normal + approved airports
@@ -2328,6 +2351,221 @@ else{
             );
 
         });
+
+    }
+
+}
+
+function openAirportEdit(){
+
+    if(!airport){
+
+        console.error(
+            "Cannot open airport editor: no current airport."
+        );
+
+        return;
+
+    }
+
+    const currentAirportData = airport;
+
+    document.getElementById("sidebar").innerHTML = `
+
+        <h2>Suggest an Edit</h2>
+
+        <p class="airport-details">
+            ${currentAirportData.name}
+        </p>
+
+        <hr>
+
+        <h3>Common Aircraft</h3>
+
+<input
+    type="text"
+    id="airportEditCommonAircraft"
+    class="airshow-edit-textarea"
+    value="${currentAirportData.commonAircraft || ""}"
+    placeholder="e.g. Typhoon, F-35B, A400M, Hawk T2"
+>
+
+<hr>
+
+<h3>What else needs changing?</h3>
+
+<textarea
+    id="airportEditDescription"
+    class="airshow-edit-textarea"
+    rows="10"
+    placeholder="Describe any other changes or corrections you would like to suggest..."
+></textarea>
+
+        <p style="font-size:13px; opacity:0.8;">
+            Please describe what information needs changing.
+            Your suggestion will be reviewed before appearing publicly.
+        </p>
+
+        <div class="airshow-edit-buttons">
+
+            <button
+                type="button"
+                onclick="cancelAirportEdit()"
+            >
+                Cancel
+            </button>
+
+            <button
+                type="button"
+                onclick="submitAirportEdit()"
+            >
+                Submit Edit
+            </button>
+
+        </div>
+
+    `;
+
+}
+
+function cancelAirportEdit(){
+
+    if(!airport){
+
+        return;
+
+    }
+
+    renderSidebar();
+
+}
+
+async function submitAirportEdit(){
+
+    if(!airport){
+
+        alert("Unable to identify the airport.");
+
+        return;
+
+    }
+
+    if(!supabaseClient){
+
+        alert("Supabase is not available.");
+
+        return;
+
+    }
+
+    const submitButton =
+        document.querySelector(
+            ".airshow-edit-buttons button:last-child"
+        );
+
+    if(submitButton){
+
+        submitButton.disabled = true;
+        submitButton.textContent = "Submitting...";
+
+    }
+
+    try{
+
+        const {
+            data: { user },
+            error: userError
+        } =
+            await supabaseClient.auth.getUser();
+
+        if(userError || !user){
+
+            alert(
+                "Please log in before suggesting an edit."
+            );
+
+            return;
+
+        }
+
+        const proposedCommonAircraft =
+    document
+        .getElementById(
+            "airportEditCommonAircraft"
+        )
+        .value
+        .trim();
+
+const proposedChanges =
+    document
+        .getElementById(
+            "airportEditDescription"
+        )
+        .value
+        .trim();
+
+        const {
+            error
+        } =
+            await supabaseClient
+                .from("airport_edit_submissions")
+                .insert({
+
+    airport_id:
+        airport.id,
+
+    user_id:
+        user.id,
+
+    proposed_common_aircraft:
+        proposedCommonAircraft,
+
+    proposed_changes:
+        proposedChanges,
+
+    status:
+        "pending"
+
+});
+
+        if(error){
+
+            console.error(
+                "Airport edit submission error:",
+                error
+            );
+
+            throw error;
+
+        }
+
+        alert(
+            "Your edit has been submitted for review. Thank you!"
+        );
+
+        renderSidebar();
+
+    }
+    catch(error){
+
+        console.error(
+            "Airport edit error:",
+            error
+        );
+
+        alert(
+            "Something went wrong while submitting your edit."
+        );
+
+    }
+    finally{
+
+        if(submitButton){
+
+            submitButton.disabled = false;
+            submitButton.textContent = "Submit Edit";
+
+        }
 
     }
 
@@ -4451,49 +4689,55 @@ airshowSpotMarkers = [];
 
         if(submission){
 
-            airport = {
+    airport = {
 
-                name:
-                    submission.airport_name,
+        id:
+            submission.id,
 
-                icao:
-                    submission.icao,
+        name:
+            submission.airport_name,
 
-                code:
-                    submission.icao,
+        icao:
+            submission.icao,
 
-                location:
-                    submission.location,
+        code:
+            submission.icao,
 
-                lat:
-                    submission.airport_lat,
+        location:
+            submission.location,
 
-                lng:
-                    submission.airport_lng,
+        lat:
+            submission.airport_lat,
 
-                image:
-                    submission.airport_image,
+        lng:
+            submission.airport_lng,
 
-                airportCredits:
-                    submission.airport_credits
-                    ?
-                    [submission.airport_credits]
-                    :
-                    [],
+        image:
+            submission.airport_image,
 
-                runways:
-                    submission.runways || [],
+        airportCredits:
+            submission.airport_credits
+            ?
+            [submission.airport_credits]
+            :
+            [],
 
-                spots:
-                    submission.spots || [],
+        runways:
+            submission.runways || [],
 
-                flightRadius:
-                    50,
+        spots:
+            submission.spots || [],
 
-                community:
-                    true
+        commonAircraft:
+            submission.common_aircraft || "",
 
-            };
+        flightRadius:
+            50,
+
+        community:
+            true
+
+    };
 
 
             console.log(

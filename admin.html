@@ -152,14 +152,22 @@
 
         <h2>Airport Submissions</h2>
 
-        <div id="submissionList">
-            Loading submissions...
-        </div>
+<div id="submissionList">
+    Loading submissions...
+</div>
 
-        <h2 class="admin-section-title">
+<h2>Airport Edit Suggestions</h2>
 
-            Airshow Submissions
-        </h2>
+<div id="airportEditSubmissions">
+
+    <p>Loading airport edit suggestions...</p>
+
+</div>
+
+<h2 class="admin-section-title">
+
+    Airshow Submissions
+</h2>
 
         <div id="airshowSubmissionList">
             Loading airshow submissions...
@@ -246,6 +254,7 @@ async function checkAdmin(){
 
 
     loadSubmissions();
+    loadAirportEditSubmissions();
     loadAirshowSubmissions();
     loadAirshowEditSubmissions();
     loadLowFlyingSubmissions();
@@ -379,6 +388,395 @@ async function loadSubmissions(){
 
 }
 
+async function loadAirportEditSubmissions(){
+
+    const container =
+        document.getElementById(
+            "airportEditSubmissions"
+        );
+
+    if(!container){
+
+        console.error(
+            "Airport edit submissions container not found."
+        );
+
+        return;
+
+    }
+
+    const {
+        data,
+        error
+    } =
+        await supabaseClient
+            .from("airport_edit_submissions")
+            .select("*")
+            .eq("status", "pending")
+            .order(
+                "created_at",
+                {
+                    ascending: false
+                }
+            );
+
+    if(error){
+
+        console.error(
+            "Error loading airport edit submissions:",
+            error
+        );
+
+        container.innerHTML =
+            "<p>Failed to load airport edit submissions.</p>";
+
+        return;
+
+    }
+
+    if(!data || data.length === 0){
+
+        container.innerHTML =
+            "<p>No pending airport edit suggestions.</p>";
+
+        return;
+
+    }
+
+    const submissionsWithAirports =
+        await Promise.all(
+
+            data.map(async function(submission){
+
+                const {
+                    data: airportData,
+                    error: airportError
+                } =
+                    await supabaseClient
+                        .from("airport_submissions")
+                        .select(
+                            "airport_name, icao, common_aircraft, location"
+                        )
+                        .eq(
+                            "id",
+                            submission.airport_id
+                        )
+                        .single();
+
+                if(airportError){
+
+                    console.error(
+                        "Error loading airport for edit:",
+                        airportError
+                    );
+
+                }
+
+                return {
+
+                    submission:
+                        submission,
+
+                    airport:
+                        airportData || null
+
+                };
+
+            })
+
+        );
+
+    container.innerHTML =
+        submissionsWithAirports
+            .map(function(item){
+
+                const submission =
+                    item.submission;
+
+                const airportData =
+                    item.airport;
+
+                return `
+
+                    <div class="admin-submission">
+
+                        <h3>
+                            Airport Edit Suggestion
+                        </h3>
+
+                        <p>
+                            <b>Airport:</b>
+                            ${escapeHtml(
+                                airportData?.airport_name ||
+                                "Unknown airport"
+                            )}
+                        </p>
+
+                        <p>
+                            <b>ICAO:</b>
+                            ${escapeHtml(
+                                airportData?.icao ||
+                                "—"
+                            )}
+                        </p>
+
+                        <p>
+                            <b>Location:</b>
+                            ${escapeHtml(
+                                airportData?.location ||
+                                "—"
+                            )}
+                        </p>
+
+                        <p>
+                            <b>Current Common Aircraft:</b>
+                            ${escapeHtml(
+                                airportData?.common_aircraft ||
+                                "—"
+                            )}
+                        </p>
+
+                        <p>
+                            <b>Proposed Common Aircraft:</b>
+                            ${escapeHtml(
+                                submission.proposed_common_aircraft ||
+                                "—"
+                            )}
+                        </p>
+
+                        <p>
+                            <b>Suggested Changes:</b>
+                            ${escapeHtml(
+                                submission.proposed_changes ||
+                                "—"
+                            )}
+                        </p>
+
+                        <p>
+                            <b>Submitted:</b>
+                            ${new Date(
+                                submission.created_at
+                            ).toLocaleString()}
+                        </p>
+
+                        <div class="admin-submission-buttons">
+
+    <button
+        class="approve-button"
+        type="button"
+        onclick="approveAirportEdit('${submission.id}')"
+    >
+        ✅ Approve
+    </button>
+
+    <button
+        class="reject-button"
+        type="button"
+        onclick="rejectAirportEdit('${submission.id}')"
+    >
+        ❌ Reject
+    </button>
+
+</div>
+
+                    </div>
+
+                `;
+
+            })
+            .join("");
+
+}
+
+async function approveAirportEdit(id){
+
+    if(!supabaseClient){
+
+        alert("Supabase is not available.");
+
+        return;
+
+    }
+
+    try{
+
+        const {
+            data: editSubmission,
+            error: editError
+        } =
+            await supabaseClient
+                .from("airport_edit_submissions")
+                .select("*")
+                .eq("id", id)
+                .single();
+
+        if(editError){
+
+            console.error(
+                "Error loading airport edit:",
+                editError
+            );
+
+            throw editError;
+
+        }
+
+        const {
+            data: airportSubmission,
+            error: airportError
+        } =
+            await supabaseClient
+                .from("airport_submissions")
+                .select("*")
+                .eq("id", editSubmission.airport_id)
+                .eq("status", "approved")
+                .single();
+
+        if(airportError){
+
+            console.error(
+                "Error loading airport:",
+                airportError
+            );
+
+            throw airportError;
+
+        }
+
+        const {
+            error: updateError
+        } =
+            await supabaseClient
+                .from("airport_submissions")
+                .update({
+
+                    common_aircraft:
+                        editSubmission.proposed_common_aircraft
+
+                })
+                .eq(
+                    "id",
+                    airportSubmission.id
+                );
+
+        if(updateError){
+
+            console.error(
+                "Error applying airport edit:",
+                updateError
+            );
+
+            throw updateError;
+
+        }
+
+        const {
+            error: statusError
+        } =
+            await supabaseClient
+                .from("airport_edit_submissions")
+                .update({
+
+                    status: "approved"
+
+                })
+                .eq(
+                    "id",
+                    id
+                );
+
+        if(statusError){
+
+            console.error(
+                "Error approving airport edit:",
+                statusError
+            );
+
+            throw statusError;
+
+        }
+
+        alert(
+            "Airport edit approved successfully."
+        );
+
+        loadAirportEditSubmissions();
+
+    }
+    catch(error){
+
+        console.error(
+            "Airport edit approval error:",
+            error
+        );
+
+        alert(
+            "Something went wrong while approving this edit."
+        );
+
+    }
+
+}
+
+async function rejectAirportEdit(id){
+
+    if(!supabaseClient){
+
+        alert("Supabase is not available.");
+
+        return;
+
+    }
+
+    try{
+
+        const {
+            error
+        } =
+            await supabaseClient
+                .from("airport_edit_submissions")
+                .update({
+
+                    status: "rejected"
+
+                })
+                .eq(
+                    "id",
+                    id
+                );
+
+        if(error){
+
+            console.error(
+                "Error rejecting airport edit:",
+                error
+            );
+
+            throw error;
+
+        }
+
+        alert(
+            "Airport edit rejected."
+        );
+
+        loadAirportEditSubmissions();
+
+    }
+    catch(error){
+
+        console.error(
+            "Airport edit rejection error:",
+            error
+        );
+
+        alert(
+            "Something went wrong while rejecting this edit."
+        );
+
+    }
+
+}
 
 async function loadAirshowSubmissions(){
 
@@ -1504,11 +1902,16 @@ function buildSubmissionPreview(submission){
         </p>
 
         <p>
-            <b>Longitude:</b>
-            ${escapeHtml(String(submission.airport_lng ?? "—"))}
-        </p>
+    <b>Longitude:</b>
+    ${escapeHtml(String(submission.airport_lng ?? "—"))}
+</p>
 
-    </div>
+<p>
+    <b>Common Aircraft:</b>
+    ${escapeHtml(submission.common_aircraft || "—")}
+</p>
+
+</div>
 
     `;
 
