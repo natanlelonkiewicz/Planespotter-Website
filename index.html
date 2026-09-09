@@ -1766,48 +1766,71 @@ async function toggleSpotNotifications(){
 
             }
 
-            const {
-                error
-            } =
-                await supabaseClient
-                    .from(
-                        "notification_preferences"
-                    )
-                    .upsert(
-                        {
+            if(existingPreference){
 
-                            user_id:
-                                user.id,
+    const {
+        error
+    } =
+        await supabaseClient
+            .from(
+                "notification_preferences"
+            )
+            .update({
 
-                            target_type:
-                                "spot",
+                enabled:
+                    true,
 
-                            airport_key:
-                                airportKey,
+                updated_at:
+                    new Date().toISOString()
 
-                            spot_key:
-                                spotKey,
+            })
+            .eq(
+                "id",
+                existingPreference.id
+            );
 
-                            enabled:
-                                true,
+    if(error){
 
-                            updated_at:
-                                new Date().toISOString()
+        throw error;
 
-                        },
-                        {
+    }
 
-                            onConflict:
-                                "user_id,target_type,airport_key,spot_key"
+}
+else{
 
-                        }
-                    );
+    const {
+        error
+    } =
+        await supabaseClient
+            .from(
+                "notification_preferences"
+            )
+            .insert({
 
-            if(error){
+                user_id:
+                    user.id,
 
-                throw error;
+                target_type:
+                    "spot",
 
-            }
+                airport_key:
+                    airportKey,
+
+                spot_key:
+                    spotKey,
+
+                enabled:
+                    true
+
+            });
+
+    if(error){
+
+        throw error;
+
+    }
+
+}
 
         }
 
