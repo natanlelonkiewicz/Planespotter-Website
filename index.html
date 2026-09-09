@@ -308,6 +308,16 @@ oninput="changeSunTime()"
 </button>
 
 <button
+    type="button"
+    id="testNotificationsButton"
+    class="account-add-airport-btn"
+    onclick="sendTestAvspotNotification()"
+    style="display:none;"
+>
+    🔔 Test Notification
+</button>
+
+<button
     id="upgradePlusButton"
     onclick="upgradeToAvspotPlus()"
 >
@@ -8399,12 +8409,20 @@ async function sendTestAvspotNotification(){
 
 function updateNotificationButton(){
 
-    const button =
+    const enableButton =
         document.getElementById(
             "enableNotificationsButton"
         );
 
-    if(!button){
+    const testButton =
+        document.getElementById(
+            "testNotificationsButton"
+        );
+
+    if(
+        !enableButton ||
+        !testButton
+    ){
 
         return;
 
@@ -8412,12 +8430,20 @@ function updateNotificationButton(){
 
     if(isAvspotInstalledApp()){
 
-        button.style.display = "block";
+        enableButton.style.display =
+            "block";
+
+        testButton.style.display =
+            "block";
 
     }
     else{
 
-        button.style.display = "none";
+        enableButton.style.display =
+            "none";
+
+        testButton.style.display =
+            "none";
 
     }
 
