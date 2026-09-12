@@ -50,6 +50,183 @@
 
 <body>
 
+<style>
+
+#avspotLoadingScreen{
+
+    position:fixed;
+
+    inset:0;
+
+    z-index:999999;
+
+    display:flex;
+
+    flex-direction:column;
+
+    align-items:center;
+
+    justify-content:center;
+
+    background:#252525;
+
+    color:#f5f5f5;
+
+    font-family:Arial, Helvetica, sans-serif;
+
+    transition:
+        opacity 0.3s ease;
+
+}
+
+#avspotLoadingScreen img{
+
+    width:110px;
+
+    height:110px;
+
+    object-fit:contain;
+
+    margin-bottom:18px;
+
+}
+
+#avspotLoadingScreen h1{
+
+    margin:0;
+
+    font-size:28px;
+
+    font-weight:600;
+
+    letter-spacing:0.5px;
+
+}
+
+#avspotLoadingScreen p{
+
+    margin:10px 0 0;
+
+    font-size:14px;
+
+    opacity:0.65;
+
+}
+
+#avspotLoadingScreen.hidden{
+
+    opacity:0;
+
+    pointer-events:none;
+
+}
+
+</style>
+
+<div id="avspotLoadingScreen">
+
+    <img
+        src="/icon-192.png"
+        alt="Avspot"
+    >
+
+    <h1>Avspot</h1>
+
+    <p>Loading...</p>
+
+</div>
+
+<script>
+
+(function(){
+
+    const loadingScreen =
+        document.getElementById(
+            "avspotLoadingScreen"
+        );
+
+    if(!loadingScreen){
+
+        return;
+
+    }
+
+    const startTime =
+        Date.now();
+
+    function hideLoadingScreen(){
+
+        const elapsed =
+            Date.now() -
+            startTime;
+
+        const remaining =
+            Math.max(
+                1000 - elapsed,
+                0
+            );
+
+        setTimeout(
+            function(){
+
+                loadingScreen.classList.add(
+                    "hidden"
+                );
+
+                setTimeout(
+                    function(){
+
+                        loadingScreen.remove();
+
+                    },
+                    350
+                );
+
+            },
+            remaining
+        );
+
+    }
+
+    if(
+        window.matchMedia(
+            "(display-mode: standalone)"
+        ).matches
+        ||
+        window.navigator.standalone === true
+    ){
+
+        if(
+            document.readyState ===
+            "complete"
+        ){
+
+            hideLoadingScreen();
+
+        }
+        else{
+
+            window.addEventListener(
+                "load",
+                hideLoadingScreen,
+                {
+                    once:true
+                }
+            );
+
+        }
+
+    }
+    else{
+
+        loadingScreen.remove();
+
+    }
+
+})();
+
+</script>
+
 <div id="container">
 
     <div id="map">
