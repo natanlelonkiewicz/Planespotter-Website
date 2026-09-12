@@ -489,11 +489,11 @@ oninput="changeSunTime()"
     onclick="upgradeToAvspotPlus()"
 >
     <span class="plusButtonTitle">
-        ⭐ Get Avspot Plus - £2.99/month
+        ⭐ Get Avspot Plus - £2.99
     </span>
 
     <span class="plusButtonSubtitle">
-        £2.99/month · Cancel anytime
+        £2.99 one-time payment
     </span>
 </button>
 
@@ -4154,7 +4154,7 @@ function showAirshowsLocked() {
             </p>
 
             <p class="plusLockedPrice">
-    £2.99/month · Cancel anytime
+    £2.99 one-time payment
 </p>
 
             <button
@@ -5039,7 +5039,7 @@ if(!plusUser){
             </button>
 
             <p class="plus-lock-footer">
-    £2.99/month · Cancel anytime
+    £2.99 one-time payment
 </p>
 
         </div>
@@ -5574,7 +5574,7 @@ async function upgradeToAvspotPlus(){
             button.disabled = false;
 
             button.innerText =
-                "⭐ Get Avspot Plus - £2.99/month";
+                "⭐ Get Avspot Plus - £2.99";
 
         }
 
@@ -9615,17 +9615,17 @@ async function showLoggedInAccount(user) {
                 </span>
 
                 <span class="plusButtonSubtitle">
-    ${
-        profile.subscription_expires_at
-            ? "Subscription active until " +
-              new Date(profile.subscription_expires_at)
-                  .toLocaleDateString("en-GB", {
-                      day: "numeric",
-                      month: "long",
-                      year: "numeric"
-                  })
-            : "Subscription active"
-    }
+${
+    profile.subscription_expires_at
+        ? "Subscription active until " +
+          new Date(profile.subscription_expires_at)
+              .toLocaleDateString("en-GB", {
+                  day: "numeric",
+                  month: "long",
+                  year: "numeric"
+              })
+        : "Lifetime access"
+}
 </span>
             `;
 
@@ -9670,11 +9670,11 @@ async function showLoggedInAccount(user) {
 
             upgradeButton.innerHTML = `
                 <span class="plusButtonTitle">
-                    ⭐ Get Avspot Plus - £2.99/month
+                    ⭐ Get Avspot Plus - £2.99
                 </span>
 
                 <span class="plusButtonSubtitle">
-                    £2.99/month · Cancel anytime
+                    £2.99 one-time payment
                 </span>
             `;
 
