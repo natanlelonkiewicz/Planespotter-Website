@@ -4088,3 +4088,89 @@ appearance: none;
     background:#a91f1f !important;
 
 }
+
+.forgot-password-text{
+    margin-top:10px;
+    text-align:center;
+}
+
+.forgot-password-text button{
+
+    all:unset;
+
+    display:inline;
+
+    color:#fff;
+
+    font-size:13px;
+
+    cursor:pointer;
+
+    text-decoration:none;
+
+}
+
+.forgot-password-text button:hover{
+
+    text-decoration:underline;
+
+}
+
+#forgotPasswordScreen,
+#resetPasswordScreen{
+
+    width:100%;
+
+}
+
+#forgotPasswordScreen h2,
+#resetPasswordScreen h2{
+
+    margin-bottom:10px;
+
+}
+
+#forgotPasswordScreen p,
+#resetPasswordScreen p{
+
+    color:#ccc;
+
+    font-size:14px;
+
+    line-height:1.5;
+
+    margin-bottom:18px;
+
+}
+
+#forgotPasswordScreen input,
+#resetPasswordScreen input{
+
+    width:100%;
+
+    box-sizing:border-box;
+
+    padding:11px;
+
+    margin-bottom:10px;
+
+    background:#252525;
+
+    color:#fff;
+
+    border:1px solid #555;
+
+    border-radius:6px;
+
+    font-size:14px;
+
+}
+
+#forgotPasswordScreen input:focus,
+#resetPasswordScreen input:focus{
+
+    outline:none;
+
+    border-color:#f5c542;
+
+}
