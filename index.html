@@ -723,6 +723,11 @@ const AVSPOT_VAPID_PUBLIC_KEY =
 const SUPABASE_URL = "https://tfshpcjfcibynsbdxztn.supabase.co";
 const SUPABASE_KEY = "sb_publishable_97SyMugx0LKqTgE7RjI8lw_UPHD7Wfl";
 
+const passwordRecoveryFromURL =
+    window.location.hash.includes(
+        "type=recovery"
+    );
+
 window.supabaseClient = window.supabase.createClient(
     SUPABASE_URL,
     SUPABASE_KEY
@@ -9182,14 +9187,42 @@ async function checkAuthState() {
 
 
     console.log(
-        "User is logged in:",
-        session.user
+    "User is logged in:",
+    session.user
+);
+
+if(passwordRecoveryFromURL){
+
+    accountWelcome.style.display =
+        "none";
+
+    loginScreen.classList.remove(
+        "active"
     );
 
-
-    showLoggedInAccount(
-        session.user
+    registerScreen.classList.remove(
+        "active"
     );
+
+    forgotPasswordScreen.classList.remove(
+        "active"
+    );
+
+    loggedInScreen.classList.remove(
+        "active"
+    );
+
+    resetPasswordScreen.classList.add(
+        "active"
+    );
+
+    return;
+
+}
+
+showLoggedInAccount(
+    session.user
+);
 
 
     const {
