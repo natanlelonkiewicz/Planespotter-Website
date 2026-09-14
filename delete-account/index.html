@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Delete Account – Avspot</title>
+
+    <style>
+        *{
+            box-sizing:border-box;
+        }
+
+        body{
+            margin:0;
+            background:#1e1e1e;
+            color:#f5f5f5;
+            font-family:Arial, Helvetica, sans-serif;
+        }
+
+        .page{
+            max-width:600px;
+            min-height:100vh;
+            margin:0 auto;
+            padding:60px 25px;
+        }
+
+        h1{
+            color:#f5c542;
+            font-size:28px;
+            margin-bottom:10px;
+        }
+
+        p{
+            color:#d0d0d0;
+            line-height:1.6;
+            font-size:15px;
+        }
+
+        .delete-box{
+            margin-top:30px;
+            padding:25px;
+            background:#252525;
+            border:1px solid #444;
+            border-radius:8px;
+        }
+
+        button{
+            background:#c62828;
+            color:#fff;
+            border:2px solid #f5c542;
+            border-radius:6px;
+            padding:10px 14px;
+            font-size:14px;
+            cursor:pointer;
+        }
+
+        button:hover{
+            background:#a91f1f;
+        }
+
+        .back-link{
+            display:inline-block;
+            margin-top:25px;
+            color:#f5c542;
+            text-decoration:none;
+            font-size:14px;
+        }
+
+        .back-link:hover{
+            text-decoration:underline;
+        }
+
+        .notice{
+            margin-top:20px;
+            padding:12px;
+            border-radius:6px;
+            background:#303030;
+            color:#ccc;
+            font-size:13px;
+            line-height:1.5;
+        }
+    </style>
+</head>
+
+<body>
+
+    <main class="page">
+
+        <h1>Delete Your Avspot Account</h1>
+
+        <p>
+            Use this page to request deletion of your Avspot account
+            and associated personal data.
+        </p>
+
+        <p>
+            To permanently delete your Avspot account, click the
+            button below. You will then be taken to Avspot where you
+            can log in and confirm the account deletion.
+        </p>
+
+        <div class="delete-box">
+
+            <p>
+                Account deletion permanently removes your Avspot
+                account and associated Avspot data. This action
+                cannot be undone.
+            </p>
+
+            <button
+                type="button"
+                onclick="requestAccountDeletion()"
+            >
+                Delete Account
+            </button>
+
+            <div class="notice">
+                You must be able to log in to the Avspot account you
+                want to delete before the deletion can be completed.
+            </div>
+
+        </div>
+
+        <a
+            class="back-link"
+            href="/"
+        >
+            ← Back to Avspot
+        </a>
+
+    </main>
+
+    <script>
+        function requestAccountDeletion(){
+
+            const confirmed = confirm(
+                "You will be taken to Avspot to log in and confirm permanent deletion of your account and associated data."
+            );
+
+            if(!confirmed){
+                return;
+            }
+
+            window.location.href =
+                "/?delete-account=true";
+        }
+    </script>
+
+</body>
+
+</html>
