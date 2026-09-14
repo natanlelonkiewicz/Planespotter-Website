@@ -724,13 +724,50 @@ const SUPABASE_URL = "https://tfshpcjfcibynsbdxztn.supabase.co";
 const SUPABASE_KEY = "sb_publishable_97SyMugx0LKqTgE7RjI8lw_UPHD7Wfl";
 
 const passwordRecoveryFromURL =
-    window.location.hash.includes(
-        "type=recovery"
-    );
+    localStorage.getItem(
+        "avspotPasswordRecovery"
+    ) === "true";
 
 window.supabaseClient = window.supabase.createClient(
     SUPABASE_URL,
     SUPABASE_KEY
+);
+
+window.avspotPasswordRecoveryActive = false;
+
+supabaseClient.auth.onAuthStateChange(
+    function(event){
+
+        if(event !== "PASSWORD_RECOVERY"){
+            return;
+        }
+
+        window.avspotPasswordRecoveryActive = true;
+
+        accountWelcome.style.display =
+            "none";
+
+        loginScreen.classList.remove(
+            "active"
+        );
+
+        registerScreen.classList.remove(
+            "active"
+        );
+
+        forgotPasswordScreen.classList.remove(
+            "active"
+        );
+
+        loggedInScreen.classList.remove(
+            "active"
+        );
+
+        resetPasswordScreen.classList.add(
+            "active"
+        );
+
+    }
 );
 
 supabaseClient.auth.onAuthStateChange(
@@ -9220,9 +9257,15 @@ if(passwordRecoveryFromURL){
 
 }
 
-showLoggedInAccount(
-    session.user
-);
+if(
+    !window.avspotPasswordRecoveryActive
+){
+
+    showLoggedInAccount(
+        session.user
+    );
+
+}
 
 
     const {
@@ -9290,7 +9333,82 @@ showLoggedInAccount(
 
 }
 
-checkAuthState();
+const {
+    data: {
+        subscription
+    }
+} =
+    supabaseClient
+        .auth
+        .onAuthStateChange(
+            async function(event, session){
+
+                if(
+                    event ===
+                    "PASSWORD_RECOVERY"
+                ){
+
+                    accountWelcome.style.display =
+                        "none";
+
+                    loginScreen.classList.remove(
+                        "active"
+                    );
+
+                    registerScreen.classList.remove(
+                        "active"
+                    );
+
+                    loggedInScreen.classList.remove(
+                        "active"
+                    );
+
+                    forgotPasswordScreen.classList.remove(
+                        "active"
+                    );
+
+                    resetPasswordScreen.classList.add(
+                        "active"
+                    );
+
+                    return;
+
+                }
+
+                if(
+                    event ===
+                    "INITIAL_SESSION"
+                ){
+
+                    if(session){
+
+                        showLoggedInAccount(
+                            session.user
+                        );
+
+                    }
+
+                    return;
+
+                }
+
+                if(
+                    event ===
+                    "SIGNED_IN"
+                ){
+
+                    if(session){
+
+                        showLoggedInAccount(
+                            session.user
+                        );
+
+                    }
+
+                }
+
+            }
+        );
 
 async function saveFavouriteAirport() {
 
@@ -9953,10 +10071,11 @@ function showRegister() {
 async function showLoggedInAccount(user) {
 
     accountWelcome.style.display = "none";
-    loginScreen.classList.remove("active");
-    registerScreen.classList.remove("active");
+loginScreen.classList.remove("active");
+registerScreen.classList.remove("active");
+resetPasswordScreen.classList.remove("active");
 
-    loggedInScreen.classList.add("active");
+loggedInScreen.classList.add("active");
 
 
     document.getElementById("loggedInEmail").textContent =
@@ -10203,25 +10322,27 @@ document.getElementById(
 
         try{
 
-            const {
-                error
-            } =
-                await supabaseClient
-                    .auth
-                    .resetPasswordForEmail(
-                        email,
-                        {
-                            redirectTo:
-                                window.location.origin +
-                                window.location.pathname
-                        }
-                    );
+            
 
-            if(error){
-
-                throw error;
-
+const {
+    error
+} =
+    await supabaseClient
+        .auth
+        .resetPasswordForEmail(
+            email,
+            {
+                redirectTo:
+                    window.location.origin +
+                    window.location.pathname
             }
+        );
+
+if(error){
+
+    throw error;
+
+}
 
             alert(
                 "If an Avspot account exists for that email address, a password reset link has been sent."
@@ -10341,6 +10462,14 @@ document.getElementById(
             alert(
                 "Your password has been reset successfully."
             );
+
+            
+
+            window.history.replaceState(
+    {},
+    document.title,
+    window.location.pathname
+);
 
             document.getElementById(
                 "resetPasswordForm"
