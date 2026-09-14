@@ -733,6 +733,39 @@ window.supabaseClient = window.supabase.createClient(
     SUPABASE_KEY
 );
 
+supabaseClient.auth.onAuthStateChange(
+    async function(event, session){
+
+        if(event === "PASSWORD_RECOVERY"){
+
+            resetPasswordScreen.classList.add(
+                "active"
+            );
+
+            accountWelcome.style.display =
+                "none";
+
+            loginScreen.classList.remove(
+                "active"
+            );
+
+            registerScreen.classList.remove(
+                "active"
+            );
+
+            forgotPasswordScreen.classList.remove(
+                "active"
+            );
+
+            loggedInScreen.classList.remove(
+                "active"
+            );
+
+        }
+
+    }
+);
+
 window.avspotPasswordRecoveryActive = false;
 
 supabaseClient.auth.onAuthStateChange(
@@ -770,36 +803,6 @@ supabaseClient.auth.onAuthStateChange(
     }
 );
 
-supabaseClient.auth.onAuthStateChange(
-    function(event, session){
-
-        if(event === "PASSWORD_RECOVERY"){
-
-            accountWelcome.style.display =
-                "none";
-
-            loginScreen.classList.remove(
-                "active"
-            );
-
-            registerScreen.classList.remove(
-                "active"
-            );
-
-            forgotPasswordScreen.classList.remove(
-                "active"
-            );
-
-            resetPasswordScreen.classList.add(
-                "active"
-            );
-
-            return;
-
-        }
-
-    }
-);
 
 var map = L.map('map').setView([54.530183, -2.876855],6);
 
