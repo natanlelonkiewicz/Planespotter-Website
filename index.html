@@ -305,6 +305,39 @@ oninput="changeSunTime()"
 
 </div>
 
+<div
+    id="deleteAccountConfirmPopup"
+    style="display:none;"
+>
+    <div>
+        <h3>Delete Account</h3>
+
+        <p>
+            Are you sure you want to delete your Avspot account?
+        </p>
+
+        <p>
+            This will permanently delete your account and
+            associated Avspot data. This action cannot be undone.
+        </p>
+
+        <button
+            type="button"
+            onclick="closeDeleteAccountConfirm()"
+        >
+            Cancel
+        </button>
+
+        <button
+    type="button"
+    class="delete-account-btn"
+    onclick="confirmDeleteAvspotAccount()"
+>
+    Delete Account
+</button>
+    </div>
+</div>
+
 <div id="accountPopup">
 
     <!-- WELCOME SCREEN -->
@@ -538,6 +571,14 @@ oninput="changeSunTime()"
 
 <button id="logoutButton" class="account-register-btn">
     Log out
+</button>
+
+<button
+    type="button"
+    class="delete-account-btn"
+    onclick="deleteAvspotAccount()"
+>
+    Delete Account
 </button>
 
 </div>
@@ -8447,6 +8488,170 @@ function closeWelcomePopup(){
         "avspotWelcomeSeen",
         "true"
     );
+
+}
+
+function deleteAvspotAccount(){
+
+    const popup =
+        document.getElementById(
+            "deleteAccountConfirmPopup"
+        );
+
+    if(!popup){
+        return;
+    }
+
+    popup.style.display =
+        "flex";
+
+}
+
+
+function closeDeleteAccountConfirm(){
+
+    const popup =
+        document.getElementById(
+            "deleteAccountConfirmPopup"
+        );
+
+    if(!popup){
+        return;
+    }
+
+    popup.style.display =
+        "none";
+
+}
+
+
+async function confirmDeleteAvspotAccount(){
+
+    try{
+
+        const {
+            data: {
+                session
+            },
+            error:
+                sessionError
+        } =
+            await supabaseClient
+                .auth
+                .getSession();
+
+        if(
+            sessionError ||
+            !session
+        ){
+
+            alert(
+                "Please log in before deleting your account."
+            );
+
+            return;
+
+        }
+
+        const deleteButton =
+            document.querySelector(
+                "#deleteAccountConfirmPopup button:last-child"
+            );
+
+        if(deleteButton){
+
+            deleteButton.disabled =
+                true;
+
+            deleteButton.textContent =
+                "Deleting...";
+
+        }
+
+        const {
+            data,
+            error
+        } =
+            await supabaseClient.functions.invoke(
+                "delete-account",
+                {
+                    body: {}
+                }
+            );
+
+        if(error){
+
+            console.error(
+                "Account deletion error:",
+                error
+            );
+
+            throw error;
+
+        }
+
+        if(
+            !data ||
+            !data.success
+        ){
+
+            throw new Error(
+                data &&
+                data.error
+                    ?
+                    data.error
+                    :
+                    "Account deletion failed."
+            );
+
+        }
+
+        alert(
+            "Your Avspot account has been deleted."
+        );
+
+        await supabaseClient
+            .auth
+            .signOut();
+
+        window.location.reload();
+
+    }
+    catch(error){
+
+        console.error(
+            "Account deletion error:",
+            error
+        );
+
+        alert(
+            error &&
+            error.message
+                ?
+                error.message
+                :
+                "Something went wrong while deleting your account."
+        );
+
+    }
+    finally{
+
+        const deleteButton =
+            document.querySelector(
+                "#deleteAccountConfirmPopup button:last-child"
+            );
+
+        if(deleteButton){
+
+            deleteButton.disabled =
+                false;
+
+            deleteButton.textContent =
+                "Delete Account";
+
+        }
+
+    }
 
 }
 

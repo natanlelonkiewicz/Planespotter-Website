@@ -3840,3 +3840,187 @@ appearance: none;
     }
 
 }
+
+#deleteAccountConfirmPopup{
+
+    position:fixed;
+
+    inset:0;
+
+    z-index:999999;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    background:rgba(0,0,0,0.7);
+
+    padding:20px;
+
+    box-sizing:border-box;
+
+}
+
+#deleteAccountConfirmPopup > div{
+
+    width:100%;
+
+    max-width:420px;
+
+    background:#252525;
+
+    color:#f5f5f5;
+
+    border-radius:10px;
+
+    padding:24px;
+
+    box-sizing:border-box;
+
+    box-shadow:0 10px 35px rgba(0,0,0,0.45);
+
+    border:1px solid #444;
+
+}
+
+#deleteAccountConfirmPopup h3{
+
+    margin-top:0;
+
+    margin-bottom:15px;
+
+}
+
+#deleteAccountConfirmPopup p{
+
+    line-height:1.5;
+
+}
+
+#deleteAccountConfirmPopup button{
+
+    padding:11px;
+
+    margin-top:10px;
+
+    border:none;
+
+    border-radius:6px;
+
+    cursor:pointer;
+
+    font-size:14px;
+
+}
+
+#deleteAccountConfirmPopup button:first-of-type{
+
+    width:100%;
+
+    background:#444;
+
+    color:#fff;
+
+}
+
+#deleteAccountConfirmPopup button:last-of-type{
+
+    width:auto;
+
+    min-width:110px;
+
+    padding:7px 11px;
+
+    background:#c62828;
+
+    color:#fff;
+
+    border:2px solid #f5c542;
+
+    font-size:12px;
+
+}
+
+#deleteAccountConfirmPopup button:last-of-type:hover{
+
+    background:#a91f1f;
+
+}
+
+#deleteAccountConfirmPopup button:first-of-type{
+
+    background:#444;
+
+    color:#fff;
+
+}
+
+#deleteAccountConfirmPopup button:last-of-type{
+
+    background:#c62828;
+
+    color:#fff;
+
+    border:2px solid #f5c542;
+
+    width:auto;
+
+    min-width:120px;
+
+    padding:8px 12px;
+
+    margin-top:14px;
+
+    border-radius:6px;
+
+    cursor:pointer;
+
+    font-size:13px;
+
+}
+
+#deleteAccountConfirmPopup button:last-of-type:hover{
+
+    background:#a91f1f;
+
+}
+
+#deleteAccountConfirmPopup button:disabled{
+
+    opacity:0.6;
+
+    cursor:not-allowed;
+
+}
+
+.delete-account-btn{
+
+    background:#c62828;
+
+    color:#fff;
+
+    border:2px solid #f5c542;
+
+    border-radius:6px;
+
+    padding:7px 11px;
+
+    font-size:12px;
+
+    font-weight:normal;
+
+    cursor:pointer;
+
+    margin-top:14px;
+
+    width:auto;
+
+}
+
+.delete-account-btn:hover{
+
+    background:#a91f1f;
+
+}
