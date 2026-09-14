@@ -4056,3 +4056,35 @@ appearance: none;
     background:#a91f1f !important;
 
 }
+
+#deleteAccountConfirmPopup .delete-account-btn{
+
+    width:auto !important;
+
+    min-width:110px !important;
+
+    padding:7px 11px !important;
+
+    background:#c62828 !important;
+
+    color:#fff !important;
+
+    border:2px solid #f5c542 !important;
+
+    border-radius:6px !important;
+
+    font-size:12px !important;
+
+    font-weight:normal !important;
+
+    cursor:pointer !important;
+
+    margin-top:14px !important;
+
+}
+
+#deleteAccountConfirmPopup .delete-account-btn:hover{
+
+    background:#a91f1f !important;
+
+}
