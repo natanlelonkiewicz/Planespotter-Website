@@ -10203,14 +10203,19 @@ accountButton.addEventListener("click", async function () {
 
     if (session) {
 
-        showLoggedInAccount(session.user);
+    if(window.avspotPasswordRecoveryActive){
 
-    } else {
-
-        showAccountWelcome();
+        return;
 
     }
 
+    showLoggedInAccount(session.user);
+
+} else {
+
+    showAccountWelcome();
+
+}
 });
 
 
