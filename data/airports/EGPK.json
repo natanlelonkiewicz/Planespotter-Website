@@ -197,6 +197,68 @@
             "Natan Lelonkiewicz",
             "Natan Lelonkiewicz"
         ]
+    },
+
+    {
+        "name": "Short Runway West",
+        "lat": 55.485061,
+        "lng": -4.591337,
+
+        "direction": 221,
+
+        "bestForRunway": "02/20",
+
+        "recommendedFocalLength": "100-300mm",
+        "parking": "Park at the retail park: 55.479553, -4.594356",
+        "bestTimeToVisit": "1400-1800",
+        "notes": [
+            "Aircraft are only parked here occasionally",
+            "This runway is rarely in use"
+        ],
+        
+
+        "photos": [
+            "https://pub-6411be86c46a44edb6371cd742f7819e.r2.dev/runwayw1.jpg",
+            "https://pub-6411be86c46a44edb6371cd742f7819e.r2.dev/runwayw2.jpg",
+            "https://pub-6411be86c46a44edb6371cd742f7819e.r2.dev/runwayw3.jpg",
+            "https://pub-6411be86c46a44edb6371cd742f7819e.r2.dev/runwayw4.jpg"
+        ],
+
+        "photoCredits": [
+            "Natan Lelonkiewicz",
+            "Natan Lelonkiewicz",
+            "Natan Lelonkiewicz",
+            "Natan Lelonkiewicz"
+        ]
+    },
+
+    {
+        "name": "Short Runway East",
+        "lat": 55.483430,
+        "lng": -4.590702,
+
+        "direction": 196,
+
+        "bestForRunway": "02/20",
+
+        "recommendedFocalLength": "150-400mm",
+        "parking": "Park at the retail park: 55.479553, -4.594356",
+        "bestTimeToVisit": "Around mid-day",
+        "notes": [
+            "Aircraft are only parked here occasionally",
+            "This runway is rarely in use"
+        ],
+        
+
+        "photos": [
+            "https://pub-6411be86c46a44edb6371cd742f7819e.r2.dev/runwaye1.jpg",
+            "https://pub-6411be86c46a44edb6371cd742f7819e.r2.dev/runwaye2.jpg"
+        ],
+
+        "photoCredits": [
+            "Natan Lelonkiewicz",
+            "Natan Lelonkiewicz"
+        ]
     }
 ]
 }
