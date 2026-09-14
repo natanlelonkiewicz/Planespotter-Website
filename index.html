@@ -413,6 +413,17 @@ oninput="changeSunTime()"
                 Log in
             </button>
 
+            <p class="forgot-password-text">
+
+    <button
+        type="button"
+        id="forgotPasswordButton"
+    >
+        Forgot password?
+    </button>
+
+</p>
+
         </form>
 
         <p class="switchAccountText">
@@ -423,6 +434,45 @@ oninput="changeSunTime()"
         </p>
 
     </div>
+
+    <div
+    id="forgotPasswordScreen"
+    class="account-screen"
+>
+
+    <button
+        class="backAccountButton"
+        onclick="showLogin()"
+    >
+        ← Back
+    </button>
+
+    <h2>Reset your password</h2>
+
+    <p>
+        Enter the email address linked to your Avspot account
+        and we’ll send you a password reset link.
+    </p>
+
+    <form id="forgotPasswordForm">
+
+        <input
+            type="email"
+            id="forgotPasswordEmail"
+            placeholder="Email address"
+            required
+        >
+
+        <button
+            type="submit"
+            class="account-login-btn"
+        >
+            Send reset link
+        </button>
+
+    </form>
+
+</div>
 
 
     <!-- REGISTER SCREEN -->
@@ -8938,6 +8988,16 @@ const loginScreen = document.getElementById("loginScreen");
 const registerScreen = document.getElementById("registerScreen");
 const loggedInScreen = document.getElementById("loggedInScreen");
 
+const forgotPasswordScreen =
+    document.getElementById(
+        "forgotPasswordScreen"
+    );
+
+const forgotPasswordButton =
+    document.getElementById(
+        "forgotPasswordButton"
+    );
+
 const loginButton = document.getElementById("loginButton");
 const registerButton = document.getElementById("registerButton");
 
@@ -9739,20 +9799,39 @@ function formatAirshowDate(dateString){
 
 function showLogin() {
 
-    accountWelcome.style.display = "none";
+    accountWelcome.style.display =
+        "none";
 
-    loginScreen.classList.add("active");
-    registerScreen.classList.remove("active");
+    loginScreen.classList.add(
+        "active"
+    );
+
+    registerScreen.classList.remove(
+        "active"
+    );
+
+    forgotPasswordScreen.classList.remove(
+        "active"
+    );
 
 }
 
-
 function showRegister() {
 
-    accountWelcome.style.display = "none";
+    accountWelcome.style.display =
+        "none";
 
-    loginScreen.classList.remove("active");
-    registerScreen.classList.add("active");
+    loginScreen.classList.remove(
+        "active"
+    );
+
+    registerScreen.classList.add(
+        "active"
+    );
+
+    forgotPasswordScreen.classList.remove(
+        "active"
+    );
 
 }
 
@@ -9934,6 +10013,145 @@ registerButton.addEventListener("click", showRegister);
 goToRegister.addEventListener("click", showRegister);
 
 goToLogin.addEventListener("click", showLogin);
+
+forgotPasswordButton.addEventListener(
+    "click",
+    function(){
+
+        accountWelcome.style.display =
+            "none";
+
+        loginScreen.classList.remove(
+            "active"
+        );
+
+        registerScreen.classList.remove(
+            "active"
+        );
+
+        forgotPasswordScreen.classList.add(
+            "active"
+        );
+
+        const emailInput =
+            document.getElementById(
+                "forgotPasswordEmail"
+            );
+
+        if(emailInput){
+
+            emailInput.value =
+                document.getElementById(
+                    "loginEmail"
+                ).value;
+
+            emailInput.focus();
+
+        }
+
+    }
+);
+
+document.getElementById(
+    "forgotPasswordForm"
+).addEventListener(
+    "submit",
+    async function(e){
+
+        e.preventDefault();
+
+        const email =
+            document.getElementById(
+                "forgotPasswordEmail"
+            ).value.trim();
+
+        if(!email){
+
+            return;
+
+        }
+
+        const submitButton =
+            this.querySelector(
+                "button[type='submit']"
+            );
+
+        if(submitButton){
+
+            submitButton.disabled =
+                true;
+
+            submitButton.textContent =
+                "Sending...";
+
+        }
+
+        try{
+
+            const {
+                error
+            } =
+                await supabaseClient
+                    .auth
+                    .resetPasswordForEmail(
+                        email,
+                        {
+                            redirectTo:
+                                window.location.origin +
+                                window.location.pathname
+                        }
+                    );
+
+            if(error){
+
+                throw error;
+
+            }
+
+            alert(
+                "If an Avspot account exists for that email address, a password reset link has been sent."
+            );
+
+            document.getElementById(
+                "forgotPasswordForm"
+            ).reset();
+
+            showLogin();
+
+        }
+        catch(error){
+
+            console.error(
+                "Password reset error:",
+                error
+            );
+
+            alert(
+                error &&
+                error.message
+                    ?
+                    error.message
+                    :
+                    "Something went wrong sending the password reset email."
+            );
+
+        }
+        finally{
+
+            if(submitButton){
+
+                submitButton.disabled =
+                    false;
+
+                submitButton.textContent =
+                    "Send reset link";
+
+            }
+
+        }
+
+    }
+);
 
 document.getElementById("logoutButton").addEventListener(
     "click",
