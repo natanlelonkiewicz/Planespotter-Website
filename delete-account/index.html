@@ -11,6 +11,8 @@
 
     <title>Delete Account – Avspot</title>
 
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
     <style>
         *{
             box-sizing:border-box;
@@ -36,6 +38,12 @@
             margin-bottom:10px;
         }
 
+        h2{
+            color:#f5f5f5;
+            font-size:20px;
+            margin-top:0;
+        }
+
         p{
             color:#d0d0d0;
             line-height:1.6;
@@ -50,6 +58,24 @@
             border-radius:8px;
         }
 
+        label{
+            display:block;
+            margin-bottom:8px;
+            color:#f5f5f5;
+            font-size:14px;
+        }
+
+        input{
+            width:100%;
+            padding:11px;
+            margin-bottom:18px;
+            background:#1e1e1e;
+            color:#f5f5f5;
+            border:1px solid #555;
+            border-radius:6px;
+            font-size:14px;
+        }
+
         button{
             background:#c62828;
             color:#fff;
@@ -62,6 +88,11 @@
 
         button:hover{
             background:#a91f1f;
+        }
+
+        button:disabled{
+            opacity:0.6;
+            cursor:not-allowed;
         }
 
         .back-link{
@@ -85,6 +116,12 @@
             font-size:13px;
             line-height:1.5;
         }
+
+        #statusMessage{
+            margin-top:15px;
+            font-size:14px;
+            color:#f5c542;
+        }
     </style>
 </head>
 
@@ -95,35 +132,63 @@
         <h1>Delete Your Avspot Account</h1>
 
         <p>
-            Use this page to request deletion of your Avspot account
-            and associated personal data.
+            You can permanently delete your Avspot account and
+            associated Avspot data from this page.
         </p>
 
         <p>
-            To permanently delete your Avspot account, click the
-            button below. You will then be taken to Avspot where you
-            can log in and confirm the account deletion.
+            Enter the email address and password associated with
+            your Avspot account below. You must log in to verify
+            that you are the owner of the account before it can
+            be permanently deleted.
         </p>
 
         <div class="delete-box">
 
-            <p>
-                Account deletion permanently removes your Avspot
-                account and associated Avspot data. This action
-                cannot be undone.
-            </p>
+            <h2>Confirm Account Deletion</h2>
 
-            <button
-                type="button"
-                onclick="requestAccountDeletion()"
-            >
-                Delete Account
-            </button>
+            <form id="deleteAccountForm">
+
+                <label for="email">
+                    Avspot account email address
+                </label>
+
+                <input
+                    type="email"
+                    id="email"
+                    name="email"
+                    placeholder="Email address"
+                    required
+                >
+
+                <label for="password">
+                    Avspot account password
+                </label>
+
+                <input
+                    type="password"
+                    id="password"
+                    name="password"
+                    placeholder="Password"
+                    required
+                >
+
+                <button
+                    type="submit"
+                    id="deleteButton"
+                >
+                    Delete Account
+                </button>
+
+            </form>
 
             <div class="notice">
-                You must be able to log in to the Avspot account you
-                want to delete before the deletion can be completed.
+                Deleting your account permanently removes your
+                Avspot account and associated Avspot data. This
+                action cannot be undone.
             </div>
+
+            <p id="statusMessage"></p>
 
         </div>
 
@@ -137,19 +202,160 @@
     </main>
 
     <script>
-        function requestAccountDeletion(){
 
-            const confirmed = confirm(
-                "You will be taken to Avspot to log in and confirm permanent deletion of your account and associated data."
+        const SUPABASE_URL =
+            "https://tfshpcjfcibynsbdxztn.supabase.co";
+
+        const SUPABASE_KEY =
+            "sb_publishable_97SyMugx0LKqTgE7RjI8lw_UPHD7Wfl";
+
+        const supabaseClient =
+            window.supabase.createClient(
+                SUPABASE_URL,
+                SUPABASE_KEY
             );
 
-            if(!confirmed){
-                return;
-            }
+        const deleteAccountForm =
+            document.getElementById(
+                "deleteAccountForm"
+            );
 
-            window.location.href =
-                "/?delete-account=true";
-        }
+        const deleteButton =
+            document.getElementById(
+                "deleteButton"
+            );
+
+        const statusMessage =
+            document.getElementById(
+                "statusMessage"
+            );
+
+
+        deleteAccountForm.addEventListener(
+            "submit",
+            async function(event){
+
+                event.preventDefault();
+
+                const email =
+                    document
+                        .getElementById("email")
+                        .value
+                        .trim();
+
+                const password =
+                    document
+                        .getElementById("password")
+                        .value;
+
+                if(!email || !password){
+                    return;
+                }
+
+                const confirmed =
+                    confirm(
+                        "Are you sure you want to permanently delete your Avspot account and all associated data?\n\nThis action cannot be undone."
+                    );
+
+                if(!confirmed){
+                    return;
+                }
+
+                deleteButton.disabled = true;
+                deleteButton.textContent =
+                    "Deleting...";
+
+                statusMessage.textContent =
+                    "";
+
+                try{
+
+                    /*
+                     * Sign in to verify ownership
+                     * of the Avspot account.
+                     */
+                    const {
+                        data: signInData,
+                        error: signInError
+                    } =
+                        await supabaseClient.auth
+                            .signInWithPassword({
+                                email: email,
+                                password: password
+                            });
+
+                    if(signInError){
+                        throw signInError;
+                    }
+
+                    if(
+                        !signInData ||
+                        !signInData.user
+                    ){
+                        throw new Error(
+                            "Unable to sign in to the Avspot account."
+                        );
+                    }
+
+                    /*
+                     * Call the existing Avspot
+                     * account deletion function.
+                     */
+                    const {
+                        data,
+                        error
+                    } =
+                        await supabaseClient.functions
+                            .invoke(
+                                "delete-account",
+                                {
+                                    body:{}
+                                }
+                            );
+
+                    if(error){
+                        throw error;
+                    }
+
+                    if(
+                        !data ||
+                        !data.success
+                    ){
+                        throw new Error(
+                            data?.error ||
+                            "The account could not be deleted."
+                        );
+                    }
+
+                    statusMessage.textContent =
+                        "Your Avspot account and associated data have been permanently deleted.";
+
+                    deleteAccountForm.reset();
+
+                    deleteButton.disabled = true;
+                    deleteButton.textContent =
+                        "Account Deleted";
+
+                }
+                catch(error){
+
+                    console.error(
+                        "Account deletion error:",
+                        error
+                    );
+
+                    statusMessage.textContent =
+                        error.message ||
+                        "Unable to delete the account.";
+
+                    deleteButton.disabled = false;
+                    deleteButton.textContent =
+                        "Delete Account";
+                }
+
+            }
+        );
+
     </script>
 
 </body>
