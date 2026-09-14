@@ -10022,6 +10022,35 @@ function showRegister() {
 
 async function showLoggedInAccount(user) {
 
+        if(window.avspotPasswordRecoveryActive){
+
+        accountWelcome.style.display =
+            "none";
+
+        loginScreen.classList.remove(
+            "active"
+        );
+
+        registerScreen.classList.remove(
+            "active"
+        );
+
+        forgotPasswordScreen.classList.remove(
+            "active"
+        );
+
+        loggedInScreen.classList.remove(
+            "active"
+        );
+
+        resetPasswordScreen.classList.add(
+            "active"
+        );
+
+        return;
+
+    }
+
     accountWelcome.style.display = "none";
 loginScreen.classList.remove("active");
 registerScreen.classList.remove("active");
