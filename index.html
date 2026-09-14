@@ -733,72 +733,21 @@ window.supabaseClient = window.supabase.createClient(
     SUPABASE_KEY
 );
 
-supabaseClient.auth.onAuthStateChange(
-    async function(event, session){
-
-        if(event === "PASSWORD_RECOVERY"){
-
-            resetPasswordScreen.classList.add(
-                "active"
-            );
-
-            accountWelcome.style.display =
-                "none";
-
-            loginScreen.classList.remove(
-                "active"
-            );
-
-            registerScreen.classList.remove(
-                "active"
-            );
-
-            forgotPasswordScreen.classList.remove(
-                "active"
-            );
-
-            loggedInScreen.classList.remove(
-                "active"
-            );
-
-        }
-
-    }
-);
-
 window.avspotPasswordRecoveryActive = false;
 
 supabaseClient.auth.onAuthStateChange(
     function(event){
+
+        console.log(
+            "AUTH EVENT:",
+            event
+        );
 
         if(event !== "PASSWORD_RECOVERY"){
             return;
         }
 
         window.avspotPasswordRecoveryActive = true;
-
-        accountWelcome.style.display =
-            "none";
-
-        loginScreen.classList.remove(
-            "active"
-        );
-
-        registerScreen.classList.remove(
-            "active"
-        );
-
-        forgotPasswordScreen.classList.remove(
-            "active"
-        );
-
-        loggedInScreen.classList.remove(
-            "active"
-        );
-
-        resetPasswordScreen.classList.add(
-            "active"
-        );
 
     }
 );
