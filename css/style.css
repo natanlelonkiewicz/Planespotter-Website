@@ -4188,3 +4188,17 @@ appearance: none;
         font-size:20px;
     }
 }
+
+#sidebarToggle{
+    display:block !important;
+    position:fixed !important;
+    bottom:20px !important;
+    right:20px !important;
+    width:60px !important;
+    height:60px !important;
+    z-index:99999 !important;
+    background:red !important;
+    color:white !important;
+    border:3px solid white !important;
+    font-size:30px !important;
+}
