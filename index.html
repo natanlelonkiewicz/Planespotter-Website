@@ -4,10 +4,6 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<div id="viewportDebug" style="position:fixed;top:0;left:0;z-index:999999;background:red;color:white;padding:10px;font-size:16px;">
-TEST
-</div>
-
 <link
     rel="manifest"
     href="/manifest.json"
@@ -10755,13 +10751,6 @@ updateNotificationButton();
     <a href="privacy.html">Privacy<span class="desktop-only"> Policy</span></a>
 
 </footer>
-
-<script>
-document.getElementById("viewportDebug").textContent =
-    "innerWidth: " + window.innerWidth +
-    " | visualViewport: " + (window.visualViewport ? window.visualViewport.width : "none") +
-    " | screen: " + screen.width;
-</script>
 
 </body>
 </html>
