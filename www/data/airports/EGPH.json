@@ -1,0 +1,202 @@
+{
+  "name": "Edinburgh Airport",
+  "code": "EGPH",
+  "location": "Ingliston, Scotland",
+
+  "image": "https://pub-6411be86c46a44edb6371cd742f7819e.r2.dev/egph-airport.jpg",
+  "airportCredits": [
+    "Corey Bunten"
+],
+
+  "lat": 55.949001,
+  "lng": -3.362185,
+
+  "runways": [
+    {
+      "name": "06/24",
+      "heading1": 60,
+      "heading2": 240
+    }
+  ],
+
+"spots": [
+    {
+        "name": "Mound",
+        "lat": 55.942436,
+        "lng": -3.385585,
+
+        "direction": 150,
+
+        "bestForRunway": "06",
+
+        "recommendedFocalLength": "Taxiway: 18-100mm.  Runway: 70-300mm",
+        "parking": "Parking available just past the holiday inn followed by a 10 minute walk to Mound. co-ordinates: 55.943737, -3.375503",
+        "bestTimeToVisit": "Morning till early afternoon",
+        "notes": "Good location for a mix of approach, taxi and takeoff shots",
+
+        "photos": [
+            "https://pub-6411be86c46a44edb6371cd742f7819e.r2.dev/edimound1.jpg",
+            "https://pub-6411be86c46a44edb6371cd742f7819e.r2.dev/edimound2.jpg",
+            "https://pub-6411be86c46a44edb6371cd742f7819e.r2.dev/edimound3.jpg",
+            "https://pub-6411be86c46a44edb6371cd742f7819e.r2.dev/edimound4.jpg"
+        ],
+
+        "photoCredits": [
+            "Joshua McNaughton",
+            "Joshua McNaughton",
+            "Joshua McNaughton",
+            "Joshua McNaughton"
+        ]
+    },
+
+    {
+        "name": "Almondbank",
+        "lat": 55.951028,
+        "lng": -3.376898,
+
+        "direction": 300,
+
+        "bestForRunway": "06",
+
+        "recommendedFocalLength": "70-200mm",
+        "parking": "Unavailable",
+        "bestTimeToVisit": "Evening",
+        "notes": "Involves shooting through fence",
+
+        "photos": [
+            "https://pub-6411be86c46a44edb6371cd742f7819e.r2.dev/boathousebrig1.jpg"
+        ],
+
+        "photoCredits": [
+            "Joshua McNaughton"
+        ]
+    },
+
+    {
+        "name": "Holiday Inn",
+        "lat": 55.945102,
+        "lng": -3.378623,
+
+        "direction": 150,
+
+        "bestForRunway": "24",
+
+        "recommendedFocalLength": "70-200mm",
+        "parking": "Car park available",
+        "bestTimeToVisit": "Visit at noon for best head on lighting",
+        "notes": [
+            "Involves shooting through fence",
+            "Best location for head on shots of runway 24 arrivals"
+        ],
+
+        "photos": [
+            "https://pub-6411be86c46a44edb6371cd742f7819e.r2.dev/holidayinn1.jpg",
+            "https://pub-6411be86c46a44edb6371cd742f7819e.r2.dev/holidayinn2.jpg",
+            "https://pub-6411be86c46a44edb6371cd742f7819e.r2.dev/holidayinn3.jpg",
+            "https://pub-6411be86c46a44edb6371cd742f7819e.r2.dev/holidayinn4.jpg"
+        ],
+        
+        "photoCredits": [
+            "Joshua McNaughton",
+            "Joshua McNaughton",
+            "Joshua McNaughton",
+            "Joshua McNaughton"
+        ]
+    },
+
+    {
+        "name": "06 Approach",
+        "lat": 55.941218,
+        "lng": -3.398363,
+
+        "direction": 76,
+
+        "bestForRunway": "06",
+
+        "recommendedFocalLength": "18-200mm",
+        "parking": "Unavailable",
+        "bestTimeToVisit": "Morning",
+        "notes": "Only runway 06 arrivals are visible here",
+
+        "photos": [
+            "https://pub-6411be86c46a44edb6371cd742f7819e.r2.dev/06approach1.jpg",
+            "https://pub-6411be86c46a44edb6371cd742f7819e.r2.dev/06approach2.jpg",
+            "https://pub-6411be86c46a44edb6371cd742f7819e.r2.dev/06approach3.jpg"
+        ],
+
+        "photoCredits": [
+            "Corey Bunten",
+            "Corey Bunten",
+            "Corey Bunten"
+        ]
+    },
+
+    {
+        "name": "24 Approach",
+        "lat": 55.957700,
+        "lng": -3.349844,
+
+        "direction": 240,
+
+        "bestForRunway": "24",
+
+        "recommendedFocalLength": "18-200mm",
+        "parking": "Unavailable",
+        "bestTimeToVisit": "Afternoon till Evening",
+        "notes": "Only runway 24 arrivals are visible here",
+
+        "photos": [
+            "https://pub-6411be86c46a44edb6371cd742f7819e.r2.dev/24approach1.jpg",
+            "https://pub-6411be86c46a44edb6371cd742f7819e.r2.dev/24approach2.jpg"
+        ],
+
+        "photoCredits": [
+            "Matt Low",
+            "Matt Low"
+        ]
+    },
+
+    {
+        "name": "Railway Bridge",
+        "lat": 55.954687,
+        "lng": -3.346238,
+
+        "direction": 145,
+
+        "bestForRunway": "24",
+
+        "recommendedFocalLength": "70-300mm",
+        "parking": "Unavailable",
+        "bestTimeToVisit": "Afternoon",
+        "notes": "Only runway 24 arrivals are visible here",
+
+        "photos": [
+            "https://pub-6411be86c46a44edb6371cd742f7819e.r2.dev/rb1.jpg"
+        ],
+
+        "photoCredits": [
+            "Matt Low"
+        ]
+    },
+
+    {
+    "lat": 55.939028,
+    "lng": -3.391444,
+    "name": "Bridge",
+    "notes": [
+      "None"
+    ],
+    "photos": [
+      "https://tfshpcjfcibynsbdxztn.supabase.co/storage/v1/object/public/airport-images/b7621e5a-9678-4b7b-9ad9-d15833879752/spots/47eddfe9-9f5f-4aa2-8d7e-5de73ccb1cc8.jpg"
+    ],
+    "parking": "You can park near the bus stop.",
+    "direction": 149,
+    "photoCredits": [
+      "Connor Frazer"
+    ],
+    "bestForRunway": "06 arrivals, 24 departures",
+    "bestTimeToVisit": "sunrise till 5-6pm",
+    "recommendedFocalLength": "100-400mm"
+  }
+]
+}

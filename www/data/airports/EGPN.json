@@ -1,0 +1,181 @@
+{
+  "name": "Dundee Airport",
+  "code": "EGPN",
+  "location": "Dundee, Scotland",
+
+  "image": "https://pub-6411be86c46a44edb6371cd742f7819e.r2.dev/egpn-airport.jpg",
+  "airportCredits": [
+    "Matt Low"
+],
+
+  "lat": 56.452940,
+  "lng": -3.024466,
+
+  "runways": [
+    {
+      "name": "09/27",
+      "heading1": 90,
+      "heading2": 270
+    }
+  ],
+
+"spots": [
+    {
+        "name": "Mound",
+        "lat": 56.453592,
+        "lng": -3.023211,
+
+        "direction": 1,
+
+        "bestForRunway": "Good for both runways",
+
+        "recommendedFocalLength": "100-300mm",
+        "parking": "Unavailable",
+        "bestTimeToVisit": "Before 0700 or after 2000 for best lighting",
+        "notes": "Good for both runways however aircraft are on ground when passing this location",
+
+        "photos": [
+            "https://pub-6411be86c46a44edb6371cd742f7819e.r2.dev/dundeemound1.jpg",
+            "https://pub-6411be86c46a44edb6371cd742f7819e.r2.dev/dundeemound2.jpg",
+            "https://pub-6411be86c46a44edb6371cd742f7819e.r2.dev/dundeemound3.jpg"
+        ],
+
+        "photoCredits": [
+            "Matt Low",
+            "Matt Low",
+            "Matt Low"
+        ]
+    },
+
+    {
+        "name": "Mayo Avenue",
+        "lat": 56.453642,
+        "lng": -3.014286,
+
+        "direction": 83,
+
+        "recommendedFocalLength": "Apron: 18-70mm. Runway 27: 70-200mm",
+        "parking": "Unavailable",
+        "bestTimeToVisit": "Apron and runway 27 departures best till 0900. Runway 27 arrivals best after 2000 during summer",
+        "notes": "Best location to get aircraft parked up",
+
+        "photos": [
+            "https://pub-6411be86c46a44edb6371cd742f7819e.r2.dev/mayoavenue1.jpg",
+            "https://pub-6411be86c46a44edb6371cd742f7819e.r2.dev/mayoavenue2.jpg",
+            "https://pub-6411be86c46a44edb6371cd742f7819e.r2.dev/mayoavenue3.jpg"
+        ],
+
+        "photoCredits": [
+            "Matt Low",
+            "Matt Low",
+            "Matt Low"
+        ]
+    },
+
+    {
+        "name": "Riverside Inn",
+        "lat": 56.453545,
+        "lng": -3.020736,
+
+        "direction": 1,
+
+        "bestForRunway": "27",
+
+        "recommendedFocalLength": "70-300mm",
+        "parking": "Parking available",
+        "bestTimeToVisit": "Before 0700 and after 2000 for best lighting",
+        "notes": [
+            "Best location to get taxi shots"
+        ],
+
+        "photos": [
+            "https://pub-6411be86c46a44edb6371cd742f7819e.r2.dev/riversideinn1.jpg",
+            "https://pub-6411be86c46a44edb6371cd742f7819e.r2.dev/riversideinn2.jpg",
+            "https://pub-6411be86c46a44edb6371cd742f7819e.r2.dev/riversideinn3.jpg"
+        ],
+        
+        "photoCredits": [
+            "Matt Low",
+            "Matt Low",
+            "Matt Low"
+        ]
+    },
+
+    {
+        "name": "Riverside Bank",
+        "lat": 56.451488,
+        "lng": -3.011621,
+
+        "direction": 114,
+
+        "bestForRunway": "27",
+
+        "recommendedFocalLength": "150-300mm",
+        "parking": "Unavailable",
+        "bestTimeToVisit": "Morning",
+        "notes": [
+            "Ladders required due to fence"
+        ],
+
+        "photos": [
+            "https://pub-6411be86c46a44edb6371cd742f7819e.r2.dev/riversidebank1.jpg",
+            "https://pub-6411be86c46a44edb6371cd742f7819e.r2.dev/riversidebank2.jpg"
+        ],
+        
+        "photoCredits": [
+            "Matt Low",
+            "Matt Low"
+        ]
+    },
+
+    {
+        "name": "09 Approach Lights",
+        "lat": 56.453040,
+        "lng": -3.044085,
+
+        "direction": 90,
+
+        "bestForRunway": "09",
+
+        "recommendedFocalLength": "70-300mm",
+        "parking": "Unavailable",
+        "bestTimeToVisit": "Morning",
+        "notes": [
+            "Only 09 arrivals visible here"
+        ],
+
+        "photos": [
+            "https://pub-6411be86c46a44edb6371cd742f7819e.r2.dev/09approach1.jpg"
+        ],
+        
+        "photoCredits": [
+            "Matt Low"
+        ]
+    },
+
+    {
+        "name": "Detailing Shop",
+        "lat": 56.453631,
+        "lng": -3.019331,
+
+        "direction": 300,
+
+        "recommendedFocalLength": "18-50mm",
+        "parking": "Unavailable",
+        "bestTimeToVisit": "Evening",
+        "notes": [
+            "Tall fence"
+        ],
+
+        "photos": [
+            "https://pub-6411be86c46a44edb6371cd742f7819e.r2.dev/detailingshop01.jpg",
+            "https://pub-6411be86c46a44edb6371cd742f7819e.r2.dev/detailingshop02.jpg"
+        ],
+        
+        "photoCredits": [
+            "Matt Low",
+            "Matt Low"
+        ]
+    }
+]
+}

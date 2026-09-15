@@ -1,0 +1,128 @@
+[
+  {
+    "icao": "EGPK",
+    "name": "Glasgow Prestwick Airport",
+    "lat": 55.5079,
+    "lng": -4.5942
+  },
+  {
+    "icao": "EGPF",
+    "name": "Glasgow Airport",
+    "lat": 55.8719,
+    "lng": -4.4331
+  },
+  {
+    "icao": "EGPH",
+    "name": "Edinburgh Airport",
+    "lat": 55.949001,
+    "lng": -3.362185
+  },
+  {
+    "icao": "EGPG",
+    "name": "Cumbernauld Airport",
+    "lat": 55.974316,
+    "lng": -3.971546
+  },
+  {
+    "icao": "EGQS",
+    "name": "RAF Lossiemouth",
+    "lat": 57.708631,
+    "lng": -3.328975
+  },
+  {
+    "icao": "EGPN",
+    "name": "Dundee Airport",
+    "lat": 56.452940,
+    "lng": -3.024466
+  },
+  {
+    "icao": "EGQL",
+    "name": "Leuchars Station",
+    "lat": 56.374990,
+    "lng": -2.863502
+  },
+  {
+    "icao": "EGUL",
+    "name": "RAF Lakenheath",
+    "lat": 52.409347,
+    "lng": 0.560487
+  },
+  {
+    "icao": "EGUN",
+    "name": "RAF Mildenhall",
+    "lat": 52.362493,
+    "lng": 0.482859
+  },
+  {
+    "icao": "EGXC",
+    "name": "RAF Coningsby",
+    "lat": 53.092892,
+    "lng": -0.167902
+  },
+  {
+    "icao": "EGCC",
+    "name": "Manchester Airport",
+    "lat": 53.355633,
+    "lng": -2.271681
+  },
+  {
+    "icao": "EGNM",
+    "name": "Leeds Bradford Airport",
+    "lat": 53.866353,
+    "lng": -1.661006
+  },
+  {
+    "icao": "ETSN",
+    "name": "Neuburg Air Base",
+    "lat": 48.710884,
+    "lng": 11.215482
+  },
+  {
+    "icao": "ETSI",
+    "name": "Ingolstadt Manching Airfield",
+    "lat": 48.716231,
+    "lng": 11.535837
+  },
+  {
+    "icao": "EDDF",
+    "name": "Frankfurt Airport",
+    "lat": 50.038744,
+    "lng": 8.560420
+  },
+  {
+    "icao": "EBOS",
+    "name": "Ostend Bruges International Airport",
+    "lat": 51.199804,
+    "lng": 2.872862
+  },
+  {
+    "icao": "EGAC",
+    "name": "Belfast City Airport",
+    "lat": 54.618763,
+    "lng": -5.872007
+  },
+  {
+    "icao": "EBBR",
+    "name": "Brussels Airport",
+    "lat": 50.900141,
+    "lng": 4.486441
+  },
+  {
+    "icao": "ENZV",
+    "name": "Stavanger Sola Airport",
+    "lat": 58.880145,
+    "lng": 5.631808
+  },
+  {
+    "icao": "EGAD",
+    "name": "Newtownards Aerodrome",
+    "lat": 54.582313,
+    "lng": -5.690756
+  },
+  {
+    "icao": "EDDL",
+    "name": "Düsseldorf Airport",
+    "lat": 51.288250,
+    "lng": 6.770034
+  }
+]

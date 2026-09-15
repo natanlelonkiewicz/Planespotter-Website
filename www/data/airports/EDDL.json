@@ -1,0 +1,106 @@
+{
+  "name": "Düsseldorf Airport",
+  "code": "EDDL",
+  "location": "Düsseldorf, Germany",
+
+  "image": "https://pub-6411be86c46a44edb6371cd742f7819e.r2.dev/eddlcp4.jpg",
+  "airportCredits": [
+    "jk.fotografie"
+],
+
+  "lat": 51.288250,
+  "lng": 6.770034,
+
+  "runways": [
+    {
+      "name": "05/23",
+      "heading1": 50,
+      "heading2": 230
+    }
+  ],
+
+"spots": [
+    {
+        "name": "Car Park",
+        "lat": 51.281470,
+        "lng": 6.771788,
+
+        "direction": 132,
+
+        "bestForRunway": "21L/05R",
+
+        "recommendedFocalLength": "Runway: 150-200mm. Taxiway: 50-70mm",
+        "parking": "Available",
+        "bestTimeToVisit": "Runway: Late morning and early afternoon. Taxiway: Morning or night",
+        "notes": [
+            "None"
+        ],
+
+        "photos": [
+            "https://pub-6411be86c46a44edb6371cd742f7819e.r2.dev/eddlcp1.jpg",
+            "https://pub-6411be86c46a44edb6371cd742f7819e.r2.dev/eddlcp2.jpg",
+            "https://pub-6411be86c46a44edb6371cd742f7819e.r2.dev/eddlcp3.jpg",
+            "https://pub-6411be86c46a44edb6371cd742f7819e.r2.dev/eddlcp4.jpg"
+        ],
+
+        "photoCredits": [
+            "jk.fotografie",
+            "jk.fotografie",
+            "jk.fotografie",
+            "jk.fotografie"
+        ]
+    },
+
+    {
+        "name": "Stairs",
+        "lat": 51.290809,
+        "lng": 6.785850,
+
+        "direction": 132,
+
+        "bestForRunway": "21L/05R",
+
+        "recommendedFocalLength": "70-200mm",
+        "parking": "Available",
+        "bestTimeToVisit": "Morning",
+        "notes": [
+            "None"
+        ],
+
+        "photos": [
+            "https://pub-6411be86c46a44edb6371cd742f7819e.r2.dev/eddlstairs1.jpg",
+            "https://pub-6411be86c46a44edb6371cd742f7819e.r2.dev/eddlstairs2.jpg"
+        ],
+
+        "photoCredits": [
+            "jk.fotografie",
+            "jk.fotografie"
+        ]
+    },
+
+    {
+        "name": "Fence 23L End",
+        "lat": 51.294281,
+        "lng": 6.789600,
+
+        "direction": 142,
+
+        "bestForRunway": "21L",
+
+        "recommendedFocalLength": "70-200mm",
+        "parking": "Available: 51.290600, 6.788344",
+        "bestTimeToVisit": "Late morning to early afternoon",
+        "notes": [
+            "Best for 21L arrivals"
+        ],
+
+        "photos": [
+            "https://pub-6411be86c46a44edb6371cd742f7819e.r2.dev/eddlfence1.jpg"
+        ],
+
+        "photoCredits": [
+            "jk.fotografie"
+        ]
+    }
+]
+}

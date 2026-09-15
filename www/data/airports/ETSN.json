@@ -1,0 +1,110 @@
+{
+  "name": "Neuburg Air Base",
+  "code": "ETSN",
+  "location": "Neuburg an der Donau, Germany",
+
+  "image": "https://pub-6411be86c46a44edb6371cd742f7819e.r2.dev/beerspott1.jpg",
+  "airportCredits": [
+    "th3milit4rysp0tter"
+],
+
+  "lat": 48.710884,
+  "lng": 11.215482,
+
+  "runways": [
+    {
+      "name": "09/27",
+      "heading1": 90,
+      "heading2": 270
+    }
+  ],
+
+"spots": [
+    {
+        "name": "Runway 27 End",
+        "lat": 48.710221,
+        "lng": 11.234315,
+
+        "direction": 128,
+
+        "bestForRunway": "27",
+
+        "recommendedFocalLength": "70-300mm",
+        "parking": "Unavailable",
+        "bestTimeToVisit": "Taxiway: Morning. Approaches: Afternoon",
+        "notes": [
+            "None"
+        ],
+
+        "photos": [
+            "https://pub-6411be86c46a44edb6371cd742f7819e.r2.dev/27app1.jpg",
+            "https://pub-6411be86c46a44edb6371cd742f7819e.r2.dev/27app2.jpg",
+            "https://pub-6411be86c46a44edb6371cd742f7819e.r2.dev/27app3.jpg",
+            "https://pub-6411be86c46a44edb6371cd742f7819e.r2.dev/27app4.jpg"
+        ],
+
+        "photoCredits": [
+            "th3milit4rysp0tter",
+            "th3milit4rysp0tter",
+            "th3milit4rysp0tter",
+            "th3milit4rysp0tter"
+        ]
+    },
+
+    {
+        "name": "Field",
+        "lat": 48.709039,
+        "lng": 11.204407,
+
+        "direction": 178,
+
+        "bestForRunway": "09/27",
+
+        "recommendedFocalLength": "200-500mm",
+        "parking": "Unavailable",
+        "bestTimeToVisit": "Late morning and afternoon",
+        "notes": [
+            "None"
+        ],
+
+        "photos": [
+            "https://pub-6411be86c46a44edb6371cd742f7819e.r2.dev/etsnfield1.jpg",
+            "https://pub-6411be86c46a44edb6371cd742f7819e.r2.dev/etsnfield2.jpg",
+            "https://pub-6411be86c46a44edb6371cd742f7819e.r2.dev/etsnfield3.jpg"
+        ],
+
+        "photoCredits": [
+            "th3milit4rysp0tter",
+            "th3milit4rysp0tter",
+            "th3milit4rysp0tter"
+        ]
+    },
+
+    {
+        "name": "Beerspott",
+        "lat": 48.709566,
+        "lng": 11.197220,
+
+        "direction": 180,
+
+        "recommendedFocalLength": "200-400mm",
+        "parking": "Unavailable",
+        "bestTimeToVisit": "Late morning and afternoon",
+        "notes": [
+            "None"
+        ],
+
+        "photos": [
+            "https://pub-6411be86c46a44edb6371cd742f7819e.r2.dev/beerspott1.jpg",
+            "https://pub-6411be86c46a44edb6371cd742f7819e.r2.dev/beerspott2.jpg",
+            "https://pub-6411be86c46a44edb6371cd742f7819e.r2.dev/beerspott3.jpg"
+        ],
+        
+        "photoCredits": [
+            "th3milit4rysp0tter",
+            "th3milit4rysp0tter",
+            "th3milit4rysp0tter"
+        ]
+    }
+]
+}

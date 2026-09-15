@@ -1,0 +1,77 @@
+{
+  "name": "Belfast City Airport",
+  "code": "EGAC",
+  "location": "Belfast, Northern Ireland",
+
+  "image": "https://pub-6411be86c46a44edb6371cd742f7819e.r2.dev/belfastcityhedge2.jpg",
+  "airportCredits": [
+    "Mark Cunningham"
+],
+
+  "lat": 54.618763,
+  "lng": -5.872007,
+
+  "runways": [
+    {
+      "name": "04/22",
+      "heading1": 40,
+      "heading2": 220
+    }
+  ],
+
+"spots": [
+    {
+        "name": "The Hedge",
+        "lat": 54.620140,
+        "lng": -5.866379,
+
+        "direction": 118,
+
+        "bestForRunway": "04/22",
+
+        "recommendedFocalLength": "100-300mm",
+        "parking": "Available",
+        "bestTimeToVisit": "From early morning till 1300",
+        "notes": "None",
+
+        "photos": [
+            "https://pub-6411be86c46a44edb6371cd742f7819e.r2.dev/belfastcityhedge1.jpg",
+            "https://pub-6411be86c46a44edb6371cd742f7819e.r2.dev/belfastcityhedge2.jpg",
+            "https://pub-6411be86c46a44edb6371cd742f7819e.r2.dev/belfastcityhedge3.jpg",
+            "https://pub-6411be86c46a44edb6371cd742f7819e.r2.dev/belfastcityhedge4.jpg"
+        ],
+
+        "photoCredits": [
+            "Mark Cunningham",
+            "Mark Cunningham",
+            "Mark Cunningham",
+            "Mark Cunningham"
+        ]
+    },
+
+    {
+        "name": "Footbridge",
+        "lat": 54.609259,
+        "lng": -5.878345,
+
+        "direction": 298,
+
+        "bestForRunway": "04",
+
+        "recommendedFocalLength": "150-300mm",
+        "parking": "Available",
+        "bestTimeToVisit": "From early morning till 1300",
+        "notes": [
+            "None"
+        ],
+
+        "photos": [
+            "https://pub-6411be86c46a44edb6371cd742f7819e.r2.dev/belfastcitybridge1.jpg"
+        ],
+
+        "photoCredits": [
+            "Mark Cunningham"
+        ]
+    }
+]
+}

@@ -1,0 +1,175 @@
+{
+  "name": "Brussels Airport",
+  "code": "EBBR",
+  "location": "Brussels, Belgium",
+
+  "image": "https://pub-6411be86c46a44edb6371cd742f7819e.r2.dev/brucps.jpg",
+  "airportCredits": [
+    "Gilles van Landeghem"
+],
+
+  "lat": 50.900141,
+  "lng": 4.486441,
+
+  "runways": [
+    {
+      "name": "07/25",
+      "heading1": 70,
+      "heading2": 250
+    }
+  ],
+
+"spots": [
+    {
+        "name": "Mound",
+        "lat": 50.896121, 
+        "lng": 4.455221,
+
+        "direction": 155,
+
+        "bestForRunway": "07L",
+
+        "recommendedFocalLength": "100-300mm",
+        "parking": "Available",
+        "bestTimeToVisit": "Late morning and early afternoon",
+        "notes": "None",
+
+        "photos": [
+            "https://pub-6411be86c46a44edb6371cd742f7819e.r2.dev/brusselsmound1.jpg"
+        ],
+
+        "photoCredits": [
+            "Gilles van Landeghem"
+        ]
+    },
+
+    {
+        "name": "Car Park Northside",
+        "lat": 50.897987,
+        "lng": 4.476786,
+
+        "direction": 155,
+
+        "bestForRunway": "25R",
+
+        "recommendedFocalLength": "200-300mm",
+        "parking": "Available",
+        "bestTimeToVisit": "Late morning and early afternoon",
+        "notes": [
+            "None"
+        ],
+
+        "photos": [
+            "https://pub-6411be86c46a44edb6371cd742f7819e.r2.dev/brusselscp1.jpg"
+        ],
+
+        "photoCredits": [
+            "Gilles van Landeghem"
+        ]
+    },
+
+    {
+        "name": "Spottersplaats 01/19",
+        "lat": 50.888591,
+        "lng": 4.496379,
+
+        "direction": 99,
+
+        "bestForRunway": "01/19",
+
+        "recommendedFocalLength": "100-300mm",
+        "parking": "Available: 50.888903, 4.503836",
+        "bestTimeToVisit": "Early morning and early afternoon",
+        "notes": [
+            "None"
+        ],
+
+        "photos": [
+            "https://pub-6411be86c46a44edb6371cd742f7819e.r2.dev/Spottersplaats1.jpg"
+        ],
+        
+        "photoCredits": [
+            "Gilles van Landeghem"
+        ]
+    },
+
+    {
+        "name": "Spottersplaats 25L/07R",
+        "lat": 50.895134,
+        "lng": 4.515642,
+
+        "direction": 160,
+
+        "bestForRunway": "07R/25L",
+
+        "recommendedFocalLength": "100-300mm",
+        "parking": "Available: 50.898568, 4.528682",
+        "bestTimeToVisit": "Late morning and early afternoon",
+        "notes": [
+            "None"
+        ],
+
+        "photos": [
+            "https://pub-6411be86c46a44edb6371cd742f7819e.r2.dev/Spottersplaats25L.jpg",
+            "https://pub-6411be86c46a44edb6371cd742f7819e.r2.dev/Spottersplaats25L2.jpg",
+            "https://pub-6411be86c46a44edb6371cd742f7819e.r2.dev/Spottersplaats25L3.jpg"
+        ],
+        
+        "photoCredits": [
+            "Gilles van Landeghem",
+            "Gilles van Landeghem",
+            "Gilles van Landeghem"
+        ]
+    },
+
+    {
+        "name": "25R Approach",
+        "lat": 50.911280,
+        "lng": 4.508929,
+
+        "direction": 152,
+
+        "bestForRunway": "25R",
+
+        "recommendedFocalLength": "100-300mm",
+        "parking": "Available",
+        "bestTimeToVisit": "1200 - 1500",
+        "notes": [
+            "None"
+        ],
+
+        "photos": [
+            "https://pub-6411be86c46a44edb6371cd742f7819e.r2.dev/bru25r.jpg"
+        ],
+        
+        "photoCredits": [
+            "Gilles van Landeghem"
+        ]
+    },
+
+    {
+        "name": "Car Park Southside",
+        "lat": 50.894684,
+        "lng": 4.483943,
+
+        "direction": 340,
+
+        "bestForRunway": "07R",
+
+        "recommendedFocalLength": "70-200mm",
+        "parking": "Available",
+        "bestTimeToVisit": "Evening",
+        "notes": [
+            "None"
+        ],
+
+        "photos": [
+            "https://pub-6411be86c46a44edb6371cd742f7819e.r2.dev/brucps.jpg"
+        ],
+        
+        "photoCredits": [
+            "Gilles van Landeghem"
+        ]
+    }
+]
+}

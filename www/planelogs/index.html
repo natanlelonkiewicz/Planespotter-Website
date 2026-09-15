@@ -1,0 +1,2514 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Plane Log | Avspot</title>
+
+    <style>
+
+        *{
+            box-sizing:border-box;
+        }
+
+        body{
+            margin:0;
+            background:#111;
+            color:#fff;
+            font-family:Arial, sans-serif;
+        }
+
+        .plane-log-page{
+            max-width:1100px;
+            margin:0 auto;
+            padding:40px 20px;
+        }
+
+        .plane-log-header{
+            display:flex;
+            justify-content:space-between;
+            align-items:center;
+            margin-bottom:10px;
+        }
+
+        .plane-log-header h1{
+            margin:0;
+            color:#f5c542;
+            font-size:32px;
+        }
+
+        .back-button{
+            background:#252525;
+            color:#fff;
+            border:1px solid #444;
+            padding:10px 16px;
+            border-radius:8px;
+            cursor:pointer;
+            font-size:14px;
+        }
+
+        .back-button:hover{
+            border-color:#f5c542;
+        }
+
+        .plane-log-subtitle{
+            color:#aaa;
+            margin-top:5px;
+            margin-bottom:30px;
+        }
+
+        .plane-log-card{
+            background:#1b1b1b;
+            border:1px solid #333;
+            border-radius:12px;
+            padding:25px;
+            margin-bottom:25px;
+        }
+
+        .plane-log-card h2{
+            margin-top:0;
+        }
+
+        .log-aircraft-button{
+            background:#f5c542;
+            color:#111;
+            border:none;
+            padding:12px 20px;
+            border-radius:8px;
+            font-weight:bold;
+            cursor:pointer;
+        }
+
+        .log-aircraft-button:hover{
+            opacity:0.9;
+        }
+
+        #planeLogEntries{
+            margin-top:20px;
+        }
+
+        .empty-log{
+            color:#888;
+            text-align:center;
+            padding:40px 10px;
+        }
+
+        #planeLogForm input,
+#planeLogForm textarea{
+    width:100%;
+    max-width:600px;
+    padding:12px;
+    margin-top:10px;
+    background:#111;
+    color:#fff;
+    border:1px solid #444;
+    border-radius:8px;
+    font-size:15px;
+    font-family:Arial, sans-serif;
+}
+
+#planeLogForm textarea{
+    min-height:100px;
+    resize:vertical;
+}
+
+#planeLogForm input:focus,
+#planeLogForm textarea:focus{
+    outline:none;
+    border-color:#f5c542;
+}
+
+#planePhotos{
+    padding:10px;
+    cursor:pointer;
+}
+
+#planeLogForm button{
+    margin-top:10px;
+    margin-right:8px;
+}
+
+.plane-log-entry{
+    background:#151515;
+    border:1px solid #333;
+    border-radius:10px;
+    padding:20px;
+    margin-bottom:15px;
+}
+
+.plane-log-entry h3{
+    color:#f5c542;
+    margin-top:0;
+    margin-bottom:15px;
+    font-size:22px;
+}
+
+.plane-log-entry p{
+    margin:7px 0;
+    color:#ddd;
+}
+
+.plane-log-photos{
+    display:grid;
+    grid-template-columns:repeat(3, 1fr);
+    gap:10px;
+    margin-top:18px;
+}
+
+.plane-log-photo{
+    width:100%;
+    height:180px;
+    object-fit:cover;
+    border-radius:8px;
+    border:1px solid #333;
+    display:block;
+    cursor:pointer;
+}
+
+.plane-log-photo:hover{
+    opacity:0.85;
+}
+
+.plane-log-photo-wrapper{
+    position:relative;
+}
+
+.plane-log-photo-remove{
+    position:absolute;
+    top:8px;
+    right:8px;
+    width:30px;
+    height:30px;
+    border:none;
+    border-radius:50%;
+    background:#4a1f1f;
+    color:#fff;
+    font-size:16px;
+    cursor:pointer;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+}
+
+.plane-log-photo-remove:hover{
+    background:#6b2929;
+}
+
+@media(max-width:700px){
+
+    .plane-log-photos{
+        grid-template-columns:repeat(2, 1fr);
+    }
+
+    .plane-log-photo{
+        height:140px;
+    }
+
+}
+
+@media(max-width:450px){
+
+    .plane-log-photos{
+        grid-template-columns:1fr;
+    }
+
+    .plane-log-photo{
+        height:200px;
+    }
+
+}
+
+.plane-log-controls{
+    display:flex;
+    gap:10px;
+    margin-top:20px;
+}
+
+.plane-log-edit,
+.plane-log-delete{
+    border:none;
+    padding:9px 15px;
+    border-radius:7px;
+    cursor:pointer;
+    font-weight:bold;
+}
+
+.plane-log-edit{
+    background:#333;
+    color:#fff;
+}
+
+.plane-log-edit:hover{
+    background:#444;
+}
+
+.plane-log-delete{
+    background:#4a1f1f;
+    color:#fff;
+}
+
+.plane-log-delete:hover{
+    background:#6b2929;
+}
+
+/* PHOTO LIGHTBOX */
+
+.plane-photo-lightbox{
+    display:none;
+    position:fixed;
+    inset:0;
+    background:rgba(0,0,0,0.92);
+    z-index:9999;
+    align-items:center;
+    justify-content:center;
+    padding:30px;
+}
+
+.plane-photo-lightbox.active{
+    display:flex;
+}
+
+.plane-photo-lightbox img{
+    max-width:90vw;
+    max-height:90vh;
+    object-fit:contain;
+    border-radius:10px;
+    box-shadow:0 0 40px rgba(0,0,0,0.6);
+}
+
+.plane-photo-lightbox-close{
+    position:absolute;
+    top:20px;
+    right:25px;
+    width:45px;
+    height:45px;
+    border:none;
+    border-radius:50%;
+    background:#252525;
+    color:#fff;
+    font-size:28px;
+    cursor:pointer;
+    z-index:10000;
+}
+
+.plane-photo-lightbox-close:hover{
+    background:#f5c542;
+    color:#111;
+}
+
+@media(max-width:600px){
+
+    .plane-photo-lightbox{
+        padding:15px;
+    }
+
+    .plane-photo-lightbox img{
+        max-width:95vw;
+        max-height:85vh;
+    }
+
+    .plane-photo-lightbox-close{
+        top:10px;
+        right:10px;
+    }
+
+}
+
+.plane-log-stats{
+    display:grid;
+    grid-template-columns:repeat(3, 1fr);
+    gap:15px;
+    margin-bottom:25px;
+}
+
+.plane-log-stat{
+    background:#1b1b1b;
+    border:1px solid #333;
+    border-radius:12px;
+    padding:20px;
+    text-align:center;
+}
+
+.plane-log-stat-number{
+    display:block;
+    color:#f5c542;
+    font-size:30px;
+    font-weight:bold;
+}
+
+.plane-log-stat-label{
+    display:block;
+    color:#aaa;
+    font-size:14px;
+    margin-top:5px;
+}
+
+@media(max-width:600px){
+
+    .plane-log-stats{
+        grid-template-columns:1fr;
+    }
+
+}
+
+.plus-locked-plane-log{
+    max-width:700px;
+    margin:10px auto 20px auto;
+    padding:45px 35px;
+    text-align:center;
+
+    background:
+        linear-gradient(
+            145deg,
+            #202020 0%,
+            #181818 55%,
+            #151515 100%
+        );
+
+    border:1px solid #3a3a3a;
+    border-radius:16px;
+
+    box-shadow:
+        0 15px 45px rgba(0,0,0,0.35),
+        inset 0 1px 0 rgba(255,255,255,0.03);
+
+    position:relative;
+    overflow:hidden;
+}
+
+
+/* subtle gold glow */
+
+.plus-locked-plane-log::before{
+    content:"";
+    position:absolute;
+
+    top:-100px;
+    left:50%;
+
+    width:300px;
+    height:200px;
+
+    transform:translateX(-50%);
+
+    background:rgba(245,197,66,0.08);
+
+    filter:blur(60px);
+
+    pointer-events:none;
+}
+
+
+/* lock / star */
+
+.plus-locked-plane-log .plus-lock-icon{
+    position:relative;
+
+    width:70px;
+    height:70px;
+
+    margin:0 auto 20px auto;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    background:#252525;
+
+    border:1px solid rgba(245,197,66,0.35);
+
+    border-radius:50%;
+
+    font-size:34px;
+
+    box-shadow:
+        0 0 25px rgba(245,197,66,0.12);
+}
+
+
+/* title */
+
+.plus-locked-plane-log h2{
+    position:relative;
+
+    margin:0 0 12px 0;
+
+    color:#f5c542;
+
+    font-size:28px;
+    font-weight:700;
+}
+
+
+/* description */
+
+.plus-locked-plane-log > p{
+    position:relative;
+
+    color:#aaa;
+
+    max-width:520px;
+
+    margin:0 auto 30px auto;
+
+    line-height:1.6;
+
+    font-size:15px;
+}
+
+
+/* feature list */
+
+.plus-locked-plane-log .plus-feature-list{
+    position:relative;
+
+    max-width:520px;
+
+    margin:0 auto 30px auto;
+
+    display:grid;
+
+    grid-template-columns:1fr 1fr;
+
+    gap:10px;
+
+    text-align:left;
+}
+
+
+/* individual feature */
+
+.plus-locked-plane-log .plus-feature{
+    display:flex;
+
+    align-items:center;
+
+    gap:12px;
+
+    min-height:58px;
+
+    padding:12px 14px;
+
+    background:#191919;
+
+    border:1px solid #303030;
+
+    border-radius:10px;
+
+    color:#ddd;
+
+    font-size:14px;
+
+    transition:
+        border-color 0.2s ease,
+        background 0.2s ease,
+        transform 0.2s ease;
+}
+
+
+.plus-locked-plane-log .plus-feature:hover{
+    background:#202020;
+
+    border-color:#4a4a4a;
+
+    transform:translateY(-2px);
+}
+
+
+/* feature icon */
+
+.plus-locked-plane-log .plus-feature span:first-child{
+    flex-shrink:0;
+
+    width:32px;
+    height:32px;
+
+    display:flex;
+
+    align-items:center;
+    justify-content:center;
+
+    background:#252525;
+
+    border-radius:8px;
+
+    font-size:17px;
+}
+
+
+/* upgrade button */
+
+.plus-locked-plane-log .airshow-plus-upgrade-button{
+    position:relative;
+
+    width:100%;
+    max-width:520px;
+
+    min-height:68px;
+
+    padding:13px 20px;
+
+    border:none;
+
+    border-radius:10px;
+
+    background:#f5c542;
+
+    color:#111;
+
+    cursor:pointer;
+
+    font-weight:bold;
+
+    box-shadow:
+        0 8px 25px rgba(245,197,66,0.16);
+
+    transition:
+        transform 0.2s ease,
+        box-shadow 0.2s ease,
+        background 0.2s ease;
+}
+
+
+.plus-locked-plane-log
+.airshow-plus-upgrade-button:hover{
+
+    background:#ffd75c;
+
+    transform:translateY(-2px);
+
+    box-shadow:
+        0 12px 30px rgba(245,197,66,0.25);
+}
+
+
+.plus-locked-plane-log
+.airshow-plus-upgrade-button:active{
+
+    transform:translateY(0);
+
+}
+
+
+/* button title */
+
+.plus-locked-plane-log
+.airshow-plus-button-title{
+
+    display:block;
+
+    font-size:16px;
+
+    font-weight:700;
+
+    margin-bottom:4px;
+}
+
+
+/* button subtitle */
+
+.plus-locked-plane-log
+.airshow-plus-button-subtitle{
+
+    display:block;
+
+    font-size:12px;
+
+    font-weight:500;
+
+    opacity:0.65;
+}
+
+
+/* footer */
+
+.plus-locked-plane-log .plus-lock-footer{
+
+    position:relative;
+
+    color:#666;
+
+    font-size:13px;
+
+    margin:18px auto 0 auto;
+
+    line-height:1.4;
+}
+
+
+/* mobile */
+
+@media(max-width:600px){
+
+    .plus-locked-plane-log{
+
+        padding:35px 18px;
+
+        border-radius:12px;
+
+    }
+
+
+    .plus-locked-plane-log h2{
+
+        font-size:25px;
+
+    }
+
+
+    .plus-locked-plane-log .plus-feature-list{
+
+        grid-template-columns:1fr;
+
+        gap:8px;
+
+    }
+
+
+    .plus-locked-plane-log .plus-feature{
+
+        min-height:54px;
+
+    }
+
+
+    .plus-locked-plane-log
+    .airshow-plus-upgrade-button{
+
+        min-height:64px;
+
+    }
+
+}
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+
+
+<div class="plane-log-page">
+
+
+    <div class="plane-log-header">
+
+        <h1>📋 Plane Log</h1>
+
+        <button
+            class="back-button"
+            onclick="window.location.href='/'"
+        >
+            ← Back to Avspot
+        </button>
+
+    </div>
+
+
+    <p class="plane-log-subtitle">
+        Keep track of every aircraft you spot.
+    </p>
+
+    <div id="planeLogStats" class="plane-log-stats"></div>
+
+    <div class="plane-log-stat">
+        <span class="plane-log-stat-number" id="totalSightings">
+            0
+        </span>
+        <span class="plane-log-stat-label">
+            Total Sightings
+        </span>
+    </div>
+
+    <div class="plane-log-stat">
+        <span class="plane-log-stat-number" id="uniqueAircraft">
+            0
+        </span>
+        <span class="plane-log-stat-label">
+            Unique Aircraft
+        </span>
+    </div>
+
+    <div class="plane-log-stat">
+        <span class="plane-log-stat-number" id="totalPhotos">
+            0
+        </span>
+        <span class="plane-log-stat-label">
+            Photos
+        </span>
+    </div>
+
+</div>
+
+    <div
+    id="planeLogIntroCard"
+    class="plane-log-card"
+>
+
+        <h2>Your Aircraft</h2>
+
+        <p>
+            Start building your personal aircraft spotting log.
+        </p>
+
+        <button
+    id="logAircraftButton"
+    class="log-aircraft-button"
+    onclick="showPlaneLogForm()"
+>
+    ➕ Log Aircraft
+</button>
+
+    </div>
+
+
+    <div
+    id="planeLogForm"
+    class="plane-log-card"
+    style="display:none;"
+>
+
+    <h2 id="planeLogFormTitle">
+    Log Aircraft
+</h2>
+
+    <input
+        id="planeRegistration"
+        type="text"
+        placeholder="Registration (e.g. G-ABCD)"
+    >
+
+    <input
+        id="planeAircraftType"
+        type="text"
+        placeholder="Aircraft type (e.g. A320-214)"
+    >
+
+    <input
+        id="planeAirline"
+        type="text"
+        placeholder="Airline / Operator"
+    >
+
+    <input
+        id="planeFlightNumber"
+        type="text"
+        placeholder="Flight number (optional)"
+    >
+
+    <input
+        id="planeAirport"
+        type="text"
+        placeholder="Airport"
+    >
+
+    <input
+        id="planeLocation"
+        type="text"
+        placeholder="Spotting location (optional)"
+    >
+
+    <input
+        id="planeDate"
+        type="date"
+    >
+
+    <input
+        id="planeTime"
+        type="time"
+    >
+
+    <textarea
+        id="planeNotes"
+        placeholder="Notes (optional)"
+    ></textarea>
+
+    <br><br>
+
+    <label
+    for="planePhotos"
+    style="
+        display:block;
+        margin-top:15px;
+        margin-bottom:8px;
+        font-weight:bold;
+    "
+>
+    📷 Photos
+</label>
+
+<input
+    id="planePhotos"
+    type="file"
+    accept="image/*"
+    multiple
+>
+
+<div
+    id="existingPlanePhotos"
+    class="plane-log-photos"
+    style="display:none;"
+></div>
+
+<p
+    style="
+        color:#888;
+        font-size:13px;
+        margin-top:6px;
+    "
+>
+    Upload up to 3 photos per sighting.
+</p>
+
+    <button
+        type="button"
+        class="log-aircraft-button"
+        onclick="savePlaneLog()"
+    >
+        Save Aircraft
+    </button>
+
+    <button
+        type="button"
+        class="back-button"
+        onclick="hidePlaneLogForm()"
+    >
+        Cancel
+    </button>
+
+</div>
+
+
+    <div class="plane-log-card">
+
+        <h2>Your Log</h2>
+
+        <div id="planeLogEntries">
+
+            <div class="empty-log">
+                No aircraft logged yet.
+            </div>
+
+        </div>
+
+    </div>
+
+
+</div>
+
+<div
+    id="planePhotoLightbox"
+    class="plane-photo-lightbox"
+    onclick="closePlanePhoto()"
+>
+
+    <button
+        class="plane-photo-lightbox-close"
+        onclick="event.stopPropagation(); closePlanePhoto();"
+    >
+        ×
+    </button>
+
+    <img
+        id="planePhotoLightboxImage"
+        src=""
+        alt="Aircraft photo"
+        onclick="event.stopPropagation();"
+    >
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<script>
+
+    const SUPABASE_URL = "https://tfshpcjfcibynsbdxztn.supabase.co";
+const SUPABASE_KEY = "sb_publishable_97SyMugx0LKqTgE7RjI8lw_UPHD7Wfl";
+
+window.supabaseClient = window.supabase.createClient(
+    SUPABASE_URL,
+    SUPABASE_KEY
+);
+
+async function isAvspotPlus(){
+
+    try{
+
+        const {
+            data: { user },
+            error: userError
+        } = await supabaseClient.auth.getUser();
+
+
+        if(userError || !user){
+
+            return false;
+
+        }
+
+
+        const {
+            data: profile,
+            error: profileError
+        } = await supabaseClient
+            .from("profiles")
+            .select("role")
+            .eq("id", user.id)
+            .single();
+
+
+        if(profileError){
+
+            console.error(
+                "Failed to check Avspot Plus status:",
+                profileError
+            );
+
+            return false;
+
+        }
+
+
+        return profile?.role === "plus";
+
+    }
+
+    catch(error){
+
+        console.error(
+            "Avspot Plus check failed:",
+            error
+        );
+
+        return false;
+
+    }
+
+}
+
+async function upgradeToAvspotPlus(){
+
+    if(!supabaseClient){
+
+        alert("Supabase is not available.");
+        return;
+
+    }
+
+
+    try{
+
+        // Make sure the user is logged in
+
+        const {
+            data: {
+                user
+            },
+            error: userError
+        } = await supabaseClient.auth.getUser();
+
+
+        if(userError || !user){
+
+            alert(
+                "Please log in or create an account before purchasing Avspot Plus."
+            );
+
+            return;
+
+        }
+
+
+        const button =
+            document.querySelector(
+                ".plus-locked-plane-log .airshow-plus-upgrade-button"
+            );
+
+
+        if(button){
+
+            button.disabled = true;
+
+            button.innerHTML = `
+                <span class="airshow-plus-button-title">
+                    Loading...
+                </span>
+            `;
+
+        }
+
+
+        const {
+            data,
+            error
+        } = await supabaseClient.functions.invoke(
+            "create-checkout-session",
+            {
+                body: {}
+            }
+        );
+
+
+        if(error){
+
+            console.error(
+                "Checkout error:",
+                error
+            );
+
+
+            if(error.context){
+
+                try{
+
+                    console.error(
+                        "Checkout error details:",
+                        await error.context.json()
+                    );
+
+                }
+                catch(e){
+
+                    console.error(
+                        "Unable to read checkout error details:",
+                        e
+                    );
+
+                }
+
+            }
+
+
+            throw error;
+
+        }
+
+
+        if(!data || !data.url){
+
+            console.error(
+                "Invalid checkout response:",
+                data
+            );
+
+            throw new Error(
+                "Stripe checkout URL was not returned."
+            );
+
+        }
+
+
+        // Send user to Stripe Checkout
+
+        window.location.href =
+            data.url;
+
+    }
+
+
+    catch(error){
+
+        console.error(
+            "Avspot Plus checkout error:",
+            error
+        );
+
+
+        alert(
+            "Something went wrong while starting your Avspot Plus purchase."
+        );
+
+
+        const button =
+            document.querySelector(
+                ".plus-locked-plane-log .airshow-plus-upgrade-button"
+            );
+
+
+        if(button){
+
+            button.disabled = false;
+
+            button.innerHTML = `
+
+                <span class="airshow-plus-button-title">
+                    ⭐ Get Avspot Plus - £2.99
+                </span>
+
+                <span class="airshow-plus-button-subtitle">
+                   £2.99 one-time payment
+                </span>
+
+            `;
+
+        }
+
+    }
+
+}
+
+function showPlaneLogForm(){
+
+    document.getElementById(
+        "planeLogForm"
+    ).style.display = "block";
+
+}
+
+function hidePlaneLogForm(){
+
+    document.getElementById(
+        "planeLogForm"
+    ).style.display = "none";
+
+}
+
+async function editPlaneLog(logId){
+
+    try{
+
+        const {
+            data: { user },
+            error: userError
+        } = await supabaseClient.auth.getUser();
+
+
+        if(userError || !user){
+
+            alert(
+                "Please log in before editing a sighting."
+            );
+
+            return;
+
+        }
+
+
+        const {
+            data: log,
+            error
+        } = await supabaseClient
+            .from("plane_logs")
+            .select("*")
+            .eq("id", logId)
+            .eq("user_id", user.id)
+            .single();
+
+
+        if(error){
+
+            console.error(
+                "Plane log fetch error:",
+                error
+            );
+
+            alert(
+                "Unable to load this aircraft log."
+            );
+
+            return;
+
+        }
+
+
+        document.getElementById(
+            "planeLogForm"
+        ).style.display = "block";
+
+
+        document.getElementById(
+            "planeLogFormTitle"
+        ).textContent =
+            "Edit Aircraft";
+
+
+        document.getElementById(
+            "planeRegistration"
+        ).value =
+            log.registration || "";
+
+
+        document.getElementById(
+            "planeAircraftType"
+        ).value =
+            log.aircraft_type || "";
+
+
+        document.getElementById(
+            "planeAirline"
+        ).value =
+            log.airline || "";
+
+
+        document.getElementById(
+            "planeFlightNumber"
+        ).value =
+            log.flight_number || "";
+
+
+        document.getElementById(
+            "planeAirport"
+        ).value =
+            log.airport || "";
+
+
+        document.getElementById(
+            "planeLocation"
+        ).value =
+            log.location || "";
+
+
+        document.getElementById(
+            "planeDate"
+        ).value =
+            log.sighting_date || "";
+
+
+        document.getElementById(
+            "planeTime"
+        ).value =
+            log.sighting_time || "";
+
+
+        document.getElementById(
+            "planeNotes"
+        ).value =
+            log.notes || "";
+
+
+        window.editingPlaneLogId =
+            logId;
+
+
+        window.editingPlaneLogPhotos =
+            log.photo_urls || [];
+
+        renderExistingPlanePhotos();
+
+
+        const saveButton =
+            document.querySelector(
+                '#planeLogForm .log-aircraft-button'
+            );
+
+
+        if(saveButton){
+
+            saveButton.textContent =
+                "Save Changes";
+
+        }
+
+
+        document.getElementById(
+            "planeLogForm"
+        ).scrollIntoView({
+            behavior:"smooth"
+        });
+
+    }
+
+    catch(error){
+
+        console.error(
+            "Edit plane log error:",
+            error
+        );
+
+        alert(
+            "Something went wrong loading this aircraft."
+        );
+
+    }
+
+}
+
+function renderExistingPlanePhotos(){
+
+    const container =
+        document.getElementById(
+            "existingPlanePhotos"
+        );
+
+    container.innerHTML = "";
+
+    const photos =
+        window.editingPlaneLogPhotos || [];
+
+    if(photos.length === 0){
+
+        container.style.display = "none";
+
+        return;
+
+    }
+
+    container.style.display = "grid";
+
+    photos.forEach(function(photoPath, index){
+
+        const wrapper =
+            document.createElement("div");
+
+        wrapper.className =
+            "plane-log-photo-wrapper";
+
+
+        const img =
+            document.createElement("img");
+
+        img.className =
+            "plane-log-photo";
+
+
+        supabaseClient.storage
+            .from("plane-log-photos")
+            .createSignedUrl(
+                photoPath,
+                3600
+            )
+            .then(function(result){
+
+                if(
+                    result.data &&
+                    result.data.signedUrl
+                ){
+
+                    img.src =
+                        result.data.signedUrl;
+
+                }
+
+            });
+
+
+        const removeButton =
+            document.createElement("button");
+
+        removeButton.type =
+            "button";
+
+        removeButton.className =
+            "plane-log-photo-remove";
+
+        removeButton.textContent =
+            "×";
+
+
+        removeButton.onclick =
+            function(){
+
+                window.editingPlaneLogPhotos.splice(
+                    index,
+                    1
+                );
+
+                renderExistingPlanePhotos();
+
+            };
+
+
+        wrapper.appendChild(img);
+
+        wrapper.appendChild(removeButton);
+
+        container.appendChild(wrapper);
+
+    });
+
+}
+
+async function savePlaneLog(){
+
+    const editingId =
+    window.editingPlaneLogId || null;
+
+    const registration =
+        document.getElementById("planeRegistration").value.trim();
+
+    const aircraftType =
+        document.getElementById("planeAircraftType").value.trim();
+
+    const airline =
+        document.getElementById("planeAirline").value.trim();
+
+    const flightNumber =
+        document.getElementById("planeFlightNumber").value.trim();
+
+    const airportName =
+        document.getElementById("planeAirport").value.trim();
+
+    const location =
+        document.getElementById("planeLocation").value.trim();
+
+    const sightingDate =
+        document.getElementById("planeDate").value;
+
+    const sightingTime =
+        document.getElementById("planeTime").value;
+
+    const notes =
+        document.getElementById("planeNotes").value.trim();
+
+    const photoInput =
+        document.getElementById("planePhotos");
+
+    const photos =
+        photoInput.files;
+
+
+    // Make sure the user is logged in
+
+    const {
+        data: { user },
+        error: userError
+    } = await supabaseClient.auth.getUser();
+
+
+    if(userError || !user){
+
+        alert(
+            "Please log in before logging an aircraft."
+        );
+
+        return;
+
+    }
+
+
+    // Require registration
+
+    if(!registration){
+
+        alert(
+            "Please enter the aircraft registration."
+        );
+
+        return;
+
+    }
+
+
+    // Maximum 3 photos
+
+    if(photos.length > 3){
+
+        alert(
+            "You can upload a maximum of 3 photos."
+        );
+
+        return;
+
+    }
+
+
+    let photoUrls = [];
+
+let originalPhotoUrls = [];
+
+if(editingId){
+
+    originalPhotoUrls =
+        [...(window.editingPlaneLogPhotos || [])];
+
+    photoUrls =
+        [...originalPhotoUrls];
+
+}
+
+
+    try{
+
+        if(
+    editingId &&
+    photoUrls.length + photos.length > 3
+){
+
+    alert(
+        "You can have a maximum of 3 photos per sighting."
+    );
+
+    return;
+
+}
+
+        for(let i = 0; i < photos.length; i++){
+
+            const file = photos[i];
+
+
+            const fileExtension =
+                file.name
+                .split(".")
+                .pop()
+                .toLowerCase();
+
+
+            const fileName =
+                crypto.randomUUID()
+                + "."
+                + fileExtension;
+
+
+            const filePath =
+                user.id
+                + "/"
+                + fileName;
+
+
+            const {
+                error: uploadError
+            } = await supabaseClient.storage
+                .from("plane-log-photos")
+                .upload(
+                    filePath,
+                    file
+                );
+
+
+            if(uploadError){
+
+                console.error(
+                    "Photo upload error:",
+                    uploadError
+                );
+
+                throw uploadError;
+
+            }
+
+
+            photoUrls.push(filePath);
+
+        }
+
+
+                /*
+            SAVE OR UPDATE PLANE LOG
+        */
+
+        let saveError;
+
+
+        if(editingId){
+
+            const {
+                error
+            } = await supabaseClient
+                .from("plane_logs")
+                .update({
+
+                    registration:
+                        registration,
+
+                    aircraft_type:
+                        aircraftType,
+
+                    airline:
+                        airline,
+
+                    flight_number:
+                        flightNumber,
+
+                    airport:
+                        airportName,
+
+                    location:
+                        location,
+
+                    sighting_date:
+                        sightingDate || null,
+
+                    sighting_time:
+                        sightingTime || null,
+
+                    notes:
+                        notes,
+
+                    photo_urls:
+                    photoUrls
+
+                })
+                .eq("id", editingId)
+                .eq("user_id", user.id);
+
+
+            saveError =
+                error;
+
+        }
+
+        else{
+
+            const {
+                error
+            } = await supabaseClient
+                .from("plane_logs")
+                .insert({
+
+                    user_id:
+                        user.id,
+
+                    registration:
+                        registration,
+
+                    aircraft_type:
+                        aircraftType,
+
+                    airline:
+                        airline,
+
+                    flight_number:
+                        flightNumber,
+
+                    airport:
+                        airportName,
+
+                    location:
+                        location,
+
+                    sighting_date:
+                        sightingDate || null,
+
+                    sighting_time:
+                        sightingTime || null,
+
+                    notes:
+                        notes,
+
+                    photo_urls:
+                        photoUrls
+
+                });
+
+
+            saveError =
+                error;
+
+        }
+
+
+        if(saveError){
+
+            console.error(
+                "Plane log save error:",
+                saveError
+            );
+
+            throw saveError;
+
+        }
+
+        if(editingId){
+
+    const removedPhotos =
+        originalPhotoUrls.filter(
+            function(photo){
+
+                return !photoUrls.includes(photo);
+
+            }
+        );
+
+
+    if(removedPhotos.length > 0){
+
+        const {
+            error: removeError
+        } = await supabaseClient.storage
+            .from("plane-log-photos")
+            .remove(
+                removedPhotos
+            );
+
+
+        if(removeError){
+
+            console.error(
+                "Removed photo cleanup error:",
+                removeError
+            );
+
+        }
+
+    }
+
+}
+
+
+        alert(
+    editingId
+    ? "Aircraft updated successfully!"
+    : "Aircraft logged successfully!"
+);
+
+
+        /*
+            CLEAR FORM
+        */
+
+        document.getElementById(
+            "planeRegistration"
+        ).value = "";
+
+        document.getElementById(
+            "planeAircraftType"
+        ).value = "";
+
+        document.getElementById(
+            "planeAirline"
+        ).value = "";
+
+        document.getElementById(
+            "planeFlightNumber"
+        ).value = "";
+
+        document.getElementById(
+            "planeAirport"
+        ).value = "";
+
+        document.getElementById(
+            "planeLocation"
+        ).value = "";
+
+        document.getElementById(
+            "planeDate"
+        ).value = "";
+
+        document.getElementById(
+            "planeTime"
+        ).value = "";
+
+        document.getElementById(
+            "planeNotes"
+        ).value = "";
+
+        photoInput.value = "";
+
+
+        hidePlaneLogForm();
+
+        window.editingPlaneLogId = null;
+window.editingPlaneLogPhotos = [];
+
+document.getElementById(
+    "existingPlanePhotos"
+).innerHTML = "";
+
+document.getElementById(
+    "existingPlanePhotos"
+).style.display = "none";
+
+
+    }
+
+    catch(error){
+
+        console.error(
+            "Plane log error:",
+            error
+        );
+
+        alert(
+            "Unable to save aircraft. Please try again."
+        );
+
+    }
+
+}
+
+async function deletePlaneLog(logId){
+
+    const confirmed =
+        confirm(
+            "Are you sure you want to delete this aircraft sighting?\n\nAny photos attached to this sighting will also be deleted."
+        );
+
+
+    if(!confirmed){
+        return;
+    }
+
+
+    try{
+
+        /*
+            Get the logged-in user
+        */
+
+        const {
+            data: { user },
+            error: userError
+        } = await supabaseClient.auth.getUser();
+
+
+        if(userError || !user){
+
+            alert(
+                "Please log in before deleting a sighting."
+            );
+
+            return;
+
+        }
+
+
+        /*
+            Get the log first
+            so we know which photos belong to it
+        */
+
+        const {
+            data: log,
+            error: fetchError
+        } = await supabaseClient
+            .from("plane_logs")
+            .select("photo_urls")
+            .eq("id", logId)
+            .eq("user_id", user.id)
+            .single();
+
+
+        if(fetchError){
+
+            console.error(
+                "Plane log fetch error:",
+                fetchError
+            );
+
+            alert(
+                "Unable to find this aircraft log."
+            );
+
+            return;
+
+        }
+
+
+        /*
+            Delete photos from Storage
+        */
+
+        if(
+            log.photo_urls &&
+            log.photo_urls.length > 0
+        ){
+
+            const {
+                error: storageError
+            } = await supabaseClient.storage
+                .from("plane-log-photos")
+                .remove(
+                    log.photo_urls
+                );
+
+
+            if(storageError){
+
+                console.error(
+                    "Photo deletion error:",
+                    storageError
+                );
+
+                alert(
+                    "The aircraft log was not deleted because its photos could not be removed."
+                );
+
+                return;
+
+            }
+
+        }
+
+
+        /*
+            Delete database row
+        */
+
+        const {
+            error: deleteError
+        } = await supabaseClient
+            .from("plane_logs")
+            .delete()
+            .eq("id", logId)
+            .eq("user_id", user.id);
+
+
+        if(deleteError){
+
+            console.error(
+                "Plane log deletion error:",
+                deleteError
+            );
+
+            alert(
+                "Unable to delete aircraft log."
+            );
+
+            return;
+
+        }
+
+
+        /*
+            Refresh the log
+        */
+
+        await loadPlaneLogs();
+
+
+    }
+
+    catch(error){
+
+        console.error(
+            "Delete plane log error:",
+            error
+        );
+
+        alert(
+            "Something went wrong deleting this aircraft log."
+        );
+
+    }
+
+}
+
+function openPlanePhoto(photoUrl){
+
+    const lightbox =
+        document.getElementById(
+            "planePhotoLightbox"
+        );
+
+    const image =
+        document.getElementById(
+            "planePhotoLightboxImage"
+        );
+
+    image.src = photoUrl;
+
+    lightbox.classList.add("active");
+
+}
+
+
+function closePlanePhoto(){
+
+    const lightbox =
+        document.getElementById(
+            "planePhotoLightbox"
+        );
+
+    const image =
+        document.getElementById(
+            "planePhotoLightboxImage"
+        );
+
+    lightbox.classList.remove("active");
+
+    image.src = "";
+
+}
+
+document.addEventListener(
+    "keydown",
+    function(event){
+
+        if(event.key === "Escape"){
+
+            closePlanePhoto();
+
+        }
+
+    }
+);
+
+async function loadPlaneLogs(){
+
+    const container =
+        document.getElementById("planeLogEntries");
+
+    const introCard =
+        document.getElementById("planeLogIntroCard");
+
+    const statsCard =
+        document.getElementById("planeLogStats");
+
+
+    if(!container){
+        console.error("planeLogEntries element not found.");
+        return;
+    }
+
+
+    /*
+        Check Avspot Plus
+    */
+
+    const plusUser =
+        await isAvspotPlus();
+
+
+    /*
+        FREE / LOGGED-OUT USER
+    */
+
+    if(!plusUser){
+
+    if(introCard){
+        introCard.style.display = "none";
+    }
+
+    if(statsCard){
+        statsCard.style.display = "none";
+    }
+
+    container.innerHTML = `
+
+        <div class="plus-locked-plane-log">
+
+            <div class="plus-lock-icon">
+                ⭐
+            </div>
+
+            <h2>
+                Avspot Plus
+            </h2>
+
+            <p>
+                Your personal aircraft spotting log
+                is an Avspot Plus feature.
+            </p>
+
+            <div class="plus-feature-list">
+
+                <div class="plus-feature">
+                    <span>✈️</span>
+                    <span>
+                        Track every aircraft you spot
+                    </span>
+                </div>
+
+                <div class="plus-feature">
+                    <span>📷</span>
+                    <span>
+                        Upload aircraft photos
+                    </span>
+                </div>
+
+                <div class="plus-feature">
+                    <span>📍</span>
+                    <span>
+                        Record airports and spotting locations
+                    </span>
+                </div>
+
+                <div class="plus-feature">
+                    <span>📝</span>
+                    <span>
+                        Add notes to your sightings
+                    </span>
+                </div>
+
+                <div class="plus-feature">
+                    <span>☁️</span>
+                    <span>
+                        Keep your spotting log stored online
+                    </span>
+                </div>
+
+            </div>
+
+            <button
+                class="airshow-plus-upgrade-button"
+                onclick="upgradeToAvspotPlus()"
+            >
+
+                <span class="airshow-plus-button-title">
+                    ⭐ Upgrade to Avspot Plus
+                </span>
+
+                <span class="airshow-plus-button-subtitle">
+                    Unlock Plane Log and other premium features
+                </span>
+
+            </button>
+
+            <p class="plus-lock-footer">
+    £2.99 one-time payment
+</p>
+
+        </div>
+
+    `;
+
+    return;
+}
+
+
+    /*
+        PLUS USER
+    */
+
+    if(introCard){
+        introCard.style.display = "block";
+    }
+
+    if(statsCard){
+        statsCard.style.display = "block";
+    }
+
+
+    /*
+        Get logged-in user
+    */
+
+    const {
+        data: { user },
+        error: userError
+    } =
+        await supabaseClient.auth.getUser();
+
+
+    if(userError || !user){
+
+        container.innerHTML = `
+            <div class="empty-log">
+                Please log in to view your aircraft log.
+            </div>
+        `;
+
+        return;
+
+    }
+
+
+    /*
+        Load plane logs
+    */
+
+    const {
+        data: logs,
+        error
+    } =
+        await supabaseClient
+            .from("plane_logs")
+            .select("*")
+            .eq("user_id", user.id)
+            .order("sighting_date", {
+                ascending:false
+            });
+
+
+    if(error){
+
+        console.error(
+            "Plane log loading error:",
+            error
+        );
+
+        container.innerHTML = `
+            <div class="empty-log">
+                Unable to load your aircraft log.
+            </div>
+        `;
+
+        return;
+
+    }
+
+
+    /*
+        Stats
+    */
+
+    const totalSightings =
+        document.getElementById(
+            "totalSightings"
+        );
+
+    const uniqueAircraft =
+        document.getElementById(
+            "uniqueAircraft"
+        );
+
+    const totalPhotos =
+        document.getElementById(
+            "totalPhotos"
+        );
+
+
+    /*
+        No logs
+    */
+
+    if(!logs || logs.length === 0){
+
+        if(totalSightings)
+            totalSightings.textContent = "0";
+
+        if(uniqueAircraft)
+            uniqueAircraft.textContent = "0";
+
+        if(totalPhotos)
+            totalPhotos.textContent = "0";
+
+
+        container.innerHTML = `
+            <div class="empty-log">
+                No aircraft logged yet.
+            </div>
+        `;
+
+        return;
+
+    }
+
+
+    /*
+        Calculate statistics
+    */
+
+    const uniqueRegistrations =
+        new Set(
+            logs
+                .map(log => log.registration)
+                .filter(Boolean)
+                .map(
+                    reg =>
+                        reg
+                            .trim()
+                            .toUpperCase()
+                )
+        );
+
+
+    const photoCount =
+        logs.reduce(
+            (total, log) =>
+                total +
+                (
+                    Array.isArray(log.photo_urls)
+                    ?
+                    log.photo_urls.length
+                    :
+                    0
+                ),
+            0
+        );
+
+
+    if(totalSightings)
+        totalSightings.textContent =
+            logs.length;
+
+    if(uniqueAircraft)
+        uniqueAircraft.textContent =
+            uniqueRegistrations.size;
+
+    if(totalPhotos)
+        totalPhotos.textContent =
+            photoCount;
+
+
+    /*
+        Display logs
+    */
+
+    container.innerHTML = "";
+
+
+    for(const log of logs){
+
+        const card =
+            document.createElement("div");
+
+        card.className =
+            "plane-log-entry";
+
+        card.dataset.logId =
+            log.id;
+
+
+        card.innerHTML = `
+
+            <h3>
+                ${log.registration || "Unknown registration"}
+            </h3>
+
+            <p>
+                <strong>Aircraft:</strong>
+                ${log.aircraft_type || "Unknown"}
+            </p>
+
+            <p>
+                <strong>Airline:</strong>
+                ${log.airline || "Unknown"}
+            </p>
+
+            <p>
+                <strong>Flight:</strong>
+                ${log.flight_number || "—"}
+            </p>
+
+            <p>
+                <strong>Airport:</strong>
+                ${log.airport || "—"}
+            </p>
+
+            <p>
+                <strong>Location:</strong>
+                ${log.location || "—"}
+            </p>
+
+            <p>
+                <strong>Date:</strong>
+                ${log.sighting_date || "—"}
+            </p>
+
+            <p>
+                <strong>Time:</strong>
+                ${log.sighting_time || "—"}
+            </p>
+
+            ${
+                log.notes
+                ?
+                `
+                <p>
+                    <strong>Notes:</strong>
+                    ${log.notes}
+                </p>
+                `
+                :
+                ""
+            }
+
+            <div class="plane-log-controls">
+
+                <button
+                    class="plane-log-edit"
+                    onclick="editPlaneLog('${log.id}')"
+                >
+                    Edit
+                </button>
+
+                <button
+                    class="plane-log-delete"
+                    onclick="deletePlaneLog('${log.id}')"
+                >
+                    🗑 Delete
+                </button>
+
+            </div>
+
+        `;
+
+
+        /*
+            Photos
+        */
+
+        if(
+            Array.isArray(log.photo_urls) &&
+            log.photo_urls.length > 0
+        ){
+
+            const photoContainer =
+                document.createElement("div");
+
+            photoContainer.className =
+                "plane-log-photos";
+
+
+            for(
+                const photoPath
+                of log.photo_urls
+            ){
+
+                const {
+                    data: photoData,
+                    error: photoError
+                } =
+                    await supabaseClient.storage
+                        .from("plane-log-photos")
+                        .createSignedUrl(
+                            photoPath,
+                            3600
+                        );
+
+
+                if(photoError){
+
+                    console.error(
+                        "Photo URL error:",
+                        photoError
+                    );
+
+                    continue;
+
+                }
+
+
+                const img =
+                    document.createElement("img");
+
+
+                img.src =
+                    photoData.signedUrl;
+
+                img.alt =
+                    log.registration ||
+                    "Aircraft photo";
+
+                img.className =
+                    "plane-log-photo";
+
+
+                img.onclick =
+                    function(){
+
+                        openPlanePhoto(
+                            photoData.signedUrl
+                        );
+
+                    };
+
+
+                photoContainer.appendChild(img);
+
+            }
+
+
+            card.appendChild(
+                photoContainer
+            );
+
+        }
+
+
+        container.appendChild(card);
+
+    }
+
+}
+
+loadPlaneLogs();
+
+</script>
+
+
+</body>
+
+</html>

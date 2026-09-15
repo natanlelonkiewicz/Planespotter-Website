@@ -1,0 +1,181 @@
+{
+  "name": "Ostend Bruges International Airport",
+  "code": "EBOS",
+  "location": "Oostende, Belgium",
+
+  "image": "https://pub-6411be86c46a44edb6371cd742f7819e.r2.dev/Vliegclub1.jpg",
+  "airportCredits": [
+    "Gilles van Landeghem"
+],
+
+  "lat": 51.199804,
+  "lng": 2.872862,
+
+  "runways": [
+    {
+      "name": "08/26",
+      "heading1": 80,
+      "heading2": 260
+    }
+  ],
+
+"spots": [
+    {
+        "name": "Legeweg",
+        "lat": 51.198958,
+        "lng": 2.879728,
+
+        "direction": 161,
+
+        "bestForRunway": "08/26",
+
+        "recommendedFocalLength": "70-300mm",
+        "parking": "There is space on the layby for maybe 1 car but don't block the crash gate",
+        "bestTimeToVisit": "Late morning and early afternoon",
+        "notes": "None",
+
+        "photos": [
+            "https://pub-6411be86c46a44edb6371cd742f7819e.r2.dev/legeweg1.jpg",
+            "https://pub-6411be86c46a44edb6371cd742f7819e.r2.dev/legeweg2.jpg",
+            "https://tfshpcjfcibynsbdxztn.supabase.co/storage/v1/object/public/airport-images/52467d0b-b122-4332-93c4-d2d5121080fb/spots/bc240aea-d5fa-439e-8ac7-a7637e8d2c9e.jpg",
+            "https://tfshpcjfcibynsbdxztn.supabase.co/storage/v1/object/public/airport-images/52467d0b-b122-4332-93c4-d2d5121080fb/spots/fb3fd851-14fa-48bd-af39-6da11d65b01d.jpg",
+            "https://tfshpcjfcibynsbdxztn.supabase.co/storage/v1/object/public/airport-images/52467d0b-b122-4332-93c4-d2d5121080fb/spots/8f89afed-4378-45d8-a926-fda0fb83382f.jpg"
+        ],
+
+        "photoCredits": [
+            "Gilles van Landeghem",
+            "Gilles van Landeghem",
+            "maxim depoorter",
+            "maxim depoorter",
+            "maxim depoorter"
+        ]
+    },
+
+    {
+        "name": "Fleriskotstraat",
+        "lat": 51.194981,
+        "lng": 2.853997,
+
+        "direction": 163,
+
+        "bestForRunway": "08",
+
+        "recommendedFocalLength": "70-200mm",
+        "parking": "Available: 51.194384, 2.854761",
+        "bestTimeToVisit": "Late morning and early afternoon",
+        "notes": [
+            "None"
+        ],
+
+        "photos": [
+            "https://pub-6411be86c46a44edb6371cd742f7819e.r2.dev/Fleriskotstraat1.jpg",
+            "https://pub-6411be86c46a44edb6371cd742f7819e.r2.dev/Fleriskotstraat2.jpg"
+        ],
+
+        "photoCredits": [
+            "Gilles van Landeghem",
+            "Gilles van Landeghem"
+        ]
+    },
+
+    {
+        "name": "Noordzee Vliegclub",
+        "lat": 51.199984, 
+        "lng": 2.854742,
+
+        "direction": 323,
+
+        "bestForRunway": "08/26",
+
+        "recommendedFocalLength": "150-300mm",
+        "parking": "Available",
+        "bestTimeToVisit": "Evening",
+        "notes": [
+            "None"
+        ],
+
+        "photos": [
+            "https://pub-6411be86c46a44edb6371cd742f7819e.r2.dev/Vliegclub1.jpg"
+        ],
+        
+        "photoCredits": [
+            "Gilles van Landeghem"
+        ]
+    },
+
+    {
+        "name": "N341",
+        "lat": 51.205323,
+        "lng": 2.892166,
+
+        "direction": 352,
+
+        "bestForRunway": "26",
+
+        "recommendedFocalLength": "100-300mm",
+        "parking": "Unavailable",
+        "bestTimeToVisit": "Evening",
+        "notes": [
+            "None"
+        ],
+
+        "photos": [
+            "https://pub-6411be86c46a44edb6371cd742f7819e.r2.dev/n3411.jpg"
+        ],
+        
+        "photoCredits": [
+            "Gilles van Landeghem"
+        ]
+    },
+
+    {
+        "name": "Field",
+        "lat": 51.199497, 
+        "lng": 2.892962,
+
+        "direction": 162,
+
+        "bestForRunway": "26",
+
+        "recommendedFocalLength": "100-300mm",
+        "parking": "Unavailable",
+        "bestTimeToVisit": "Late morning and early afternoon for arrivals/departures. Evening for parked aircraft",
+        "notes": [
+            "None"
+        ],
+
+        "photos": [
+            "https://pub-6411be86c46a44edb6371cd742f7819e.r2.dev/ostendfield1.jpg"
+        ],
+        
+        "photoCredits": [
+            "Gilles van Landeghem"
+        ]
+    },
+    {
+    "lat": "51.195000",
+    "lng": "2.854010",
+    "name": "nhv",
+    "notes": [
+      "None"
+    ],
+    "photos": [
+      "https://tfshpcjfcibynsbdxztn.supabase.co/storage/v1/object/public/airport-images/52467d0b-b122-4332-93c4-d2d5121080fb/spots/233b218b-559f-4549-b30d-85f4639ce5a9.jpg",
+      "https://tfshpcjfcibynsbdxztn.supabase.co/storage/v1/object/public/airport-images/52467d0b-b122-4332-93c4-d2d5121080fb/spots/25f09b95-a4d0-4adc-94a8-a28e4e1d9992.jpg",
+      "https://tfshpcjfcibynsbdxztn.supabase.co/storage/v1/object/public/airport-images/52467d0b-b122-4332-93c4-d2d5121080fb/spots/0f412fc2-3368-4532-9653-50a25ba856d3.jpg",
+      "https://tfshpcjfcibynsbdxztn.supabase.co/storage/v1/object/public/airport-images/52467d0b-b122-4332-93c4-d2d5121080fb/spots/980ad4b3-c785-4c45-9593-75a40f51091d.jpg"
+    ],
+    "parking": "Layby",
+    "direction": 165,
+    "photoCredits": [
+      "maxim depoorter",
+      "maxim depoorter",
+      "maxim depoorter",
+      "maxim depoorter"
+    ],
+    "bestForRunway": "08",
+    "bestTimeToVisit": "Late morning and early afternoon",
+    "recommendedFocalLength": "70-300mm"
+  }
+]
+}
