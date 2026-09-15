@@ -4174,3 +4174,17 @@ appearance: none;
     border-color:#f5c542;
 
 }
+
+@media (max-width: 768px){
+    body::before{
+        content:"MOBILE CSS ACTIVE";
+        position:fixed;
+        top:0;
+        left:0;
+        z-index:99999;
+        background:red;
+        color:white;
+        padding:10px;
+        font-size:20px;
+    }
+}
