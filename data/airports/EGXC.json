@@ -160,6 +160,32 @@
             "Felix Brown",
             "Tristen F"
         ]
-    }
+    },
+
+    {
+    "lat": "53.0902960",
+    "lng": "-0.1864055",
+    "name": "Dogdyke road",
+    "notes": [
+      "None"
+    ],
+    "photos": [
+      "https://tfshpcjfcibynsbdxztn.supabase.co/storage/v1/object/public/airport-images/6b5046b3-16f0-4e05-8242-2ab01ec5f306/spots/9e44706f-193b-4a16-b2d4-30b779d3a264.jpg",
+      "https://tfshpcjfcibynsbdxztn.supabase.co/storage/v1/object/public/airport-images/6b5046b3-16f0-4e05-8242-2ab01ec5f306/spots/6d6f5869-e5f6-423a-a25a-48ee89e8ee7f.jpg",
+      "https://tfshpcjfcibynsbdxztn.supabase.co/storage/v1/object/public/airport-images/6b5046b3-16f0-4e05-8242-2ab01ec5f306/spots/e71337d8-8b50-4def-9cda-6abfef2371dc.jpg",
+      "https://tfshpcjfcibynsbdxztn.supabase.co/storage/v1/object/public/airport-images/6b5046b3-16f0-4e05-8242-2ab01ec5f306/spots/345b1f1b-70b7-4069-874f-a38db765c3e4.jpg"
+    ],
+    "parking": "Carpark down the road",
+    "direction": 285,
+    "photoCredits": [
+      "Isaac Denton",
+      "Isaac Denton",
+      "Isaac Denton",
+      "Isaac Denton"
+    ],
+    "bestForRunway": "07/25",
+    "bestTimeToVisit": "Evening",
+    "recommendedFocalLength": "100-400mm"
+  }
 ]
 }
