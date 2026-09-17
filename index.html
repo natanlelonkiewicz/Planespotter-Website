@@ -1085,12 +1085,12 @@ ${airport.airportCredits?.[currentAirportPhotoIndex] || ""}
 <h3>Runway Information</h3>
 
 <p>
-🌬 Wind:
+Wind:
 <b>${weather.windDirection}°</b>
 </p>
 
 <p>
-🛬 Active Runway:
+Active Runway:
 <b>${activeRunway}</b>
 </p>
 
@@ -1207,18 +1207,18 @@ spot.lighting.stars
 </p>
 
 <p>
-🌡 Temperature:
+Temperature:
 ${weather.temperature}°C
 </p>
 
 <p>
-💨 Wind:
+Wind:
 ${weather.windDirection}°
 @ ${weather.windSpeed} km/h
 </p>
 
 <p>
-☁ Cloud:
+Cloud:
 ${weather.cloudCover}%
 </p>
 
@@ -3424,20 +3424,20 @@ else{
 
 
         <p>
-            🌡 Temperature:
+            Temperature:
             ${weather.temperature}°C
         </p>
 
 
         <p>
-            💨 Wind:
+            Wind:
             ${weather.windDirection}°
             @ ${weather.windSpeed} km/h
         </p>
 
 
         <p>
-            ☁ Cloud:
+            Cloud:
             ${weather.cloudCover}%
         </p>
 
@@ -8262,14 +8262,14 @@ function getWeatherAdvice(){
 
     if(weather.windSpeed > 30){
 
-        advice.push("💨 Strong winds - tripod stability may be affected.");
+        advice.push("Strong winds - tripod stability may be affected.");
 
     }
 
 
     if(weather.cloudCover > 80){
 
-        advice.push("☁ Heavy cloud - reduced lighting contrast.");
+        advice.push("Heavy cloud - reduced lighting contrast.");
 
     }
 
