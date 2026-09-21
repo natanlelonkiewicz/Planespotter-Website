@@ -707,7 +707,220 @@ oninput="changeSunTime()"
 
 <script src="https://cdn.jsdelivr.net/npm/tz-lookup@6.1.25/tz.js"></script>
 
+<script src="/capacitor.js"></script>
+<script src="/capacitor-push-notifications.js"></script>
+
 <script>
+
+async function registerAvspotIOSPush(){
+
+    if(
+        !window.Capacitor ||
+        !window.Capacitor.isNativePlatform ||
+        !window.Capacitor.isNativePlatform()
+    ){
+
+        return null;
+
+    }
+
+    if(
+    !window.capacitorPushNotifications ||
+    !window.capacitorPushNotifications.PushNotifications
+){
+
+        alert(
+            "iOS notifications are not available."
+        );
+
+        return null;
+
+    }
+
+    try{
+
+        const permission =
+            await window.capacitorPushNotifications.PushNotifications
+                .checkPermissions();
+
+        let permissionResult =
+            permission.receive;
+
+        if(
+            permissionResult !==
+            "granted"
+        ){
+
+            const requested =
+                await window.capacitorPushNotifications.PushNotifications
+                    .requestPermissions();
+
+            permissionResult =
+                requested.receive;
+
+        }
+
+        if(
+            permissionResult !==
+            "granted"
+        ){
+
+            alert(
+                "Notification permission was not granted."
+            );
+
+            return null;
+
+        }
+
+        const tokenPromise =
+            new Promise(
+                function(resolve, reject){
+
+                    let resolved =
+                        false;
+
+                    window.capacitorPushNotifications.PushNotifications
+                        .addListener(
+                            "registration",
+                            function(token){
+
+                                if(resolved){
+                                    return;
+                                }
+
+                                resolved =
+                                    true;
+
+                                resolve(
+                                    token.value
+                                );
+
+                            }
+                        );
+
+                    window.capacitorPushNotifications.PushNotifications
+                        .addListener(
+                            "registrationError",
+                            function(error){
+
+                                if(resolved){
+                                    return;
+                                }
+
+                                resolved =
+                                    true;
+
+                                reject(
+                                    new Error(
+                                        error.error ||
+                                        "iOS push registration failed."
+                                    )
+                                );
+
+                            }
+                        );
+
+                    window.capacitorPushNotifications.PushNotifications
+                        .register()
+                        .catch(
+                            function(error){
+
+                                if(resolved){
+                                    return;
+                                }
+
+                                resolved =
+                                    true;
+
+                                reject(error);
+
+                            }
+                        );
+
+                }
+            );
+
+        const token =
+            await tokenPromise;
+
+        return token;
+
+    }
+    catch(error){
+
+        console.error(
+            "iOS push registration error:",
+            error
+        );
+
+        alert(
+            "Unable to enable iOS notifications."
+        );
+
+        return null;
+
+    }
+
+}
+
+function setupAvspotIOSNotificationRouting(){
+
+    if(
+        !window.Capacitor ||
+        !window.Capacitor.isNativePlatform ||
+        !window.Capacitor.isNativePlatform()
+    ){
+
+        return;
+
+    }
+
+    if(
+        !window.capacitorPushNotifications ||
+        !window.capacitorPushNotifications.PushNotifications
+    ){
+
+        return;
+
+    }
+
+    window.capacitorPushNotifications.PushNotifications.addListener(
+        "pushNotificationActionPerformed",
+        function(event){
+
+            console.log(
+                "Avspot iOS notification tapped:",
+                event
+            );
+
+            const data =
+                event &&
+                event.notification &&
+                event.notification.data
+                    ? event.notification.data
+                    : {};
+
+            const url =
+                data.url ||
+                "/";
+
+            if(
+                typeof url === "string" &&
+                url.length > 0
+            ){
+
+                window.location.href =
+                    url;
+
+            }
+
+        }
+    );
+
+}
+
+setupAvspotIOSNotificationRouting();
 
 const AVSPOT_VAPID_PUBLIC_KEY =
     "BA7QnZf9zuZEW3ao5NcnysZo9qLsTu-CqHILDkqgSE0MsVPLRr9K5C6UogMS7Fl7VVMkObqHCooeFqGAtZkV10I";
@@ -9565,6 +9778,12 @@ function showAccountWelcome() {
 function isAvspotInstalledApp(){
 
     return (
+        (
+            window.Capacitor &&
+            window.Capacitor.isNativePlatform &&
+            window.Capacitor.isNativePlatform()
+        )
+        ||
         window.matchMedia(
             "(display-mode: standalone)"
         ).matches
@@ -9573,7 +9792,6 @@ function isAvspotInstalledApp(){
     );
 
 }
-
 
 async function registerAvspotServiceWorker(){
 
@@ -9663,9 +9881,103 @@ async function enableAvspotNotifications(){
 
     if(!isAvspotInstalledApp()){
 
+        return false;
+
+    }
+
+    if(
+        window.Capacitor &&
+        window.Capacitor.isNativePlatform &&
+        window.Capacitor.isNativePlatform()
+    ){
+
+        try{
+
+            const {
+                data: { user },
+                error: userError
+            } =
+                await supabaseClient.auth.getUser();
+
+            if(userError || !user){
+
+                alert(
+                    "Please log in before enabling notifications."
+                );
+
+                return false;
+
+            }
+
+            const token =
+    await registerAvspotIOSPush();
+
+if(!token){
+    return false;
+}
+
+const {
+    error: tokenSaveError
+} =
+    await supabaseClient
+        .from("ios_push_tokens")
+        .upsert(
+            {
+                user_id: user.id,
+                device_token: token,
+                environment: "production",
+                updated_at:
+                    new Date().toISOString()
+            },
+            {
+                onConflict:
+                    "user_id,device_token"
+            }
+        );
+
+if(tokenSaveError){
+
+    console.error(
+        "iOS APNs token save error:",
+        tokenSaveError
+    );
+
+    alert(
+        "Unable to save iOS notification registration."
+    );
+
     return false;
 
 }
+
+console.log(
+    "iOS APNs token received and saved:",
+    token
+);
+
+            alert(
+                "Avspot notifications have been enabled."
+            );
+
+            return true;
+
+        }
+        catch(error){
+
+            console.error(
+                "Enable iOS notifications error:",
+                error
+            );
+
+            alert(
+                "Something went wrong while enabling notifications."
+            );
+
+            return false;
+
+        }
+
+    }
 
     if(!("Notification" in window)){
 
@@ -9733,9 +10045,9 @@ async function enableAvspotNotifications(){
                         true,
 
                     applicationServerKey:
-    urlBase64ToUint8Array(
-        AVSPOT_VAPID_PUBLIC_KEY
-    )
+                        urlBase64ToUint8Array(
+                            AVSPOT_VAPID_PUBLIC_KEY
+                        )
 
                 });
 
@@ -9792,10 +10104,10 @@ async function enableAvspotNotifications(){
         );
 
         console.log(
-    "Avspot push subscription saved."
-);
+            "Avspot push subscription saved."
+        );
 
-return true;
+        return true;
 
     }
     catch(error){
@@ -9806,10 +10118,10 @@ return true;
         );
 
         alert(
-    "Something went wrong while enabling notifications."
-);
+            "Something went wrong while enabling notifications."
+        );
 
-return false;
+        return false;
 
     }
 
