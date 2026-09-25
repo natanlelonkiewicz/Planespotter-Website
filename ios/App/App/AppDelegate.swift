@@ -80,16 +80,7 @@ extension AppDelegate: UNUserNotificationCenterDelegate {
             @escaping (UNNotificationPresentationOptions) -> Void
     ) {
 
-        if let bridge = self.window?.rootViewController as? CAPBridgeViewController {
-
-            bridge.bridge?.notificationRouter.willPresent(notification) { options in
-                completionHandler(options)
-            }
-
-        } else {
-
-            completionHandler([.banner, .sound, .badge])
-        }
+        completionHandler([.banner, .sound, .badge])
     }
 
     func userNotificationCenter(
@@ -97,12 +88,6 @@ extension AppDelegate: UNUserNotificationCenterDelegate {
         didReceive response: UNNotificationResponse,
         withCompletionHandler completionHandler: @escaping () -> Void
     ) {
-
-        if let bridge = self.window?.rootViewController as? CAPBridgeViewController {
-
-            bridge.bridge?.notificationRouter.didReceive(response)
-
-        }
 
         completionHandler()
     }
