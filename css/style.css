@@ -2194,7 +2194,7 @@ body {
 .account-add-airport-btn.add-airshow-button {
     background: #2b2b2b !important;
     border: 2px solid #f5c542 !important;
-    color: #ff8c00 !important;
+    color: #ffffff !important;
 }
 
 .account-add-airport-btn.add-airshow-button:hover {
@@ -4173,4 +4173,13 @@ appearance: none;
 
     border-color:#f5c542;
 
+}
+
+/* Account panel action buttons — white text */
+.account-add-airport-btn {
+    color: #ffffff !important;
+}
+
+.account-add-airport-btn:hover {
+    color: #ffffff !important;
 }
