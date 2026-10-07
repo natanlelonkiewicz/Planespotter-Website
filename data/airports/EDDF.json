@@ -130,6 +130,32 @@
         "photoCredits": [
             "jk.fotografie"
         ]
-    }
+    },
+
+    [
+  {
+    "lat": "50.054342",
+    "lng": "8.590597",
+    "name": "b'mine hotel",
+    "notes": [
+      "Its a hotel so access is restricted."
+    ],
+    "photos": [
+      "https://tfshpcjfcibynsbdxztn.supabase.co/storage/v1/object/public/airport-images/5fc5f32a-7c05-4090-8a64-c1981b6dcd56/spots/3b3fa8c6-925a-42c1-8c08-4abccdfeffbc.jpg",
+      "https://tfshpcjfcibynsbdxztn.supabase.co/storage/v1/object/public/airport-images/5fc5f32a-7c05-4090-8a64-c1981b6dcd56/spots/c0dafffc-de7f-4253-b4d3-b3f348ed97c7.jpg",
+      "https://tfshpcjfcibynsbdxztn.supabase.co/storage/v1/object/public/airport-images/5fc5f32a-7c05-4090-8a64-c1981b6dcd56/spots/19eb6cab-8a14-4263-a0db-3d51a83e0659.jpg"
+    ],
+    "parking": "Available if staying at the hotel",
+    "direction": null,
+    "photoCredits": [
+      "Photographer_Seppe",
+      "Photographer_Seppe",
+      "Photographer_Seppe"
+    ],
+    "bestForRunway": "25L/25C",
+    "bestTimeToVisit": "Evening",
+    "recommendedFocalLength": "100-300mm"
+  }
+]
 ]
 }
