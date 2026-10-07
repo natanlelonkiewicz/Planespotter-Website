@@ -132,7 +132,6 @@
         ]
     },
 
-    [
   {
     "lat": "50.054342",
     "lng": "8.590597",
@@ -146,7 +145,7 @@
       "https://tfshpcjfcibynsbdxztn.supabase.co/storage/v1/object/public/airport-images/5fc5f32a-7c05-4090-8a64-c1981b6dcd56/spots/19eb6cab-8a14-4263-a0db-3d51a83e0659.jpg"
     ],
     "parking": "Available if staying at the hotel",
-    "direction": null,
+    "direction": 336,
     "photoCredits": [
       "Photographer_Seppe",
       "Photographer_Seppe",
@@ -156,6 +155,5 @@
     "bestTimeToVisit": "Evening",
     "recommendedFocalLength": "100-300mm"
   }
-]
 ]
 }
