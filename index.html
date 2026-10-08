@@ -2440,26 +2440,32 @@ async function toggleAirportNotifications(){
 
             if(existingPreference){
 
-                const {
-                    error
-                } =
-                    await supabaseClient
-                        .from(
-                            "notification_preferences"
-                        )
-                        .update({
+    const {
+        error
+    } =
+        await supabaseClient
+            .from(
+                "notification_preferences"
+            )
+            .update({
 
-                            enabled:
-                                true,
+                enabled:
+                    true,
 
-                            updated_at:
-                                new Date().toISOString()
+                last_notified_status:
+                    null,
 
-                        })
-                        .eq(
-                            "id",
-                            existingPreference.id
-                        );
+                last_notified_at:
+                    null,
+
+                updated_at:
+                    new Date().toISOString()
+
+            })
+            .eq(
+                "id",
+                existingPreference.id
+            );
 
                 if(error){
 
