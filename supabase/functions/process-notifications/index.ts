@@ -538,17 +538,23 @@ Deno.serve(async (req) => {
             sun.altitude * 180 / Math.PI;
 
         const evaluatedSpots = airport.spots.map(function(spot: any){
-            const rating = getLightingRating(
-                sunBearing,
-                Number(spot.direction),
-                sunAltitude,
-                weather.lowCloud,
-                weather.midCloud,
-                weather.highCloud
-            );
-            const status = getStarsStatus(rating.stars);
-            return { spot, rating, status, spotKey: getSpotKey(spot) };
-        });
+
+    const rating = getLightingRating(
+        sunBearing,
+        Number(spot.direction),
+        sunAltitude,
+        weather.lowCloud,
+        weather.midCloud,
+        weather.highCloud
+    );
+
+    return {
+        spot,
+        rating,
+        spotKey: getSpotKey(spot)
+    };
+
+});
 
         const airportPreferences = preferences.filter(function(preference){
             return (
@@ -559,89 +565,79 @@ Deno.serve(async (req) => {
         });
 
         for(const preference of airportPreferences){
-            const summaryState =
-                evaluatedSpots
-                    .map(function(item: any){
-                        return item.spotKey + ":" + item.status.key;
-                    })
-                    .sort()
-                    .join("|");
 
-            if(preference.last_notified_status === summaryState){
-                continue;
-            }
+    const summaryState =
+        evaluatedSpots
+            .map(function(item: any){
 
-            const bodyLines = evaluatedSpots.map(function(item: any){
-                return item.spot.name + " — " + getStarLineForStatus(item.status.key) + " " + item.status.label;
-            });
+                return (
+                    item.spotKey +
+                    ":" +
+                    item.rating.text +
+                    ":" +
+                    item.rating.stars
+                );
 
-            const notification = {
-                title: "🔔 Avspot",
-                body: airport.name + " spotting conditions\n" + bodyLines.join("\n")
-            };
+            })
+            .sort()
+            .join("|");
 
-            const userSent = await sendToUser(preference.user_id, notification);
-            sent += userSent;
 
-            await supabaseAdmin
-                .from("notification_preferences")
-                .update({
-                    last_notified_status: summaryState,
-                    last_notified_at: now.toISOString(),
-                    updated_at: now.toISOString()
-                })
-                .eq("id", preference.id);
+    if(preference.last_notified_status === summaryState){
+        continue;
+    }
 
-            results.push({ type: "airport", airport: airport.name, user_id: preference.user_id, sent: userSent });
-        }
 
-        const spotPreferences = preferences.filter(function(preference){
+    const bodyLines =
+        evaluatedSpots.map(function(item: any){
+
             return (
-                preference.target_type === "spot" &&
-                String(preference.airport_key) === airportKey
+                item.spot.name +
+                " — " +
+                item.rating.stars +
+                " " +
+                item.rating.text
             );
+
         });
 
-        for(const preference of spotPreferences){
-            const evaluated = evaluatedSpots.find(function(item: any){
-                return item.spotKey === String(preference.spot_key || "");
-            });
 
-            if(!evaluated){
-                continue;
-            }
+    const notification = {
+        title: "🔔 Avspot",
+        body:
+            airport.name +
+            " spotting conditions\n" +
+            bodyLines.join("\n")
+    };
 
-            const statusKey = evaluated.status.key;
-            if(preference.last_notified_status === statusKey){
-                continue;
-            }
 
-            const notification = formatIndividualNotification(
-                evaluated.spot.name,
-                evaluated.status
-            );
+    const userSent =
+        await sendToUser(
+            preference.user_id,
+            notification
+        );
 
-            const userSent = await sendToUser(preference.user_id, notification);
-            sent += userSent;
+    sent += userSent;
 
-            await supabaseAdmin
-                .from("notification_preferences")
-                .update({
-                    last_notified_status: statusKey,
-                    last_notified_at: now.toISOString(),
-                    updated_at: now.toISOString()
-                })
-                .eq("id", preference.id);
 
-            results.push({
-                type: "spot",
-                airport: airport.name,
-                spot: evaluated.spot.name,
-                user_id: preference.user_id,
-                status: statusKey,
-                sent: userSent
-            });
-        }
+    await supabaseAdmin
+        .from("notification_preferences")
+        .update({
+            last_notified_status: summaryState,
+            last_notified_at: now.toISOString(),
+            updated_at: now.toISOString()
+        })
+        .eq("id", preference.id);
+
+
+    results.push({
+        type: "airport",
+        airport: airport.name,
+        user_id: preference.user_id,
+        sent: userSent
+    });
+
+}
     }
 
     return jsonResponse({
