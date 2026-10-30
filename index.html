@@ -1277,7 +1277,7 @@ ${airport.location}
     id="favouriteAirportButton"
     class="favourite-airport-button"
 >
-    ⭐ Set as favourite airport
+    Set as favourite airport
 </button>
 
 <div class="photoContainer airport-image">
@@ -3492,36 +3492,30 @@ else{
 
         <hr>
 
+        
+<div class="best-spot">
 
-        <h3>Best Spot Right Now</h3>
+    <h3>Best Spot Right Now</h3>
 
+    ${
+        bestSpot && bestSpot.lighting
+        ?
+        `
+        <strong>
+            ${escapeHtml(bestSpot.name || "Spotting Location")}
+        </strong>
 
         <p>
-
-            ${
-                bestSpot &&
-                bestSpot.lighting
-                ?
-                `
-                <b>
-                    ${escapeHtml(
-                        bestSpot.name ||
-                        "Spotting Location"
-                    )}
-                </b>
-
-                <br>
-
-                ${bestSpot.lighting.stars}
-                ${escapeHtml(
-                    bestSpot.lighting.text
-                )}
-                `
-                :
-                "No spotting locations available."
-            }
-
+            ${bestSpot.lighting.stars}
+            ${escapeHtml(bestSpot.lighting.text)}
         </p>
+        `
+        :
+        `<p>No spotting locations available.</p>`
+    }
+
+</div>
+
 
 
         <hr>
@@ -3629,55 +3623,38 @@ else{
         <hr>
 
 
-        <h3>Flight Conditions</h3>
+        
+<h3>Flight Conditions</h3>
 
+<div class="flight-conditions-panel">
 
-        <p>
-            <b>
-                ${escapeHtml(
-                    weather.description ||
-                    "Unknown"
-                )}
-            </b>
-        </p>
+    <div class="flight-condition">
+        <span class="flight-condition-label">TEMPERATURE</span>
+        <strong>${weather.temperature}°C</strong>
+    </div>
 
+    <div class="flight-condition">
+        <span class="flight-condition-label">WIND</span>
+        <strong>${weather.windDirection}°</strong>
+        <small>${weather.windSpeed} km/h</small>
+    </div>
 
-        <p>
-            Temperature:
-            ${weather.temperature}°C
-        </p>
+    <div class="flight-condition">
+        <span class="flight-condition-label">CLOUD</span>
+        <strong>${weather.cloudCover}%</strong>
+    </div>
 
+</div>
 
-        <p>
-            Wind:
-            ${weather.windDirection}°
-            @ ${weather.windSpeed} km/h
-        </p>
+<p class="flight-weather-description">
+    ${escapeHtml(weather.description || "Weather information unavailable.")}
+</p>
 
-
-        <p>
-            Cloud:
-            ${weather.cloudCover}%
-        </p>
-
-
-        <p style="
-            font-size:13px;
-            opacity:0.8;
-            margin-top:-8px;
-        ">
-
-            Low: ${weather.lowCloud}%
-
-            ·
-
-            Mid: ${weather.midCloud}%
-
-            ·
-
-            High: ${weather.highCloud}%
-
-        </p>
+<div class="cloud-breakdown">
+    <span>LOW <b>${weather.lowCloud}%</b></span>
+    <span>MID <b>${weather.midCloud}%</b></span>
+    <span>HIGH <b>${weather.highCloud}%</b></span>
+</div>
 
 
         <hr>
@@ -6936,7 +6913,7 @@ function getLightingRating(
     highCloud
 ){
 
-    // 🌙 Night
+    // Night
     if(sunAltitude < -6){
 
         return {
@@ -8471,7 +8448,7 @@ function getWeatherAdvice(){
 
     if(now > times.dusk || now < times.dawn){
 
-        return "🌙 Night time - spotting possible but photography unavailable.";
+        return "Night time - spotting possible but photography unavailable.";
 
     }
 
@@ -9672,7 +9649,7 @@ async function saveFavouriteAirport() {
             favouriteButton.disabled = false;
 
             favouriteButton.textContent =
-                "☆ Set as favourite airport";
+                "Set as favourite airport";
 
         }
 
@@ -9696,7 +9673,7 @@ async function saveFavouriteAirport() {
             favouriteButton.disabled = false;
 
             favouriteButton.textContent =
-                "☆ Set as favourite airport";
+                "Set as favourite airport";
 
         }
 
