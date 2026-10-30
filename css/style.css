@@ -4726,16 +4726,13 @@ body {
     line-height: 1.5;
 }
 
-
-/* ========================================
-   AVSPOT — FLIGHT CONDITIONS
-======================================== */
+/* AVSPOT — FLIGHT CONDITIONS */
 
 #sidebar .flight-conditions-panel {
     display: grid;
     grid-template-columns: repeat(3, minmax(0, 1fr));
-    border: 1px solid #394144;
-    background: #1b2022;
+    background: #202426;
+    border: 1px solid #343c3f;
     margin: 10px 0;
 }
 
@@ -4743,19 +4740,19 @@ body {
     display: flex;
     flex-direction: column;
     gap: 5px;
-    padding: 11px 8px;
+    padding: 11px 9px;
     min-width: 0;
 }
 
 #sidebar .flight-condition + .flight-condition {
-    border-left: 1px solid #394144;
+    border-left: 1px solid #343c3f;
 }
 
 #sidebar .flight-condition-label {
-    color: #929d9f;
-    font-size: 9px;
-    font-weight: 700;
-    letter-spacing: 0.7px;
+    color: #a5aaa7;
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 0.2px;
 }
 
 #sidebar .flight-condition strong {
@@ -4772,9 +4769,9 @@ body {
 
 #sidebar .flight-weather-description {
     margin: 8px 0 !important;
-    color: #d9ad45;
+    color: #d9c17d;
     font-size: 13px;
-    font-weight: 600;
+    font-weight: 500;
 }
 
 #sidebar .cloud-breakdown {
@@ -4782,11 +4779,11 @@ body {
     justify-content: space-between;
     gap: 8px;
     padding: 8px 0;
-    border-top: 1px solid #394144;
-    border-bottom: 1px solid #394144;
-    color: #929d9f;
-    font-size: 10px;
-    letter-spacing: 0.4px;
+    border-top: 1px solid #343c3f;
+    border-bottom: 1px solid #343c3f;
+    color: #a5aaa7;
+    font-size: 11px;
+    letter-spacing: 0;
 }
 
 #sidebar .cloud-breakdown b {
@@ -4834,4 +4831,167 @@ body {
     background: #343d42 !important;
     border: 1px solid #58666c !important;
     border-left: 4px solid #899da5 !important;
+}
+
+#sidebar .photography-conditions {
+    margin: 8px 0 12px;
+}
+
+#sidebar .photography-result {
+    color: #eeeae0;
+    font-size: 15px;
+    font-weight: 600;
+    padding: 4px 0 9px;
+}
+
+#sidebar .photography-advice {
+    padding: 9px 0 0;
+    border-top: 1px solid #394144;
+    color: #c5c7c2;
+    font-size: 13px;
+    line-height: 1.5;
+}
+
+#sidebar .runway-information {
+    margin: 10px 0 14px;
+}
+
+#sidebar .runway-wind {
+    display: flex;
+    align-items: baseline;
+    gap: 8px;
+    margin-bottom: 12px;
+    color: #a5aaa7;
+    font-size: 11px;
+}
+
+#sidebar .runway-wind span {
+    font-size: 10px;
+}
+
+#sidebar .runway-wind strong {
+    color: #e5e4dd;
+    font-size: 15px;
+    font-weight: 600;
+}
+
+#sidebar .runway-wind small {
+    color: #929a99;
+    font-size: 11px;
+}
+
+#sidebar .runway-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+#sidebar .runway-item {
+    display: grid;
+    grid-template-columns: 34px 1fr 34px;
+    align-items: center;
+    gap: 7px;
+}
+
+#sidebar .runway-strip {
+    position: relative;
+    height: 62px;
+    background: #25282a;
+    border: 1px solid #4a4e50;
+    overflow: hidden;
+}
+
+#sidebar .runway-strip.active {
+    background: #2b2d2e;
+    border-color: #766332;
+}
+
+#sidebar .runway-centreline {
+    position: absolute;
+    top: 50%;
+    left: 10px;
+    right: 10px;
+    width: auto;
+    height: 2px;
+    transform: translateY(-50%);
+
+    background: repeating-linear-gradient(
+        to right,
+        #d8d8d2 0,
+        #d8d8d2 14px,
+        transparent 14px,
+        transparent 24px
+    );
+
+    opacity: 0.7;
+}
+
+#sidebar .runway-number {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #c7c8c3;
+    font-size: 15px;
+    font-weight: 600;
+    letter-spacing: 1px;
+    z-index: 2;
+}
+
+#sidebar .runway-number-top {
+    left: 10px;
+}
+
+#sidebar .runway-number-bottom {
+    right: 10px;
+}
+
+#sidebar .runway-number.active {
+    color: #f5c542;
+}
+
+#sidebar .runway-heading {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+    color: #a5aaa7;
+    font-size: 13px;
+}
+
+#sidebar .runway-heading span {
+    color: #d4d5d0;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+#sidebar .runway-heading span.active {
+    color: #f5c542;
+}
+
+#sidebar .runway-heading small {
+    color: #858d8d;
+    font-size: 10px;
+}
+
+#sidebar .runway-heading-bottom {
+    text-align: right;
+}
+
+#sidebar .active-runway-display {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 10px;
+    padding-top: 9px;
+    border-top: 1px solid #343a3c;
+}
+
+#sidebar .active-runway-display span {
+    color: #929a99;
+    font-size: 10px;
+}
+
+#sidebar .active-runway-display strong {
+    color: #f5c542;
+    font-size: 16px;
+    font-weight: 600;
 }

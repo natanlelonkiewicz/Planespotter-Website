@@ -1297,26 +1297,75 @@ ${airport.airportCredits?.[currentAirportPhotoIndex] || ""}
 
 <h3>Runway Information</h3>
 
-<p>
-Wind:
-<b>${weather.windDirection}°</b>
-</p>
+<div class="runway-information">
 
-<p>
-Active Runway:
-<b>${activeRunway}</b>
-</p>
+    <div class="runway-wind">
+        <span>WIND</span>
+        <strong>${weather.windDirection}°</strong>
+        <small>${weather.windSpeed} km/h</small>
+    </div>
 
-<p>
-Runway Headings:
-${airport.runways.map(function(runway){
+    <div class="runway-list">
 
-return runway.name + ": " +
-runway.heading1 + "° / " +
-runway.heading2 + "°";
+        ${airport.runways.map(function(runway){
 
-}).join("<br>")}
-</p>
+            var runway1 = String(runway.name).split("/")[0];
+            var runway2 = String(runway.name).split("/")[1];
+
+            var isActive1 =
+                String(activeRunway) === runway1 ||
+                String(activeRunway).replace(/^0+/, "") === runway1.replace(/^0+/, "");
+
+            var isActive2 =
+                String(activeRunway) === runway2 ||
+                String(activeRunway).replace(/^0+/, "") === runway2.replace(/^0+/, "");
+
+            return `
+            
+            <div class="runway-item">
+
+                <div class="runway-heading">
+                    <span class="${isActive1 ? "active" : ""}">
+                        ${runway1}
+                    </span>
+                    <small>${runway.heading1}°</small>
+                </div>
+
+                <div class="runway-strip ${isActive1 || isActive2 ? "active" : ""}">
+
+                    <div class="runway-centreline"></div>
+
+                    <span class="runway-number runway-number-top ${isActive1 ? "active" : ""}">
+                        ${runway1}
+                    </span>
+
+                    <span class="runway-number runway-number-bottom ${isActive2 ? "active" : ""}">
+                        ${runway2}
+                    </span>
+
+                </div>
+
+                <div class="runway-heading runway-heading-bottom">
+                    <small>${runway.heading2}°</small>
+                    <span class="${isActive2 ? "active" : ""}">
+                        ${runway2}
+                    </span>
+                </div>
+
+            </div>
+
+            `;
+
+        }).join("")}
+
+    </div>
+
+    <div class="active-runway-display">
+        <span>ACTIVE RUNWAY</span>
+        <strong>${activeRunway || "—"}</strong>
+    </div>
+
+</div>
 
 <hr>
 
@@ -1331,19 +1380,20 @@ ${airport.commonAircraft || ""}
 
 <h3>Best Spot Right Now</h3>
 
-<p>
-${
-rankedSpots.length > 0 && rankedSpots[0].lighting
-?
-"<b>" + rankedSpots[0].name + "</b>"
-+ "<br>"
-+ rankedSpots[0].lighting.stars
-+ " "
-+ rankedSpots[0].lighting.text
-:
-"Calculating..."
-}
-</p>
+<div class="best-spot">
+    ${
+        rankedSpots.length > 0 && rankedSpots[0].lighting
+        ?
+        "<b>" + rankedSpots[0].name + "</b>"
+        + "<p>"
+        + rankedSpots[0].lighting.stars
+        + " "
+        + rankedSpots[0].lighting.text
+        + "</p>"
+        :
+        "Calculating..."
+    }
+</div>
 
 <hr>
 
@@ -1415,43 +1465,47 @@ spot.lighting.stars
 
 <h3>Flight Conditions</h3>
 
-<p>
-<b>${weather.description}</b>
+<div class="flight-conditions-panel">
+    <div class="flight-condition">
+        <span class="flight-condition-label">TEMPERATURE</span>
+        <strong>${weather.temperature}°C</strong>
+    </div>
+
+    <div class="flight-condition">
+        <span class="flight-condition-label">WIND</span>
+        <strong>${weather.windDirection}°</strong>
+        <small>${weather.windSpeed} km/h</small>
+    </div>
+
+    <div class="flight-condition">
+        <span class="flight-condition-label">CLOUD</span>
+        <strong>${weather.cloudCover}%</strong>
+    </div>
+</div>
+
+<p class="flight-weather-description">
+    ${escapeHtml(weather.description || "Weather information unavailable.")}
 </p>
 
-<p>
-Temperature:
-${weather.temperature}°C
-</p>
-
-<p>
-Wind:
-${weather.windDirection}°
-@ ${weather.windSpeed} km/h
-</p>
-
-<p>
-Cloud:
-${weather.cloudCover}%
-</p>
-
-<p style="font-size:13px; opacity:0.8; margin-top:-8px;">
-Low: ${weather.lowCloud}% ·
-Mid: ${weather.midCloud}% ·
-High: ${weather.highCloud}%
-</p>
+<div class="cloud-breakdown">
+    <span>LOW <b>${weather.lowCloud}%</b></span>
+    <span>MID <b>${weather.midCloud}%</b></span>
+    <span>HIGH <b>${weather.highCloud}%</b></span>
+</div>
 
 <hr>
 
 <h3>Photography Conditions</h3>
 
-<p>
-${getPhotographyScore()}
-</p>
+<div class="photography-conditions">
+    <div class="photography-result">
+        ${getPhotographyScore()}
+    </div>
 
-<p>
-${getWeatherAdvice()}
-</p>
+    <div class="photography-advice">
+        ${getWeatherAdvice()}
+    </div>
+</div>
 
 
 <hr>
