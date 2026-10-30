@@ -108,16 +108,6 @@ h2{
 
 }
 
-.spot-card.excellent{
-
-    background:#14532d;
-
-    border:2px solid #22c55e;
-
-    color:white;
-
-}
-
 .direction-card{
 
     background:#111;
@@ -152,27 +142,6 @@ h2{
     color:#111;
 
     transform:scale(1.03);
-
-}
-
-.spot-card.side{
-
-    background:#713f12;
-
-    border:2px solid #eab308;
-
-    color:white;
-
-}
-
-
-.spot-card.backlit{
-
-    background:#7f1d1d;
-
-    border:2px solid #ef4444;
-
-    color:white;
 
 }
 
@@ -2170,21 +2139,6 @@ body {
 
 .airshow-marker-icon {
     filter: brightness(1.15) saturate(1.4);
-}
-
-.spot-card.excellent{
-    border-left: 5px solid #22c55e;
-    background: rgba(34, 197, 94, 0.12);
-}
-
-.spot-card.side{
-    border-left: 5px solid #f5c542;
-    background: rgba(245, 197, 66, 0.12);
-}
-
-.spot-card.backlit{
-    border-left: 5px solid #ef4444;
-    background: rgba(239, 68, 68, 0.12);
 }
 
 .add-airport-page .add-airshow-title {
@@ -4257,45 +4211,6 @@ body {
     box-shadow: none !important;
 }
 
-.spot-card.excellent {
-    background: rgba(50, 125, 83, 0.13) !important;
-    border-color: #438b64 !important;
-    border-left: 4px solid var(--av-green) !important;
-}
-
-.spot-card.favourable,
-.spot-card.side,
-.spot-card.diffused {
-    background: rgba(190, 145, 48, 0.10) !important;
-    border-color: #8c7139 !important;
-    border-left: 4px solid var(--av-amber) !important;
-}
-
-.spot-card.poor,
-.spot-card.backlit {
-    background: rgba(160, 65, 60, 0.12) !important;
-    border-color: #96514c !important;
-    border-left: 4px solid var(--av-red) !important;
-}
-
-.spot-card.overcast {
-    background: rgba(120, 130, 135, 0.10) !important;
-    border-color: #596267 !important;
-    border-left: 4px solid #879398 !important;
-}
-
-.spot-card.low-light {
-    background: rgba(75, 112, 145, 0.12) !important;
-    border-color: #526f87 !important;
-    border-left: 4px solid var(--av-blue) !important;
-}
-
-.spot-card.night {
-    background: #181b1d !important;
-    border-color: #343a3d !important;
-    border-left: 4px solid #454d51 !important;
-}
-
 /* Direction and lighting panels */
 
 .direction-card {
@@ -4878,4 +4793,45 @@ body {
     color: #e5e4dd;
     margin-left: 3px;
     font-size: 11px;
+}
+
+/* AVSPOT — REFINED, MORE VISIBLE SPOTTING COLOURS */
+
+#sidebar .spot-card.excellent {
+    background: #345b43 !important;
+    border: 1px solid #638c6d !important;
+    border-left: 4px solid #8bc39a !important;
+}
+
+#sidebar .spot-card.favourable,
+#sidebar .spot-card.side,
+#sidebar .spot-card.diffused {
+    background: #594a2d !important;
+    border: 1px solid #947b4b !important;
+    border-left: 4px solid #d4b66c !important;
+}
+
+#sidebar .spot-card.poor,
+#sidebar .spot-card.backlit {
+    background: #603b39 !important;
+    border: 1px solid #98615b !important;
+    border-left: 4px solid #d18b80 !important;
+}
+
+#sidebar .spot-card.overcast {
+    background: #414c50 !important;
+    border: 1px solid #687a80 !important;
+    border-left: 4px solid #a4b5ba !important;
+}
+
+#sidebar .spot-card.low-light {
+    background: #354d61 !important;
+    border: 1px solid #5d7b91 !important;
+    border-left: 4px solid #8eb5d0 !important;
+}
+
+#sidebar .spot-card.night {
+    background: #343d42 !important;
+    border: 1px solid #58666c !important;
+    border-left: 4px solid #899da5 !important;
 }
