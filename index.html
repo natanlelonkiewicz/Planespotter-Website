@@ -5300,39 +5300,27 @@ function displayAirshowSpots(airshow){
 
 }
 
+
 async function showAirshow(airshow){
 
-    lowFlyingMarkers.forEach(
-        function(marker){
-
-            map.removeLayer(marker);
-
-        }
-    );
+    lowFlyingMarkers.forEach(function(marker){
+        map.removeLayer(marker);
+    });
 
     lowFlyingMarkers = [];
-
     currentLowFlyingArea = null;
-
-    const plusUser = await isAvspotPlus();
-
 
     airport = null;
 
-
     spotMarkers.forEach(function(marker){
-
         map.removeLayer(marker);
-
     });
 
     spotMarkers = [];
 
-
     openSidebar();
 
     currentAirshow = airshow;
-
 
     map.flyTo(
         [
@@ -5342,166 +5330,19 @@ async function showAirshow(airshow){
         13
     );
 
-
     // Remove existing airshow spot markers
 
     airshowSpotMarkers.forEach(function(marker){
-
         map.removeLayer(marker);
-
     });
 
     airshowSpotMarkers = [];
 
-
-    // FREE / LOGGED-OUT USER
-
-if(!plusUser){
-
-    document.getElementById("sidebar").innerHTML = `
-
-        <h2>${airshow.name}</h2>
-
-        <p class="airport-details">
-            📍 ${airshow.location}
-        </p>
-
-        <hr>
-
-        <div class="plus-locked-airshow">
-
-            <div class="plus-lock-icon">
-                ⭐
-            </div>
-
-            <h3>
-                Avspot Plus
-            </h3>
-
-            <p class="plus-lock-description">
-                Unlock the full airshow experience with
-                <strong>Avspot Plus</strong>.
-            </p>
-
-            <div class="plus-feature-list">
-
-                <div class="plus-feature">
-                    <span>📅</span>
-                    <span>Full airshow information</span>
-                </div>
-
-                <div class="plus-feature">
-                    <span>✈️</span>
-                    <span>Confirmed aircraft</span>
-                </div>
-
-                <div class="plus-feature">
-                    <span>📸</span>
-                    <span>All spotting locations</span>
-                </div>
-
-                <div class="plus-feature">
-                    <span>☀️</span>
-                    <span>Lighting information</span>
-                </div>
-
-                <div class="plus-feature">
-                    <span>🔭</span>
-                    <span>Recommended focal lengths</span>
-                </div>
-
-                <div class="plus-feature">
-                    <span>📝</span>
-                    <span>Photography advice</span>
-                </div>
-
-                <div class="plus-feature">
-                    <span>🖼️</span>
-                    <span>Spotting location photos</span>
-                </div>
-
-            </div>
-
-            <button
-                id="upgradePlusButton"
-                class="airshow-plus-upgrade-button"
-                onclick="upgradeToAvspotPlus()"
-            >
-
-                <span class="airshow-plus-button-title">
-                    ⭐ Upgrade to Avspot Plus
-                </span>
-
-                <span class="airshow-plus-button-subtitle">
-                    Unlock all premium airshow features
-                </span>
-
-            </button>
-
-            <p class="plus-lock-footer">
-    £2.99 one-time payment
-</p>
-
-        </div>
-
-    `;
-
-    return;
-
-}
-
-
-    // PLUS USER
-
-    const {
-        data: fullAirshow,
-        error
-    } = await supabaseClient
-        .from("airshow_submissions")
-        .select("*")
-        .eq("id", airshow.id)
-        .eq("status", "approved")
-        .single();
-
-
-    if(error){
-
-        console.error(
-            "Full airshow loading error:",
-            error
-        );
-
-        alert(
-            "Unable to load the full airshow information."
-        );
-
-        return;
-
-    }
-
-
-    airshow = fullAirshow;
-
-    currentAirshow = airshow;
+    // Display spotting locations for everyone
 
     displayAirshowSpots(airshow);
-
-    // Hide airshow spotting pins for non-Plus users
-    airshowSpotMarkers.forEach(function(marker){
-
-        map.removeLayer(marker);
-
-    });
-
-    airshowSpotMarkers = [];
-
-
-    // Avspot Plus users
-    displayAirshowSpots(airshow);
-
 
     const spots = airshow.spots || [];
-
 
     document.getElementById("sidebar").innerHTML = `
 
@@ -5563,7 +5404,7 @@ if(!plusUser){
 
         <hr>
 
-                <h3>About This Airshow</h3>
+        <h3>About This Airshow</h3>
 
         <p>
             ${airshow.description || "No description available."}
@@ -5619,9 +5460,7 @@ if(!plusUser){
                         : "";
 
                     if(lightingText === "Excellent"){
-
                         lightingClass = "excellent";
-
                     }
 
                     else if(
@@ -5629,11 +5468,8 @@ if(!plusUser){
                         lightingText === "Diffused light" ||
                         lightingText === "Favourable light"
                     ){
-
                         lightingClass = "side";
-
                     }
-
 
                     return `
 
@@ -5652,11 +5488,9 @@ if(!plusUser){
                             </h3>
 
                             <p>
-
                                 <b>Lighting:</b>
 
                                 <span class="airshow-spot-lighting">
-
                                     ${
                                         spot.lighting
                                         ?
@@ -5666,9 +5500,7 @@ if(!plusUser){
                                         :
                                         "Lighting direction not set"
                                     }
-
                                 </span>
-
                             </p>
 
                             ${
@@ -5719,6 +5551,7 @@ if(!plusUser){
     `;
 
 }
+
 
 function updateAirshowSpotCards(){
 
