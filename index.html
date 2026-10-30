@@ -1416,14 +1416,14 @@ ${rankedSpots.map((spot,index)=>{
         }
 
         else if(
-            spot.lighting.text === "Side lighting" ||
-            spot.lighting.text === "Diffused light" ||
-            spot.lighting.text === "Favourable light"
-        ){
-
-            lightingClass = "side";
-
-        }
+    spot.lighting.text === "Side lighting" ||
+    spot.lighting.text === "Diffused light" ||
+    spot.lighting.text === "Favourable light" ||
+    spot.lighting.text === "Soft light" ||
+    spot.lighting.text === "Filtered sunlight"
+){
+    lightingClass = "side";
+}
 
         else{
 
@@ -5994,15 +5994,15 @@ function showAirshowSpot(spot, airshow){
 
         }
 
-        else if(
-            spot.lighting.text === "Side lighting" ||
-            spot.lighting.text === "Diffused light" ||
-            spot.lighting.text === "Favourable light"
-        ){
-
-            lightingClass = "side";
-
-        }
+       else if(
+    spot.lighting.text === "Side lighting" ||
+    spot.lighting.text === "Diffused light" ||
+    spot.lighting.text === "Favourable light" ||
+    spot.lighting.text === "Soft light" ||
+    spot.lighting.text === "Filtered sunlight"
+){
+    lightingClass = "side";
+}
 
         else if(spot.lighting.text === "Backlit"){
 
@@ -7225,13 +7225,14 @@ function updateSpotMarker(spot){
     else if(
         spot.lighting.text === "Side lighting" ||
         spot.lighting.text === "Diffused light" ||
-        spot.lighting.text === "Favourable light"
+        spot.lighting.text === "Favourable light" ||
+        spot.lighting.text === "Soft light" ||
+        spot.lighting.text === "Filtered sunlight"
     ){
 
         spot.marker.setIcon(yellowIcon);
 
     }
-
 
     else{
 
@@ -8179,17 +8180,17 @@ function liveSunTime(){
                     );
 
                 }
+                
                 else if(
-                    spot.lighting.text === "Side lighting" ||
-                    spot.lighting.text === "Diffused light" ||
-                    spot.lighting.text === "Favourable light"
-                ){
+    spot.lighting.text === "Side lighting" ||
+    spot.lighting.text === "Diffused light" ||
+    spot.lighting.text === "Favourable light" ||
+    spot.lighting.text === "Soft light" ||
+    spot.lighting.text === "Filtered sunlight"
+){
+    lightingClass = "side";
+}
 
-                    card.classList.add(
-                        "side"
-                    );
-
-                }
                 else{
 
                     card.classList.add(
